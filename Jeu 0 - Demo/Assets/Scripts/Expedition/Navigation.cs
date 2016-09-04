@@ -97,8 +97,6 @@ public class Navigation : CI_caller {
             {
                 // on s'assure que le syst de nav va pas pourir ma rotation à venir
                 agent.updateRotation = false;
-                // on s'assure également que les autres entités ne vont pas pourir ma rotation via la physique du jeu
-                this.GetComponent<Rigidbody>().freezeRotation = true;
             }
             // en train d'effectuer la rotation
             rotating = true;
@@ -114,7 +112,6 @@ public class Navigation : CI_caller {
     {
         agent.SetDestination(v3Destination);
         moving = true;
-        this.GetComponent<Rigidbody>().freezeRotation = false;
     }
 
 }

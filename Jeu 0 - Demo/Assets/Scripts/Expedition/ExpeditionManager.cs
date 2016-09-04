@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ExpeditionManager : MonoBehaviour
 {
 
+    // Singleton management about an ExpeditionManager instance
     private static ExpeditionManager instance;
     public static ExpeditionManager Inst
     {
@@ -18,6 +19,7 @@ public class ExpeditionManager : MonoBehaviour
         }
     }
 
+    // Singleton management about a list of GameObject
     private static List<GameObject> personages;
     public static List<GameObject> Persos
     {
@@ -31,28 +33,42 @@ public class ExpeditionManager : MonoBehaviour
         }
     }
 
+    // the formations 
     public List<int>[] formations;
+
+    [Header("Just watch, don't modify ;)")]
     public List<int> selected;
+    [SerializeField]
+    private List<int> newSelection;
+    [Header("Can be modified (-1 : no formation)")]
+    [Range(-1,4)]
     public int formationSelected = -1;
 
     void Start()
     {
         formations = new List<int>[5];
+        newSelection = new List<int>();
     }
 
-    private List<int> newSelection = new List<int>();
-
-    public void nouvellesSelections(List<int> newSelec)
+    public void clearNewSelection()
     {
-        // remplacement de l'ancienne sélection
         newSelection.Clear();
-        newSelection.AddRange(newSelec);
+    }
 
+    public void addNewSelection(int i)
+    {
+        if (!newSelection.Contains(i))
+            newSelection.Add(i);
+    }
+
+    public void previewNewSelection ()
+    {
         // complétion de sélection
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
         {
             for (int i = 0; i < Persos.Count; i++)
             {
+                // dse booléens pour éclaircir le code
                 bool inSelected = selected.Contains(i);
                 bool inNewSelect = newSelection.Contains(i);
                 
@@ -60,14 +76,11 @@ public class ExpeditionManager : MonoBehaviour
                 Persos[i].GetComponent<Navigation>().Selected = inSelected ^ inNewSelect;
             }
         }
-        // sélection simple
-        else
+        else // sélection simple
         {
             for (int i = 0; i < Persos.Count; i++)
             {
-                bool inNewSelect = newSelection.Contains(i);
-
-                Persos[i].GetComponent<Navigation>().Selected = inNewSelect;
+                Persos[i].GetComponent<Navigation>().Selected = newSelection.Contains(i);
             }
         }
     }
@@ -80,61 +93,47 @@ public class ExpeditionManager : MonoBehaviour
             foreach (int i in newSelection)
             {
                 if (selected.Contains(i))
-                {
                     selected.Remove(i);
-                }
                 else
-                {
                     selected.Add(i);
-                }
             }
         }
-        // sélection simple
-        else
+        else // sélection simple
         {
             selected.Clear();
             selected.AddRange(newSelection);
         }
 
-        newSelection.Clear();
+        // affichage
+        for(int i = 0; i < Persos.Count; i++)
+        {
+            Persos[i].GetComponent<Navigation>().Selected = selected.Contains(i);
+        }
     }
 
-    public void nouvelleSelection(int i)
+    public void monoSelection(int i)
     {
+        clearNewSelection();
+
         // complétion de sélection
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
         {
-            // dé/sélection du perso
-            if (!selected.Contains(i))
-            {
-                selected.Add(i);
-                Persos[i].GetComponent<Navigation>().Selected = true;
-            }
-            else
-            {
+            if (selected.Contains(i))
                 selected.Remove(i);
-                Persos[i].GetComponent<Navigation>().Selected = false;
-            }
+            else
+                selected.Add(i);
         }
-        else
+        else // sélection simple
         {
-            // suppression de la sélection précedente des persos
-            clearSelection();
-
-            // sélection du perso
-            selected.Add(i);
-            Persos[i].GetComponent<Navigation>().Selected = true;
+            selected.Clear();
+            newSelection.Add(i);
+            selected.AddRange(newSelection);
         }
-    }
 
-    /* Some private function */
-
-    private void clearSelection ()
-    {
-        foreach (int i in selected)
+        // affichage
+        for (int j = 0; j < Persos.Count; j++)
         {
-            Persos[i].GetComponent<Navigation>().Selected = false;
+            Persos[j].GetComponent<Navigation>().Selected = selected.Contains(j);
         }
-        selected.Clear();
     }
 }

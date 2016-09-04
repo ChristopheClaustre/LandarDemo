@@ -18,11 +18,10 @@ public class SelectionBox : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButton(0) && pressed)
         {
+            ExpeditionManager.Inst.clearNewSelection();
+
             // on récupère la position de fin courante
             end = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // la liste des persos dans la selectionBox
-            List<int> newSelection = new List<int>();
 
             // quels sont les persos dans la selectionBox ?
             for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
@@ -47,12 +46,12 @@ public class SelectionBox : MonoBehaviour {
                 // si c'est bon, c'est bon !
                 if (xCheck && zCheck)
                 {
-                    newSelection.Add(i);
+                    ExpeditionManager.Inst.addNewSelection(i);
                 }
             }
 
             // on applique ;)
-            ExpeditionManager.Inst.nouvellesSelections(newSelection);
+            ExpeditionManager.Inst.previewNewSelection();
         }
 
         if (Input.GetMouseButtonUp(0))

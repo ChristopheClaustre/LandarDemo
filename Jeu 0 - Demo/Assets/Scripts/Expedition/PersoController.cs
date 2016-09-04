@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PersoController : CI_caller {
 
@@ -24,11 +25,10 @@ public class PersoController : CI_caller {
     private float rotationValue = 0;
 
     private Vector3 v3Destination;
-    private GameObject[] persos;
 
     // Use this for initialization
     void Start () {
-        persos = GameObject.FindGameObjectsWithTag("Player");
+        
 	}
 	
 	// Update is called once per frame
@@ -38,18 +38,21 @@ public class PersoController : CI_caller {
 
     private void go()
     {
+        // on récupère les sélectionnés
+        List<int> selec = ExpeditionManager.Inst.selected;
+
         int nbPerRow = 3;
 
         // calcul the destination
-        int nbRow = (persos.Length / nbPerRow) + 1;
-        Vector3[] destinations = new Vector3[persos.Length];
-        for (int i = 0; i < persos.Length; i+=nbPerRow)
+        int nbRow = (selec.Count / nbPerRow) + 1;
+        Vector3[] destinations = new Vector3[selec.Count];
+        for (int i = 0; i < selec.Count; i+=nbPerRow)
         {
             // the incrementation from the original position
-            float incrX = (Mathf.Min(nbPerRow, persos.Length - i) - 1.0f) / -2.0f;
+            float incrX = (Mathf.Min(nbPerRow, selec.Count - i) - 1.0f) / -2.0f;
             float incrZ = (nbRow - 1.0f) / -2.0f;
             // we calculate each row of the formation
-            for (int j = 0; (i + j) < persos.Length && j < nbPerRow; j++)
+            for (int j = 0; (i + j) < selec.Count && j < nbPerRow; j++)
             {
                 destinations[i+j] =
                     new Vector3(v3Destination.x + incrX + j, v3Destination.y, v3Destination.z + incrZ);
@@ -67,9 +70,9 @@ public class PersoController : CI_caller {
         }
         
         // assign the destination
-        for (int i = 0; i < persos.Length; i++)
+        for (int i = 0; i < selec.Count; i++)
         {
-            Navigation nav = persos[i].GetComponent<Navigation>();
+            Navigation nav = ExpeditionManager.Persos[selec[i]].GetComponent<Navigation>();
             if (rotationRequired)
             {
                 nav.rotationRequired = rotationRequired;

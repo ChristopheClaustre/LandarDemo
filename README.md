@@ -3,17 +3,18 @@ Source of the future demo for the next SquirrelSoft's game
 
 ## 1. Folder
 
- * *bin* : latest working build
- * *Teddy* : a folder for teddy's shitty things
- * *Jeu 0 - Demo* (Never change this folder's name) : Unity's source of the project
+ * **bin** : latest working build
+ * **Teddy** : a folder for teddy's shitty things
+ * **Jeu 0 - Demo** (Never change this folder's name) : Unity's source of the project
 
 ## 2. Organisation
 
- * Never have two persons editing the same scene/asset ! NEVER !
- * If you detect an issue with a *Finished* Asset you should warn the other persons who may be using it and then commit your modifications. Never commit it if you can't warn the other users before.
- * Always check for new commits before begining your work.
- * Always commit your work (if you only modified the file you are allowed to).
- * Commit only working (or at least buildable) version of your work.
+ * **Never** have two persons editing the same scene/asset ! NEVER !
+ * If you detect an issue with a *Finished* Asset you should warn the other persons who may be using it and then push your modifications. Never push it if you can't warn the other users before.
+ * **Always** check for new commits before begining your work.
+ * **Always** commit and push your work (if you only modified the file you are allowed to).
+ * Push only working (or at least buildable) version of your work.
+
  * Don't modify the project's settings in unity without warning before @ChristopheClaustre
 
 ### A. Example of organisation
