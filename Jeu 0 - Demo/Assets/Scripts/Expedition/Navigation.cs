@@ -4,6 +4,7 @@ using System.Collections;
 public class Navigation : CI_caller {
 
     // information about rotation
+    [SerializeField]
     public float rotatingDistance = 1;
     public bool rotationRequired = false;
     public float rotationValue = 0;
@@ -11,12 +12,10 @@ public class Navigation : CI_caller {
     [Header("Need to click the button to be updated")]
 
     // Some code for the CustomInspector
-    // use the getter after an update of v2Destination (via button)
 #if (UNITY_EDITOR)
     // destination for next call to pathfinder from Inspector
     [SerializeField]
     private Vector2 v2Destination;
-
     public override void updateVarFromCI()
     {
         v3Destination = new Vector3(v2Destination.x, 0, v2Destination.y);
@@ -27,7 +26,6 @@ public class Navigation : CI_caller {
 
     [SerializeField]
     private bool selected = false;
-
     public bool Selected
     {
         get
@@ -43,7 +41,6 @@ public class Navigation : CI_caller {
 
     // the destination for next call of the pathfinder
     private Vector3 v3Destination;
-
     public Vector3 V3Destination
     {
         get
@@ -69,40 +66,40 @@ public class Navigation : CI_caller {
 
     void Update ()
     {
-        // fin du déplacement
-        if (moving && agent.remainingDistance <= float.Epsilon)
+        if (moving)
         {
-            // fin de mouvement
-            moving = false;
-            // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
-            agent.updateRotation = true;
-        }
-
-        // fin de la rotation (généralement après la fin du déplacement)
-        if (rotationRequired && rotating
-            && Mathf.Abs(transform.eulerAngles.y - rotationValue) <= 0.5)
-        {
-            // fin de rotation
-            rotating = false;
-            // on remet les variables public en config par défaut
-            rotationRequired = false;
-            rotationValue = 0;
-        }
-
-        // la rotation (à partir de rotatingDistance case de la destination)
-        if (rotationRequired && (rotating || moving)
-            && Mathf.Abs(agent.remainingDistance - agent.stoppingDistance) < rotatingDistance)
-        {
-            if (!rotating) // si on était pas déjà en train de rotate
+            // fin du déplacement
+            if (agent.remainingDistance <= float.Epsilon)
             {
+                moving = false;
+            }
+
+            // début de rotation
+            if (rotationRequired && agent.remainingDistance <= rotatingDistance && !rotating)
+            {
+                rotating = true;
                 // on s'assure que le syst de nav va pas pourir ma rotation à venir
                 agent.updateRotation = false;
             }
-            // en train d'effectuer la rotation
-            rotating = true;
+        }
+        if (rotating)
+        {
+            // fin de rotation
+            if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(rotationValue, 360)) <= 0.5f)
+            {
+                rotating = false;
+                // on remet les variables public en config par défaut
+                rotationRequired = false;
+                rotationValue = 0;
+                // on reactive la rotation pour le syst de nav
+                agent.updateRotation = true;
+            }
             // on rotate
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.AngleAxis(rotationValue, Vector3.up), Time.deltaTime * 2);
+            else
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.AngleAxis(rotationValue, Vector3.up), Time.deltaTime * 2);
+            }
         }
     }
 
@@ -110,8 +107,12 @@ public class Navigation : CI_caller {
 
     private void go()
     {
-        agent.SetDestination(v3Destination);
+        // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
+        agent.updateRotation = true;
+        // on va se mettre à bouger
         moving = true;
+        // on applique la destination
+        agent.SetDestination(v3Destination);
     }
 
 }

@@ -165,6 +165,8 @@ GameObject:
   - 23: {fileID: 73423128}
   - 114: {fileID: 73423131}
   - 114: {fileID: 73423132}
+  - 114: {fileID: 73423133}
+  - 114: {fileID: 73423134}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -258,50 +260,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pressed: 0
   selectionBox: {fileID: 1588306104}
---- !u!1 &109778514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 109778515}
-  - 114: {fileID: 109778516}
-  m_Layer: 0
-  m_Name: PersoController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &109778515
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 109778514}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
---- !u!114 &109778516
+--- !u!114 &73423133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 109778514}
+  m_GameObject: {fileID: 73423126}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f18c3e003adef1645bd11cea56ac535a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   v2Destination: {x: 0, y: 2}
-  rotatingDistance: 2
-  rotationRequired: 1
-  rotationValue: 90
+  rotationRequired: 0
+  rotationValue: 0
+--- !u!114 &73423134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 73423126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d017170326b0a4aab7395247dd19c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotatingDistance: 25
+  rotationValue: 0
+  rStartClick: {x: 0, y: 0, z: 0}
+  rEndClick: {x: 0, y: 0, z: 0}
+  rPressed: 0
 --- !u!1 &139113067
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +493,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.095
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -925,6 +913,7 @@ GameObject:
   - 92: {fileID: 980909208}
   - 124: {fileID: 980909207}
   - 81: {fileID: 980909206}
+  - 114: {fileID: 980909211}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1001,6 +990,28 @@ Transform:
   - {fileID: 442767219}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &980909211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 980909205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07607825d1dcabf4d8bd1a224e06a374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HandleRightClick: 1
+  HandleMiddleClick: 0
+  OnRightClickMethodName: OnRightUpAsButton
+  OnRightDownMethodName: OnRightDown
+  OnRightUpMethodName: OnRightUp
+  OnMiddleClickMethodName: OnMiddleUpAsButton
+  OnMiddleDownMethodName: OnMiddleDown
+  OnMiddleUpMethodName: OnMiddleUp
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
 --- !u!1 &1219547874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,8 +1133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 
-  formationSelected: -1
   newSelection: 
+  formationSelected: -1
 --- !u!1 &1327869193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,7 +1739,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.13
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

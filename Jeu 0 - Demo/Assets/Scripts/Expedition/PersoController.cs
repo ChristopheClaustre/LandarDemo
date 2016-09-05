@@ -16,25 +16,39 @@ public class PersoController : CI_caller {
     }
 #endif
 
-    // show in Editor field
-    [SerializeField]
-    private float rotatingDistance = 1;
-    [SerializeField]
-    private bool rotationRequired = false;
-    [SerializeField]
-    private float rotationValue = 0;
+    public bool rotationRequired = false;
+    public float rotationValue = 0;
 
     private Vector3 v3Destination;
+    public Vector3 V3Destination
+    {
+        get
+        {
+            return v3Destination;
+        }
+        set
+        {
+            v3Destination = value;
+            go();
+        }
+    }
 
-    // Use this for initialization
-    void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    // destination + rotation
+    public void go(Vector3 dest, float rValue)
+    {
+        v3Destination = dest;
+        rotationRequired = true;
+        rotationValue = rValue;
+        go();
+    }
+
+    // just the destination
+    public void go(Vector3 dest)
+    {
+        v3Destination = dest;
+        rotationRequired = false;
+        go();
+    }
 
     private void go()
     {
@@ -43,7 +57,7 @@ public class PersoController : CI_caller {
 
         int nbPerRow = 3;
 
-        // calcul the destination
+        // calcul the destination(s)
         int nbRow = (selec.Count / nbPerRow) + 1;
         Vector3[] destinations = new Vector3[selec.Count];
         for (int i = 0; i < selec.Count; i+=nbPerRow)
@@ -76,7 +90,6 @@ public class PersoController : CI_caller {
             if (rotationRequired)
             {
                 nav.rotationRequired = rotationRequired;
-                nav.rotatingDistance = rotatingDistance;
                 nav.rotationValue = rotationValue;
             }
             nav.V3Destination = destinations[i];
@@ -90,4 +103,5 @@ public class PersoController : CI_caller {
         point = dir + pivot; // calculate rotated point
         return point; // return it
     }
+    
 }
