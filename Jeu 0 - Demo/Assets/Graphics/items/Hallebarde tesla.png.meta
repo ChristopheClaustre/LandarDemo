@@ -1,13 +1,14 @@
 fileFormatVersion: 2
-guid: 5f63f015030bc4c4f9b323244b592382
-timeCreated: 1456957156
+guid: 0fd90c88cec51d94bac2a6aa35eddc4e
+timeCreated: 1470317142
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: feu de camp_0
-    21300002: feu de camp_1
-    21300004: feu de camp_2
-    21300006: feu de camp_3
+    21300000: Hallebarde tesla
+    21300002: "Hallebarde tesla_activ\xE9_1"
+    21300004: "Hallebarde tesla_activ\xE9_2"
+    21300006: "Hallebarde tesla_activ\xE9_3"
+    21300008: Hallebarde tesla_Rangee
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -21,7 +22,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -41,11 +42,12 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
+  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaIsTransparency: 1
@@ -53,46 +55,62 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: feu de camp_0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 33
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 33
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_2
+    - name: Hallebarde tesla
       rect:
         serializedVersion: 2
         x: 1
         y: 1
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 20
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_3
+      outline: []
+    - name: "Hallebarde tesla_activ\xE9_1"
       rect:
         serializedVersion: 2
-        x: 33
+        x: 22
         y: 1
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 20
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: "Hallebarde tesla_activ\xE9_2"
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 1
+        width: 20
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: "Hallebarde tesla_activ\xE9_3"
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 1
+        width: 20
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Hallebarde tesla_Rangee
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 32
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

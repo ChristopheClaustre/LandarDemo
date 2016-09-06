@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 0f414d6203c49ba4389eadeb69b7e850
-timeCreated: 1470146046
+guid: 755fc96a60209434db124626d19468f2
+timeCreated: 1473188304
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -9,7 +9,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -25,13 +25,13 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
+  cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -75,8 +75,8 @@ TextureImporter:
         y: 8
         width: 22
         height: 22
-      alignment: 9
-      pivot: {x: 0.6206923, y: 0.5402307}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
