@@ -1,13 +1,12 @@
 fileFormatVersion: 2
-guid: 5f63f015030bc4c4f9b323244b592382
-timeCreated: 1456957156
+guid: edd107f6f4276fc4b9973ea08d30dc55
+timeCreated: 1466427387
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: feu de camp_0
-    21300002: feu de camp_1
-    21300004: feu de camp_2
-    21300006: feu de camp_3
+    21300000: Carabine_Chargee
+    21300002: Carabine_Vide
+    21300004: Carabine_Rangee
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,45 +52,35 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: feu de camp_0
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 33
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_1
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 33
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_2
+    - name: Carabine_Chargee
       rect:
         serializedVersion: 2
         x: 1
         y: 1
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 10
+        height: 27
+      alignment: 9
+      pivot: {x: .300000012, y: .400000006}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: feu de camp_3
+    - name: Carabine_Vide
       rect:
         serializedVersion: 2
-        x: 33
+        x: 12
         y: 1
-        width: 31
-        height: 31
+        width: 8
+        height: 27
+      alignment: 9
+      pivot: {x: .400000006, y: .400000006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Carabine_Rangee
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 11
+        width: 7
+        height: 8
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

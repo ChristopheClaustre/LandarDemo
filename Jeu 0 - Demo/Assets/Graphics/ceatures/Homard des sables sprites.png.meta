@@ -1,0 +1,165 @@
+fileFormatVersion: 2
+guid: b9b0bd4054f6d154dbb9ffa8259d4e9d
+timeCreated: 1471277823
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Homard des sables sprites_Idle1
+    21300002: Homard des sables sprites_Idle2
+    21300004: Homard des sables sprites_Idle3
+    21300006: Homard des sables sprites_Mache1
+    21300008: Homard des sables sprites_Marche2
+    21300010: Homard des sables sprites_Dard
+    21300012: Homard des sables sprites_Dard_Attaque
+    21300014: Homard des sables sprites_Menace
+    21300016: Homard des sables sprites_Attaque
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Homard des sables sprites_Idle1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 45
+        width: 31
+        height: 47
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Idle2
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 45
+        width: 31
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Idle3
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 45
+        width: 31
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Mache1
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 45
+        width: 31
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Marche2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 45
+        width: 31
+        height: 48
+      alignment: 9
+      pivot: {x: 0.5, y: 0.49}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Dard
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 19
+        width: 9
+        height: 23
+      alignment: 9
+      pivot: {x: 0.5, y: 0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Dard_Attaque
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 13
+        width: 7
+        height: 29
+      alignment: 9
+      pivot: {x: 0.5, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Menace
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 1
+        width: 31
+        height: 43
+      alignment: 9
+      pivot: {x: 0.5, y: 0.524}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Homard des sables sprites_Attaque
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 6
+        width: 31
+        height: 38
+      alignment: 9
+      pivot: {x: 0.5, y: 0.46}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

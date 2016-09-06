@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: aadbf0eb86350114e916349156acf1cf
-timeCreated: 1470145706
+guid: f906023f474973a48ae82a0021c585ca
+timeCreated: 1473188263
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: "Ing\xE9nieur_casque"
-    21300002: "Ing\xE9nieur_sac"
+    21300000: "Ing\xE9nieur_sac"
+    21300002: "Ing\xE9nieur_casque"
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,7 +25,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
+  cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
@@ -55,19 +55,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Ing\xE9nieur_casque"
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 3
-        width: 24
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 1}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
       name: "Ing\xE9nieur_sac"
       rect:
         serializedVersion: 2
@@ -75,6 +62,19 @@ TextureImporter:
         y: 1
         width: 50
         height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Ing\xE9nieur_casque"
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 3
+        width: 27
+        height: 25
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
