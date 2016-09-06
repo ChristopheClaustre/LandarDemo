@@ -1,5 +1,6 @@
 *.sln
 *.csproj
+*.db
 /Temp
 /obj
 /Library
