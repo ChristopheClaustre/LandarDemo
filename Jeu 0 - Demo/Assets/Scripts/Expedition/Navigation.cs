@@ -66,39 +66,42 @@ public class Navigation : CI_caller {
 
     void Update ()
     {
-        if (moving)
+        if (!agent.pathPending)
         {
-            // fin du déplacement
-            if (agent.remainingDistance <= float.Epsilon)
+            if (moving)
             {
-                moving = false;
-            }
+                // fin du déplacement
+                if (agent.remainingDistance <= float.Epsilon)
+                {
+                    moving = false;
+                }
 
-            // début de rotation
-            if (rotationRequired && agent.remainingDistance <= rotatingDistance && !rotating)
-            {
-                rotating = true;
-                // on s'assure que le syst de nav va pas pourir ma rotation à venir
-                agent.updateRotation = false;
+                // début de rotation
+                if (rotationRequired && !rotating && agent.remainingDistance <= rotatingDistance)
+                {
+                    rotating = true;
+                    // on s'assure que le syst de nav ne va pas pourir ma rotation à venir
+                    agent.updateRotation = false;
+                }
             }
-        }
-        if (rotating)
-        {
-            // fin de rotation
-            if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(rotationValue, 360)) <= 0.5f)
+            if (rotating)
             {
-                rotating = false;
-                // on remet les variables public en config par défaut
-                rotationRequired = false;
-                rotationValue = 0;
-                // on reactive la rotation pour le syst de nav
-                agent.updateRotation = true;
-            }
-            // on rotate
-            else
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.AngleAxis(rotationValue, Vector3.up), Time.deltaTime * 2);
+                // fin de rotation
+                if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(rotationValue, 360)) <= 0.5f)
+                {
+                    rotating = false;
+                    // on remet les variables public en config par défaut
+                    rotationRequired = false;
+                    rotationValue = 0;
+                    // on reactive la rotation pour le syst de nav
+                    agent.updateRotation = true;
+                }
+                // on rotate
+                else
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation,
+                        Quaternion.AngleAxis(rotationValue, Vector3.up), Time.deltaTime * 2);
+                }
             }
         }
     }
