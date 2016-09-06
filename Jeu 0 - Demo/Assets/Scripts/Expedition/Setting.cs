@@ -88,6 +88,19 @@ public class Setting : MonoBehaviour {
         }
     }
 
+    /* increment de formation */
+
+    [SerializeField]
+    private Vector2 formationIncr = new Vector2(0.75f, 0.75f);
+
+    public Vector2 FormationIncr
+    {
+        get
+        {
+            return formationIncr;
+        }
+    }
+
     /* gestion du singleton */
 
     private static Setting instance;

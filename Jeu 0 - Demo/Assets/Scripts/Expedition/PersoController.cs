@@ -33,6 +33,13 @@ public class PersoController : CI_caller {
         }
     }
 
+    private Setting setting;
+
+    void Start ()
+    {
+        setting = Camera.main.GetComponent<Setting>();
+    }
+
     // destination + rotation
     public void go(Vector3 dest, float rValue)
     {
@@ -50,26 +57,35 @@ public class PersoController : CI_caller {
         go();
     }
 
+    // function to calculate and send the destinations to all the selected personages
     private void go()
     {
         // on récupère les sélectionnés
         List<int> selec = ExpeditionManager.Inst.selected;
 
-        int nbPerRow = 3;
+        // on calcule le nombre d'unité par ligne
+        int nbPerRow = 2;
+        if (selec.Count > 6)
+            nbPerRow = 3;
+
+        // init du nombre de ligne
+        int nbRow = (selec.Count / nbPerRow) + 1;
+        // init des destinations
+        Vector3[] destinations = new Vector3[selec.Count];
 
         // calcul the destination(s)
-        int nbRow = (selec.Count / nbPerRow) + 1;
-        Vector3[] destinations = new Vector3[selec.Count];
-        for (int i = 0; i < selec.Count; i+=nbPerRow)
+        float baseZ = ((nbRow - 1.0f) / 2.0f) * setting.FormationIncr.y;
+        for (int i = 0; i < nbRow; i++)
         {
+            int _i = i * nbPerRow;
             // the incrementation from the original position
-            float incrX = (Mathf.Min(nbPerRow, selec.Count - i) - 1.0f) / -2.0f;
-            float incrZ = (nbRow - 1.0f) / -2.0f;
+            float incrX = ((Mathf.Min(nbPerRow, selec.Count - _i) - 1.0f) / -2.0f) * setting.FormationIncr.x;
+            float incrZ = baseZ - (i * setting.FormationIncr.y);
             // we calculate each row of the formation
-            for (int j = 0; (i + j) < selec.Count && j < nbPerRow; j++)
+            for (int j = 0; (_i + j) < selec.Count && j < nbPerRow; j++)
             {
-                destinations[i+j] =
-                    new Vector3(v3Destination.x + incrX + j, v3Destination.y, v3Destination.z + incrZ);
+                destinations[_i+j] =
+                    new Vector3(v3Destination.x + incrX + (j * setting.FormationIncr.x), v3Destination.y, v3Destination.z + incrZ);
             }
         }
 
@@ -96,6 +112,7 @@ public class PersoController : CI_caller {
         }
     }
 
+    // function to rotate a point around another one (the pivot)
     private Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         Vector3 dir = point - pivot; // get point direction relative to pivot
