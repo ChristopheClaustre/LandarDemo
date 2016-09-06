@@ -3,23 +3,56 @@ using System.Collections;
 
 public class GUISelectionBox : MonoBehaviour {
 
-    // has the click begun on this object ?
-    [SerializeField]
-    private bool pressed = false;
-
     // Draggable inspector reference to the Image GameObject's RectTransform.
-    public RectTransform selectionBox;
+    private RectTransform selectionBox;
 
-    // This variable will store the location of wherever we first click before dragging.
-    private Vector2 initialClickPosition = Vector2.zero;
+    private SelectionBox box;
+
+    private bool working = false;
 
     void Start ()
     {
         selectionBox = (RectTransform)GameObject.Find("selectionBox").transform;
+        box = GetComponent<SelectionBox>();
     }
 
     void Update ()
     {
+        if (box.LeftPressed)
+        {
+            working = true;
+
+            // différence entre deux coins opposés du rectangle à calculer
+            Vector2 difference = box.LeftEndClick - box.LeftStartClick;
+
+            // copie du startclick pour calculer le nouveau rectangle
+            Vector2 startPoint = box.LeftStartClick;
+
+            // gestion de la possibilité de draggé depuis n'importe quel coin
+            if (difference.x < 0)
+            {
+                startPoint.x = box.LeftEndClick.x;
+                difference.x = -difference.x;
+            }
+            if (difference.y < 0)
+            {
+                startPoint.y = box.LeftEndClick.y;
+                difference.y = -difference.y;
+            }
+
+            // on applique
+            selectionBox.anchoredPosition = startPoint;
+            selectionBox.sizeDelta = difference;
+        }
+        else if (working)
+        {
+            // Reset
+            selectionBox.anchoredPosition = Vector2.zero;
+            selectionBox.sizeDelta = Vector2.zero;
+            working = false;
+        }
+
+        /*
         // While we are dragging.
         if (Input.GetMouseButton(0) && pressed)
         {
@@ -59,9 +92,9 @@ public class GUISelectionBox : MonoBehaviour {
             selectionBox.anchoredPosition = Vector2.zero;
             selectionBox.sizeDelta = Vector2.zero;
             pressed = false;
-        }
+        }*/
     }
-
+    /*
     // Click somewhere in the Game View.
     void OnMouseDown ()
     {
@@ -74,6 +107,6 @@ public class GUISelectionBox : MonoBehaviour {
 
         // the user pressed on this go
         pressed = true;
-    }
+    }*/
 }
 

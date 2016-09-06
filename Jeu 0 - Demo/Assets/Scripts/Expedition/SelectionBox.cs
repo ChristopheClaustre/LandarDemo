@@ -7,70 +7,101 @@ public class SelectionBox : MonoBehaviour {
     [SerializeField]
     private bool pressed = false;
     private Vector3 begin;
+    private Vector3 worldBegin;
     private Vector3 end;
+    private Vector3 worldEnd;
 
-    // Use this for initialization
-	void Start () {
-	    
-	}
+    public bool LeftPressed
+    {
+        get
+        {
+            return pressed;
+        }
+    }
+
+    public Vector3 LeftStartClick
+    {
+        get
+        {
+            return begin;
+        }
+    }
+
+    public Vector3 LeftEndClick
+    {
+        get
+        {
+            return end;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButton(0) && pressed)
+        if (pressed)
         {
-            ExpeditionManager.Inst.clearNewSelection();
-
-            // on récupère la position de fin courante
-            end = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // quels sont les persos dans la selectionBox ?
-            for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
+            if (Input.GetMouseButtonUp(0))
             {
-                GameObject p = ExpeditionManager.Persos[i];
-                Vector3 pPos = p.transform.position;
-                bool xCheck = false;
-                bool zCheck = false;
+                ExpeditionManager.Inst.applyNewSelection();
 
-                // on check en X (en vérifiant la forme de la box)
-                if (begin.x < end.x)
-                    xCheck = (begin.x <= pPos.x && pPos.x <= end.x);
-                else
-                    xCheck = (end.x <= pPos.x && pPos.x <= begin.x);
-
-                // on check en Z (en vérifiant la forme de la box)
-                if (begin.z < end.z)
-                    zCheck = (begin.z <= pPos.z && pPos.z <= end.z);
-                else
-                    zCheck = (end.z <= pPos.z && pPos.z <= begin.z);
-
-                // si c'est bon, c'est bon !
-                if (xCheck && zCheck)
-                {
-                    ExpeditionManager.Inst.addNewSelection(i);
-                }
+                // Reset
+                pressed = false;
+                begin = Vector3.zero;
+                end = Vector3.zero;
+                worldBegin = Vector3.zero;
+                worldEnd = Vector3.zero;
             }
+            else
+            {
+                ExpeditionManager.Inst.clearNewSelection();
 
-            // on applique ;)
-            ExpeditionManager.Inst.previewNewSelection();
-        }
+                // on récupère la position de fin courante
+                end = Input.mousePosition;
+                worldEnd = Camera.main.ScreenToWorldPoint(end);
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            ExpeditionManager.Inst.applyNewSelection();
+                // quels sont les persos dans la selectionBox ?
+                for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
+                {
+                    GameObject p = ExpeditionManager.Persos[i];
+                    Vector3 pPos = p.transform.position;
+                    bool xCheck = false;
+                    bool zCheck = false;
 
-            // on reinit
-            pressed = false;
-            begin = Vector3.zero;
-            end = Vector3.zero;
+                    // on check en X (en vérifiant la forme de la box)
+                    if (worldBegin.x < worldEnd.x)
+                        xCheck = (worldBegin.x <= pPos.x && pPos.x <= worldEnd.x);
+                    else
+                        xCheck = (worldEnd.x <= pPos.x && pPos.x <= worldBegin.x);
+
+                    // on check en Z (en vérifiant la forme de la box)
+                    if (worldBegin.z < worldEnd.z)
+                        zCheck = (worldBegin.z <= pPos.z && pPos.z <= worldEnd.z);
+                    else
+                        zCheck = (worldEnd.z <= pPos.z && pPos.z <= worldBegin.z);
+
+                    // si c'est bon, c'est bon !
+                    if (xCheck && zCheck)
+                    {
+                        ExpeditionManager.Inst.addNewSelection(i);
+                    }
+                }
+
+                // on applique ;)
+                ExpeditionManager.Inst.previewNewSelection();
+            }
         }
 	}
 
     void OnMouseDown ()
     {
-        // on récupère la position de début
-        begin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pressed = true;
-        // on init la fin
-        end = begin;
+        if (!Input.GetMouseButton(1))
+        {
+            // on récupère la position de début
+            begin = Input.mousePosition;
+            worldBegin = Camera.main.ScreenToWorldPoint(begin);
+            pressed = true;
+            // on init la fin
+            end = begin;
+            worldEnd = worldBegin;
+        }
     }
 }
