@@ -112,6 +112,8 @@ public class Navigation : CI_caller {
     {
         // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
         agent.updateRotation = true;
+        // Reinit
+        rotating = false;
         // on va se mettre à bouger
         moving = true;
         // on applique la destination
