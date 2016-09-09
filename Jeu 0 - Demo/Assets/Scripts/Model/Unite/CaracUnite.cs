@@ -60,6 +60,13 @@ public class CaracUnite {
             return precision;
         }
     }
+    public EnumMalus Malus
+    {
+        get
+        {
+            return malus;
+        }
+    }
 
     public CaracUnite(int vieMax, int agilite, int force, int vision, int precision, EnumMalus malus)
     {

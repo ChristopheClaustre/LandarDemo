@@ -104,12 +104,12 @@ public class Movement : MonoBehaviour {
                     // calculate the orientation
                     rotationValue = angleBetweenVectorNAxis(rStartClick, rEndClick);
                     // apply the destination and rotation
-                    pc.go(dest, rotationValue);
+                    pc.go(new Destination(dest, rotationValue));
                 }
                 else
                 {
                     // apply the destination
-                    pc.go(dest);
+                    pc.go(new Destination(dest));
                 }
 
                 // finished !

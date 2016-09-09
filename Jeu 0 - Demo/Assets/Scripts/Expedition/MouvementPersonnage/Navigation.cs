@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Navigation : CI_caller {
 
+    [HideInInspector]
     public Unite unite;
 
     // information about rotation
@@ -34,7 +35,7 @@ public class Navigation : CI_caller {
     }
 
     // the destination for next call of the pathfinder
-    Destination dest;
+    private Destination dest;
 
     private NavMeshAgent agent;
     private bool moving = false;
@@ -60,7 +61,7 @@ public class Navigation : CI_caller {
                     if (float.IsNaN(dest.OrientationFinale))
                     {
                         // Reinit
-                        unite.Patrouille.nextDestination();
+                        unite.Trajet.nextDestination();
 
                         // on relance l'algo de déplacement pour la prochaine destination
                         go();
@@ -96,7 +97,7 @@ public class Navigation : CI_caller {
             }
         }
 
-        if (!moving && !rotating && unite.Patrouille.hasDestination())
+        if (!moving && !rotating && unite.Trajet.hasDestination())
         {
             go();
         }
@@ -104,26 +105,19 @@ public class Navigation : CI_caller {
 
     // some public function
 
-    public void newDestination(Destination dest)
+    public void nouveautrajet(Trajet trajet)
     {
-        this.unite.Patrouille = new Patrouille();
-        this.unite.Patrouille.addDestination(dest);
-
+        unite.Trajet = trajet;
         go();
-    }
-
-    public void addDestination(Destination dest)
-    {
-        this.unite.Patrouille.addDestination(dest);
     }
 
     // some private function ;)
 
     private void go()
     {
-        if (unite.Patrouille.hasDestination())
+        if (unite.Trajet.hasDestination())
         {
-            dest = unite.Patrouille.currentDestination();
+            dest = unite.Trajet.currentDestination();
             // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
             agent.updateRotation = true;
             // Reinit

@@ -19,7 +19,7 @@ public class Unite {
     private Vector3 position = Vector3.one;
     private Description desc = null;
     private EnumIAState etatIA = EnumIAState.ETDRF;
-    private Patrouille patrouille = new Patrouille();
+    private Trajet trajet = new Trajet();
     private CaracUnite carac = null;
 
     public int Vie
@@ -64,15 +64,15 @@ public class Unite {
             return etatIA;
         }
     }
-    public Patrouille Patrouille
+    public Trajet Trajet
     {
         get
         {
-            return patrouille;
+            return trajet;
         }
         set
         {
-            patrouille = value;
+            trajet = value;
         }
     }
     public CaracUnite Carac

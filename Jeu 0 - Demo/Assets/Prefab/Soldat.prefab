@@ -648,10 +648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bd57cbb2a5ff745928c6906c86ecc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotatingDistance: 1
-  rotationRequired: 0
-  rotationValue: 0
-  v2Destination: {x: 0, y: 0}
+  rotatingDistance: 0
   selected: 0
 --- !u!114 &114000013242776124
 MonoBehaviour:

@@ -15,12 +15,20 @@ public class Destination {
         {
             return cible;
         }
+        set
+        {
+            cible = value;
+        }
     }
     public float OrientationFinale
     {
         get
         {
             return orientationFinale;
+        }
+        set
+        {
+            orientationFinale = value;
         }
     }
 

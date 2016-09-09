@@ -121,9 +121,20 @@ public class CamMovement : MonoBehaviour {
             }
 
             // correction up and down
+            Vector2 min_real = new Vector2(min.x + (cam.orthographicSize * cam.aspect), min.y + cam.orthographicSize);
+            Vector2 max_real = new Vector2(max.x - (cam.orthographicSize * cam.aspect), max.y - cam.orthographicSize);
             pos = cam.transform.position;
-            pos.x = Mathf.Clamp(pos.x, min.x + (cam.orthographicSize * cam.aspect), max.x - (cam.orthographicSize * cam.aspect));
-            pos.z = Mathf.Clamp(pos.z, min.y + cam.orthographicSize, max.y - cam.orthographicSize);
+            // rectif en x
+            if (min_real.x > max_real.x)
+                pos.x = (min_real.x + max_real.x) / 2.0f;
+            else
+                pos.x = Mathf.Clamp(pos.x, min_real.x, max_real.x);
+            // rectif en y
+            if (min_real.y > max_real.y)
+                pos.z = (min_real.y + max_real.y) / 2.0f;
+            else
+                pos.z = Mathf.Clamp(pos.z, min_real.y, max_real.y);
+            // application
             cam.transform.position = pos;
         }
     }

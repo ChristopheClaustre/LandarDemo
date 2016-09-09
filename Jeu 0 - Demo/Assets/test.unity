@@ -208,9 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18c3e003adef1645bd11cea56ac535a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  v2Destination: {x: 0, y: 0}
-  rotationRequired: 0
-  rotationValue: 0
+  destination:
+    cible: {x: 25, y: 0, z: 0}
+    orientationFinale: 0
 --- !u!114 &329232246
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class Patrouille {
+public class Trajet {
 
     [SerializeField]
     private List<Destination> destinations;
@@ -11,7 +11,7 @@ public class Patrouille {
     private bool boucler;
 
     // const prenant aucun paramètre (pas de destinations donc !)
-    public Patrouille()
+    public Trajet()
     {
         destinations = new List<Destination>();
         boucler = false;

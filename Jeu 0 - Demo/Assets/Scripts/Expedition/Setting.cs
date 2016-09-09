@@ -4,7 +4,7 @@ using System.Collections;
 public class Setting : MonoBehaviour {
 
     /* gestion des settings du curseur */
-
+    [Header("Curseur")]
     [SerializeField]
     private Texture2D cursorTex;
     [SerializeField]
@@ -26,7 +26,7 @@ public class Setting : MonoBehaviour {
     }
 
     /* gestion des settings de déplacement de la cam */
-
+    [Header("Déplacements de la caméra")]
     [SerializeField]
     private string mapName = "map";
     [SerializeField]
@@ -89,7 +89,7 @@ public class Setting : MonoBehaviour {
     }
 
     /* increment de formation */
-
+    [Header("Formation de personage")]
     [SerializeField]
     private Vector2 formationIncr = new Vector2(0.75f, 0.75f);
 
