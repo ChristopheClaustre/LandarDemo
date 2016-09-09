@@ -104,11 +104,9 @@ public class PersoController : CI_caller {
         {
             Navigation nav = ExpeditionManager.Persos[selec[i]].GetComponent<Navigation>();
             if (rotationRequired)
-            {
-                nav.rotationRequired = rotationRequired;
-                nav.rotationValue = rotationValue;
-            }
-            nav.V3Destination = destinations[i];
+                nav.newDestination(new Destination(destinations[i], rotationValue));
+            else
+                nav.newDestination(new Destination(destinations[i]));
         }
     }
 

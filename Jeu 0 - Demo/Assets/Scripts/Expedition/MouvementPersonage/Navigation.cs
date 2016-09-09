@@ -3,29 +3,23 @@ using System.Collections;
 
 public class Navigation : CI_caller {
 
+    public Unite unite;
+
     // information about rotation
-    [SerializeField]
     public float rotatingDistance = 1;
-    public bool rotationRequired = false;
-    public float rotationValue = 0;
     
     [Header("Need to click the button to be updated")]
+    [SerializeField]
+    private bool selected = false;
 
     // Some code for the CustomInspector
 #if (UNITY_EDITOR)
-    // destination for next call to pathfinder from Inspector
-    [SerializeField]
-    private Vector2 v2Destination;
     public override void updateVarFromCI()
     {
-        v3Destination = new Vector3(v2Destination.x, 0, v2Destination.y);
-        go();
         Selected = selected;
     }
 #endif
 
-    [SerializeField]
-    private bool selected = false;
     public bool Selected
     {
         get
@@ -40,20 +34,7 @@ public class Navigation : CI_caller {
     }
 
     // the destination for next call of the pathfinder
-    private Vector3 v3Destination;
-    public Vector3 V3Destination
-    {
-        get
-        {
-            return v3Destination;
-        }
-        set
-        {
-            v2Destination = new Vector2(value.x, value.z);
-            v3Destination = value;
-            go();
-        }
-    }
+    Destination dest;
 
     private NavMeshAgent agent;
     private bool moving = false;
@@ -74,10 +55,20 @@ public class Navigation : CI_caller {
                 if (agent.remainingDistance <= float.Epsilon)
                 {
                     moving = false;
+
+                    // si il n'y as pas de rotation c'est fini -> on relance l'algo sur la prochaine destination
+                    if (float.IsNaN(dest.OrientationFinale))
+                    {
+                        // Reinit
+                        unite.Patrouille.nextDestination();
+
+                        // on relance l'algo de déplacement pour la prochaine destination
+                        go();
+                    }
                 }
 
                 // début de rotation
-                if (rotationRequired && !rotating && agent.remainingDistance <= rotatingDistance)
+                if (!float.IsNaN(dest.OrientationFinale) && !rotating && agent.remainingDistance <= rotatingDistance)
                 {
                     rotating = true;
                     // on s'assure que le syst de nav ne va pas pourir ma rotation à venir
@@ -87,37 +78,61 @@ public class Navigation : CI_caller {
             if (rotating)
             {
                 // fin de rotation
-                if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(rotationValue, 360)) <= 0.5f)
+                if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(dest.OrientationFinale, 360)) <= 0.5f)
                 {
                     rotating = false;
-                    // on remet les variables public en config par défaut
-                    rotationRequired = false;
-                    rotationValue = 0;
                     // on reactive la rotation pour le syst de nav
                     agent.updateRotation = true;
+
+                    // on relance l'algo de déplacement pour la prochaine destination
+                    go();
                 }
                 // on rotate
                 else
                 {
                     transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.AngleAxis(rotationValue, Vector3.up), Time.deltaTime * 2);
+                        Quaternion.AngleAxis(dest.OrientationFinale, Vector3.up), Time.deltaTime * 2);
                 }
             }
         }
+
+        if (!moving && !rotating && unite.Patrouille.hasDestination())
+        {
+            go();
+        }
+    }
+
+    // some public function
+
+    public void newDestination(Destination dest)
+    {
+        this.unite.Patrouille = new Patrouille();
+        this.unite.Patrouille.addDestination(dest);
+
+        go();
+    }
+
+    public void addDestination(Destination dest)
+    {
+        this.unite.Patrouille.addDestination(dest);
     }
 
     // some private function ;)
 
     private void go()
     {
-        // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
-        agent.updateRotation = true;
-        // Reinit
-        rotating = false;
-        // on va se mettre à bouger
-        moving = true;
-        // on applique la destination
-        agent.SetDestination(v3Destination);
+        if (unite.Patrouille.hasDestination())
+        {
+            dest = unite.Patrouille.currentDestination();
+            // on s'assure que le joueur va se déplacer en regardant dans la direction de son déplacement
+            agent.updateRotation = true;
+            // Reinit
+            rotating = false;
+            // on va se mettre à bouger
+            moving = true;
+            // on applique la destination
+            agent.SetDestination(dest.Cible);
+        }
     }
 
 }
