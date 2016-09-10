@@ -11,7 +11,10 @@ public class ShadowRayScan2 : MonoBehaviour
 	public float distanceMin = 1;
 	public float champDeVision = 60;
 	public float champPeripherique= 30;
-	private float distance;
+    public float rotationX;
+    public float rotationY;
+    public float rotationZ;
+    private float distance;
 	private Vector3[] vertices;
 	private Vector2[] vertices2d;
 	private int[] triangles;
@@ -44,14 +47,15 @@ public class ShadowRayScan2 : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
-		// dont cast if not moved?
-		// build prelook-array of hit points/pixels/areas?
-		// skip duplicate hit points (compare previous)
-		// always same amount of vertices, no need create new mesh?..but need to triangulate or not??
-		
-		//float angle = 0;
-		LayerMask maskLayer; 
+
+        // dont cast if not moved?
+        // build prelook-array of hit points/pixels/areas?
+        // skip duplicate hit points (compare previous)
+        // always same amount of vertices, no need create new mesh?..but need to triangulate or not??
+
+        //float angle = 0;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
+        LayerMask maskLayer; 
 		float deltaDistance = distanceMax - distanceMin;
 		float angle = lightmeshholder.transform.eulerAngles.y * Mathf.Deg2Rad ;
 		vertices2d[0] = new Vector2(0,0);
