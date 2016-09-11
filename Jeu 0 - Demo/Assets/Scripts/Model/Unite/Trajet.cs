@@ -10,6 +10,27 @@ public class Trajet {
     [SerializeField]
     private bool boucler;
 
+    public List<Destination> Destinations
+    {
+        get
+        {
+            return destinations;
+        }
+    }
+    public bool Boucler
+    {
+        get
+        {
+            return boucler;
+        }
+
+        set
+        {
+            boucler = value;
+        }
+    }
+
+
     // const prenant aucun paramètre (pas de destinations donc !)
     public Trajet()
     {
@@ -43,10 +64,9 @@ public class Trajet {
     }
 
     // ajout d'une destination
-    public void addDestination(Destination destination, bool boucler = false)
+    public void addDestination(Destination destination)
     {
         destinations.Add(destination);
-        this.boucler = boucler;
     }
 
 }

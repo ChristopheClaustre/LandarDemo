@@ -14,40 +14,27 @@ public class PersoController : CI_caller {
 #endif
 
     [SerializeField]
-    private Destination destination;
+    private Trajet trajet;
 
+    public Trajet Trajet
+    {
+        get
+        {
+            return trajet;
+        }
+        set
+        {
+            trajet = value;
+            go();
+        }
+    }
+    
     void Start ()
     {
 
     }
 
-    // destination + rotation
-    public void go(Destination dest)
-    {
-        destination = dest;
-        go();
-    }
-
-    // function to calculate and send the destinations to all the selected personages
-    private void go()
-    {
-        // on récupère les sélectionnés
-        List<int> selec = ExpeditionManager.Inst.selected;
-
-        // on créé les destinations
-        List<Destination> dests = createFormation(destination, selec.Count);
-        
-        // assign the destination
-        for (int i = 0; i < selec.Count; i++)
-        {
-            Navigation nav = ExpeditionManager.Persos[selec[i]].GetComponent<Navigation>();
-            Trajet t = new Trajet();
-            t.addDestination(dests[i]);
-            nav.nouveautrajet(t);
-        }
-    }
-
-    public static List<Destination> createFormation(Destination pivot, int nbPerso)
+    private static List<Trajet> createFormation(Trajet pivots, int nbPerso)
     {
         // on calcule le nombre d'unité par ligne
         int nbPerRow = 2;
@@ -57,38 +44,55 @@ public class PersoController : CI_caller {
         // init du nombre de ligne
         int nbRow = (nbPerso / nbPerRow) + 1;
         // init des destinations
-        List<Destination> destinations = new List<Destination>();
+        List<Trajet> trajets = new List<Trajet>();
+        for (int i = 0; i < nbPerso; i++)
+        {
+            trajets.Add(new Trajet());
+        }
 
         // calcul the destination(s)
         float baseZ = ((nbRow - 1.0f) / 2.0f) * Setting.Inst.FormationIncr.y;
-        for (int i = 0; i < nbRow; i++)
-        {
-            int _i = i * nbPerRow;
-            // the incrementation from the original position
-            float incrX = ((Mathf.Min(nbPerRow, nbPerso - _i) - 1.0f) / -2.0f) * Setting.Inst.FormationIncr.x;
-            float incrZ = baseZ - (i * Setting.Inst.FormationIncr.y);
-            // we calculate each row of the formation
-            for (int j = 0; (_i + j) < nbPerso && j < nbPerRow; j++)
+        foreach (Destination pivot in pivots.Destinations) {
+            for (int i = 0; i < nbRow; i++)
             {
-                destinations.Add(new Destination(
-                    new Vector3(pivot.Cible.x + incrX + (j * Setting.Inst.FormationIncr.x), pivot.Cible.y, pivot.Cible.z + incrZ),
-                    pivot.OrientationFinale)
-                    );
+                int _i = i * nbPerRow;
+                // the incrementation from the original position
+                float incrX = ((Mathf.Min(nbPerRow, nbPerso - _i) - 1.0f) / -2.0f) * Setting.Inst.FormationIncr.x;
+                float incrZ = baseZ - (i * Setting.Inst.FormationIncr.y);
+                // we calculate each row of the formation
+                for (int j = 0; (_i + j) < nbPerso && j < nbPerRow; j++)
+                {
+                    // on calcul la destination
+                    Vector3 _v = new Vector3(pivot.Cible.x + incrX + (j * Setting.Inst.FormationIncr.x), pivot.Cible.y, pivot.Cible.z + incrZ);
+                    // on la rotate si il faut
+                    if (!float.IsNaN(pivot.OrientationFinale))
+                        _v = RotatePointAroundPivot(_v, pivot.Cible, new Vector3(0, pivot.OrientationFinale));
+                    // on l'ajoute au trajet !
+                    trajets[_i + j].addDestination(new Destination(_v, pivot.OrientationFinale));
+                }
             }
         }
 
-        // rotate them if needed
-        if (!float.IsNaN(pivot.OrientationFinale))
-        {
-            for (int i = 0; i < destinations.Count; i++)
-            {
-                destinations[i].Cible =
-                    RotatePointAroundPivot(destinations[i].Cible, pivot.Cible, new Vector3(0, pivot.OrientationFinale));
-            }
-        }
-
-        return destinations;
+        return trajets;
     }
+
+    // function to calculate and send the destinations to all the selected personages
+    private void go()
+    {
+        // on récupère les sélectionnés
+        List<int> selec = ExpeditionManager.Inst.Selected;
+
+        // on créé les destinations
+        List<Trajet> trajets = createFormation(trajet, selec.Count);
+        
+        // assign the destination
+        for (int i = 0; i < selec.Count; i++)
+        {
+            Navigation nav = ExpeditionManager.Persos[selec[i]].GetComponent<Navigation>();
+            nav.nouveauTrajet(trajets[i]);
+        }
+    }
+
 
     // function to rotate a point around another one (the pivot)
     private static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)

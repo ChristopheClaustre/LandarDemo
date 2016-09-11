@@ -28,7 +28,7 @@ public class Destination {
         }
         set
         {
-            orientationFinale = value;
+            orientationFinale = MyMathf.posModulo(value, 360);
         }
     }
 
@@ -37,7 +37,7 @@ public class Destination {
     // const avec orientation demande
     public Destination(Vector3 _c, float _o)
     {
-        orientationFinale = _o;
+        orientationFinale = (float.IsNaN(_o))? _o : MyMathf.posModulo(_o, 360);
         cible = _c;
     }
 

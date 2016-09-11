@@ -138,7 +138,7 @@ GameObject:
   - 65: {fileID: 65000011372531390}
   - 23: {fileID: 23000011819400064}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: model_corps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 1000013659817970}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.25}
-  m_LocalScale: {x: 0.13, y: 0.1, z: 0.25}
+  m_LocalScale: {x: 0.13, y: 0.1, z: 0.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010028568102}
@@ -276,10 +276,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013518983224}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: -10.9, y: 0, z: 9.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
   m_Children:
   - {fileID: 4000011266403234}
   - {fileID: 4000013341584886}
@@ -410,9 +410,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatingDistance: 0.5
-  rotationRequired: 0
-  rotationValue: 0
-  v2Destination: {x: 0, y: 0}
   selected: 0
 --- !u!114 &114000012180722728
 MonoBehaviour:

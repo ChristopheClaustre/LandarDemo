@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Navigation : CI_caller {
 
-    [HideInInspector]
     public Unite unite;
 
     // information about rotation
@@ -38,7 +37,9 @@ public class Navigation : CI_caller {
     private Destination dest;
 
     private NavMeshAgent agent;
+    [SerializeField]
     private bool moving = false;
+    [SerializeField]
     private bool rotating = false;
 
     // Use this for initialization
@@ -48,55 +49,52 @@ public class Navigation : CI_caller {
 
     void Update ()
     {
-        if (!agent.pathPending)
+        // si on a lancé l'ordre de bouger et qu'on a finit de calculer le path
+        if (moving && !agent.pathPending)
         {
-            if (moving)
+            // fin du déplacement
+            if (agent.remainingDistance - agent.stoppingDistance <= float.Epsilon)
             {
-                // fin du déplacement
-                if (agent.remainingDistance <= float.Epsilon)
+                moving = false;
+
+                // si il n'y a pas de rotation c'est fini -> on relance l'algo sur la prochaine destination
+                if (float.IsNaN(dest.OrientationFinale))
                 {
-                    moving = false;
-
-                    // si il n'y as pas de rotation c'est fini -> on relance l'algo sur la prochaine destination
-                    if (float.IsNaN(dest.OrientationFinale))
-                    {
-                        // Reinit
-                        unite.Trajet.nextDestination();
-
-                        // on relance l'algo de déplacement pour la prochaine destination
-                        go();
-                    }
-                }
-
-                // début de rotation
-                if (!float.IsNaN(dest.OrientationFinale) && !rotating && agent.remainingDistance <= rotatingDistance)
-                {
-                    rotating = true;
-                    // on s'assure que le syst de nav ne va pas pourir ma rotation à venir
-                    agent.updateRotation = false;
+                    // Reinit
+                    unite.Trajet.nextDestination();
                 }
             }
-            if (rotating)
-            {
-                // fin de rotation
-                if (!moving && Mathf.Abs(transform.eulerAngles.y - MyMathf.posModulo(dest.OrientationFinale, 360)) <= 0.5f)
-                {
-                    rotating = false;
-                    // on reactive la rotation pour le syst de nav
-                    agent.updateRotation = true;
 
-                    // on relance l'algo de déplacement pour la prochaine destination
-                    go();
-                }
-                // on rotate
-                else
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation,
-                        Quaternion.AngleAxis(dest.OrientationFinale, Vector3.up), Time.deltaTime * 2);
-                }
+            // début de rotation
+            if (!float.IsNaN(dest.OrientationFinale) && !rotating && agent.remainingDistance <= rotatingDistance)
+            {
+                rotating = true;
+                // on s'assure que le syst de nav ne va pas pourir ma rotation à venir
+                agent.updateRotation = false;
+            }
+        }
+        // si on a recu l'ordre de roter
+        if (rotating)
+        {
+            // fin de rotation
+            if (!moving && Mathf.Abs(transform.eulerAngles.y - dest.OrientationFinale) <= 1f)
+            {
+                rotating = false;
+                // on reactive la rotation pour le syst de nav
+                agent.updateRotation = true;
+
+                // Reinit
+                unite.Trajet.nextDestination();
+            }
+            // on rotate
+            else
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.AngleAxis(dest.OrientationFinale, Vector3.up), Time.deltaTime * 2);
             }
         }
 
+        // si on ne fais rien mais que l'on a un trajet à faire
         if (!moving && !rotating && unite.Trajet.hasDestination())
         {
             go();
@@ -105,7 +103,7 @@ public class Navigation : CI_caller {
 
     // some public function
 
-    public void nouveautrajet(Trajet trajet)
+    public void nouveauTrajet(Trajet trajet)
     {
         unite.Trajet = trajet;
         go();

@@ -80,13 +80,8 @@ public class SelectionBox : MonoBehaviour {
 
                     // si c'est bon, c'est bon !
                     if (xCheck && zCheck)
-                    {
                         ExpeditionManager.Inst.addNewSelection(i);
-                    }
                 }
-
-                // on applique ;)
-                ExpeditionManager.Inst.previewNewSelection();
             }
         }
 	}

@@ -19,6 +19,7 @@ public class Unite {
     private Vector3 position = Vector3.one;
     private Description desc = null;
     private EnumIAState etatIA = EnumIAState.ETDRF;
+    [SerializeField]
     private Trajet trajet = new Trajet();
     private CaracUnite carac = null;
 

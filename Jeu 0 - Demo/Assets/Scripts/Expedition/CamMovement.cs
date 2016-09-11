@@ -56,11 +56,12 @@ public class CamMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (cam.pixelRect.Contains(Input.mousePosition))
+        if (cam.pixelRect.Contains(Input.mousePosition) && !Input.GetMouseButton(0) && !Input.GetMouseButton(1))
         {
             // pour faciliter la lecture/ecriture
             Vector3 pos = cam.transform.position;
             Vector3 mPos = Input.mousePosition;
+            Vector3 worldMPos = cam.ScreenToWorldPoint(mPos);
             // pour éviter des calculs redondant
             float margin = Screen.height * setting.PercentMargin;
             float coeffZoom = cam.orthographicSize / setting.ZoomMin;
@@ -94,17 +95,13 @@ public class CamMovement : MonoBehaviour {
                 pos.x -= coeffDist * setting.MoveMaxSpeed * coeffZoom;
             }
 
-            // APPLY
-            if (!Input.GetMouseButton(1) && (movementUp || movementDown || movementRight || movementLeft))
-            {
-                cam.transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime);
-            }
-
             // zoom+
             if ((Input.GetAxis("Zoom") > 0 || Input.GetAxis("Mouse ScrollWheel") > 0)
                 && cam.orthographicSize > setting.ZoomMax && !_isAxisZoomInUse)
             {
                 cam.orthographicSize -= setting.ZoomSpeed;
+                pos.x = worldMPos.x;
+                pos.y = worldMPos.y;
                 _isAxisZoomInUse = true;
             }
             // zoom-
@@ -112,6 +109,8 @@ public class CamMovement : MonoBehaviour {
                 && cam.orthographicSize < setting.ZoomMin && !_isAxisZoomInUse)
             {
                 cam.orthographicSize += setting.ZoomSpeed;
+                pos.x = worldMPos.x;
+                pos.y = worldMPos.y;
                 _isAxisZoomInUse = true;
             }
             // zoom reset
@@ -120,22 +119,28 @@ public class CamMovement : MonoBehaviour {
                 _isAxisZoomInUse = false;
             }
 
-            // correction up and down
-            Vector2 min_real = new Vector2(min.x + (cam.orthographicSize * cam.aspect), min.y + cam.orthographicSize);
-            Vector2 max_real = new Vector2(max.x - (cam.orthographicSize * cam.aspect), max.y - cam.orthographicSize);
-            pos = cam.transform.position;
-            // rectif en x
-            if (min_real.x > max_real.x)
-                pos.x = (min_real.x + max_real.x) / 2.0f;
-            else
-                pos.x = Mathf.Clamp(pos.x, min_real.x, max_real.x);
-            // rectif en y
-            if (min_real.y > max_real.y)
-                pos.z = (min_real.y + max_real.y) / 2.0f;
-            else
-                pos.z = Mathf.Clamp(pos.z, min_real.y, max_real.y);
-            // application
-            cam.transform.position = pos;
+            // APPLY
+            if (movementUp || movementDown || movementRight || movementLeft)
+            {
+                cam.transform.position = Vector3.Lerp(transform.position, pos, Time.deltaTime);
+            }
         }
+
+        // correction up and down
+        Vector2 min_real = new Vector2(min.x + (cam.orthographicSize * cam.aspect), min.y + cam.orthographicSize);
+        Vector2 max_real = new Vector2(max.x - (cam.orthographicSize * cam.aspect), max.y - cam.orthographicSize);
+        Vector3 camPos = cam.transform.position;
+        // rectif en x
+        if (min_real.x > max_real.x)
+            camPos.x = (min_real.x + max_real.x) / 2.0f;
+        else
+            camPos.x = Mathf.Clamp(camPos.x, min_real.x, max_real.x);
+        // rectif en y
+        if (min_real.y > max_real.y)
+            camPos.z = (min_real.y + max_real.y) / 2.0f;
+        else
+            camPos.z = Mathf.Clamp(camPos.z, min_real.y, max_real.y);
+        // application
+        cam.transform.position = camPos;
     }
 }

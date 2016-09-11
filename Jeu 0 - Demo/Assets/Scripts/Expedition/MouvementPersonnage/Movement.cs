@@ -60,9 +60,12 @@ public class Movement : MonoBehaviour {
     // the script this script have to send to the infos
     private PersoController pc;
 
+    private Trajet trajet;
+
     void Start()
     {
         pc = GetComponent<PersoController>();
+        trajet = new Trajet();
     }
 
     void Update()
@@ -95,22 +98,18 @@ public class Movement : MonoBehaviour {
                 rEndClick = Input.mousePosition;
 
                 // get the new wanted destination ;)
-                Vector3 dest = Camera.main.ScreenToWorldPoint(rStartClick);
-                dest.y = 0;
+                Destination dest;
+                Vector3 cible = Camera.main.ScreenToWorldPoint(rStartClick);
+                cible.y = 0;
 
-                // if rotation needed
+                // create the new destination
                 if (rotationRequired)
-                {
-                    // calculate the orientation
-                    rotationValue = angleBetweenVectorNAxis(rStartClick, rEndClick);
-                    // apply the destination and rotation
-                    pc.go(new Destination(dest, rotationValue));
-                }
+                    dest = new Destination(cible, rotationValue);
                 else
-                {
-                    // apply the destination
-                    pc.go(new Destination(dest));
-                }
+                    dest = new Destination(cible);
+
+                // add the new destination
+                trajet.addDestination(dest);
 
                 // finished !
                 rPressed = false;
@@ -118,6 +117,19 @@ public class Movement : MonoBehaviour {
                 rEndClick = -Vector3.one;
                 rotationRequired = false;
             }
+        }
+
+        // Is it the end ??
+        if (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl) && trajet.hasDestination())
+        {
+            pc.Trajet = trajet;
+            resetTrajet();
+
+            // finished !
+            rPressed = false;
+            rStartClick = -Vector3.one;
+            rEndClick = -Vector3.one;
+            rotationRequired = false;
         }
     }
 
@@ -132,6 +144,11 @@ public class Movement : MonoBehaviour {
     }
 
     // Some private function
+
+    private void resetTrajet()
+    {
+        trajet = new Trajet();
+    }
 
     private float angleBetweenVectorNAxis(Vector3 pivot, Vector3 point)
     {

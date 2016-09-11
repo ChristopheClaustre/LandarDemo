@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class IndividualSelection : MonoBehaviour {
     void OnMouseUpAsButton ()
     {
-        ExpeditionManager.Inst.monoSelection(ExpeditionManager.Persos.IndexOf(this.gameObject));
+        if (!Input.GetMouseButton(1))
+            ExpeditionManager.Inst.monoSelection(ExpeditionManager.Persos.IndexOf(this.gameObject));
     }
 }
