@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class Navigation : CI_caller {
+public class Navigation : MonoBehaviour {
 
+    public interface IAbonneNavigation
+    {
+        void newTrajet();
+        void newSelected();
+    }
+
+    // les variables de model
     public Unite unite;
 
     // information about rotation
-    public float rotatingDistance = 1;
+    [SerializeField]
+    private float rotatingDistance = 1;
     
     [Header("Need to click the button to be updated")]
     [SerializeField]
     private bool selected = false;
-
-    // Some code for the CustomInspector
-#if (UNITY_EDITOR)
-    public override void updateVarFromCI()
-    {
-        Selected = selected;
-    }
-#endif
 
     public bool Selected
     {
@@ -29,7 +30,7 @@ public class Navigation : CI_caller {
         set
         {
             selected = value;
-            this.transform.Find("selector").gameObject.SetActive(value);
+            newSelected();
         }
     }
 
@@ -37,10 +38,20 @@ public class Navigation : CI_caller {
     private Destination dest;
 
     private NavMeshAgent agent;
+
+    // booléen de traitement
+    [Header("Just watch, don't modify")]
     [SerializeField]
     private bool moving = false;
     [SerializeField]
     private bool rotating = false;
+    [SerializeField]
+    private bool rectifying = false;
+
+    void Awake()
+    {
+        abonnes = new List<IAbonneNavigation>();
+    }
 
     // Use this for initialization
     void Start () {
@@ -62,6 +73,7 @@ public class Navigation : CI_caller {
                 {
                     // Reinit
                     unite.Trajet.nextDestination();
+                    newTrajet();
                 }
             }
 
@@ -74,10 +86,10 @@ public class Navigation : CI_caller {
             }
         }
         // si on a recu l'ordre de roter
-        if (rotating)
+        if (rotating || rectifying)
         {
             // fin de rotation
-            if (!moving && Mathf.Abs(transform.eulerAngles.y - dest.OrientationFinale) <= 1f)
+            if (!moving && Mathf.Abs(transform.eulerAngles.y - dest.OrientationFinale) <= 1f && !rectifying)
             {
                 rotating = false;
                 // on reactive la rotation pour le syst de nav
@@ -85,6 +97,11 @@ public class Navigation : CI_caller {
 
                 // Reinit
                 unite.Trajet.nextDestination();
+                newTrajet();
+
+                // si c'était la dernière destination
+                if (!unite.Trajet.hasDestination())
+                    rectifying = true; // on autorise la rectification
             }
             // on rotate
             else
@@ -106,6 +123,7 @@ public class Navigation : CI_caller {
     public void nouveauTrajet(Trajet trajet)
     {
         unite.Trajet = trajet;
+        newTrajet();
         go();
     }
 
@@ -120,6 +138,7 @@ public class Navigation : CI_caller {
             agent.updateRotation = true;
             // Reinit
             rotating = false;
+            rectifying = false;
             // on va se mettre à bouger
             moving = true;
             // on applique la destination
@@ -127,4 +146,29 @@ public class Navigation : CI_caller {
         }
     }
 
+    // gestion des abonnés
+
+    // les abonnés
+    private List<IAbonneNavigation> abonnes;
+
+    private void newTrajet()
+    {
+        foreach (IAbonneNavigation a in abonnes)
+        {
+            a.newTrajet();
+        }
+    }
+
+    private void newSelected()
+    {
+        foreach (IAbonneNavigation a in abonnes)
+        {
+            a.newSelected();
+        }
+    }
+
+    public void abonnement(IAbonneNavigation cible)
+    {
+        abonnes.Add(cible);
+    }
 }

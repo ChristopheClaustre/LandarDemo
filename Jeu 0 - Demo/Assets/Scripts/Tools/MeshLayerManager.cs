@@ -7,8 +7,11 @@ public class MeshLayerManager : MonoBehaviour {
     public int Order;
     // Use this for initialization
     void Start () {
-	    this.GetComponent<MeshRenderer>().sortingLayerName = LayerName;
-        this.GetComponent<MeshRenderer>().sortingOrder = Order;
+        foreach (Renderer r in this.GetComponents<Renderer>())
+        {
+            r.sortingLayerName = LayerName;
+            r.sortingOrder = Order;
+        }
     }
 	
 	// Update is called once per frame

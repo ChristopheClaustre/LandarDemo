@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GUIMovement : MonoBehaviour {
 
-    // Draggable inspector reference to the Image GameObject's RectTransform.
     private RectTransform directionFormation;
 
     private Movement mov;
