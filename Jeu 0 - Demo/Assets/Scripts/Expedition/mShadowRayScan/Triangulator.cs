@@ -62,11 +62,12 @@ public class Triangulator
 		}*/
 		int a, b, c;
 		for(int i = 1; i < n;i++){
+            a = 0;
 			b = i;
 			c = (i+1)%(n);
 			if(c == 0)
 				c = 1;
-			indices.Add(0);
+			indices.Add(a);
 			indices.Add(b);
 			indices.Add(c);
 		}

@@ -15,44 +15,34 @@ public class ShadowRayScan2 : MonoBehaviour
     public float rotationY;
     public float rotationZ;
     private float distance;
-	private Vector3[] vertices;
 	private Vector2[] vertices2d;
 	private int[] triangles;
-	//private Vector3[] vertices2;
 	private Mesh mesh;
-	
-	// texture grabber
-	private Texture2D texture;
-	private int screenwidth;
-	private int screenheight;
-	private int grab = 0;
+
+    // texture grabber
+    //Utilisé si l'allocation de texture se fait dans ce scipte
+        //private Texture2D texture; 
+        //private int screenwidth;
+	    //private int screenheight;
+	    //private int grab = 0;
 
 	// Use this for initialization
 	void Start ()
 	{
 		lightmeshholder = gameObject;
-		screenwidth = Screen.width;
-		screenheight = Screen.height;
-		var texture = new Texture2D (screenwidth, screenheight, TextureFormat.RGB24, false);
+		//screenwidth = Screen.width;
+		//screenheight = Screen.height;
+		//var texture = new Texture2D (screenwidth, screenheight, TextureFormat.RGB24, false);
 		
-		vertices = new Vector3[RaysToShoot+1];
 		vertices2d = new Vector2[RaysToShoot+1];
-		triangles = new int[RaysToShoot+1];
-		//	vertices2 = new Vector3[4];
 		mesh = Instantiate(lightmeshholder.GetComponent<MeshFilter>().mesh);
-
 		//lightmeshholder.GetComponent<MeshRenderer>().enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-
-        // dont cast if not moved?
-        // build prelook-array of hit points/pixels/areas?
-        // skip duplicate hit points (compare previous)
-        // always same amount of vertices, no need create new mesh?..but need to triangulate or not??
-
+        
         //float angle = 0;
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
         LayerMask maskLayer; 
@@ -81,21 +71,7 @@ public class ShadowRayScan2 : MonoBehaviour
 
 			if (Physics.Raycast(transform.position, dir,out hit, distance, maskLayer)) 
 			{
-							Debug.DrawLine (transform.position, hit.point,new Color(1,1,0,1));
-
-				/*
-			// bounce ray, ignore last hit object?
-			// reflect more than 1 ray?
-			Vector3 dir2 = Vector3.Reflect(dir, hit.normal);
-			RaycastHit hit2 ;
-			if (Physics.Raycast (hit.point, dir2, hit2, distance/4)) 
-			{
-				Debug.DrawLine (hit.point, hit2.point, Color(1,0,0,1));
-			}else{ // we might not hit anything, because of short bounce distance
-				Debug.DrawRay (hit.point, dir2*(distance/4), Color(1,0,0,1));
-			}
-			*/
-
+				Debug.DrawLine (transform.position, hit.point,new Color(1,1,0,1));
 				var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
 				vertices2d[i] = new Vector2(tmp.x*(float)1.1,tmp.z*(float)1.1);
 			}else{ // no hit
@@ -126,19 +102,6 @@ public class ShadowRayScan2 : MonoBehaviour
 		mesh.vertices = newvertices;
 		mesh.triangles = indices;
 		mesh.uv = uvs;
-		
-		//    mesh.RecalculateNormals(); // need?
-		//    mesh.RecalculateBounds(); // need ?
-		
-		// last triangles
-		//	triangles[i+1] = 0;
-		//	triangles[i+2] = 0;
-		//	triangles[i+1] = 0;
-		
-		//triangles.Reverse();
-		
-		//	mesh.vertices = newvertices;
-		//	mesh.triangles = triangles;
 		
 		// not every frame? clear texture before take new shot?
 		//	if (grab>10) GrabToTexture();
