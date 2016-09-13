@@ -50,12 +50,18 @@ public class GUINavigation : MonoBehaviour, Navigation.IAbonneNavigation {
             for (int i = 0; i < dests.Count; i++)
             {
                 // affichage de la position
-                Quaternion orientation = Quaternion.AngleAxis((float.IsNaN(dests[i].OrientationFinale)) ? 0 : dests[i].OrientationFinale, Vector3.up);
                 GameObject go =
                     Instantiate(
                         prefab_position,
                         dests[i].Cible,
-                        orientation) as GameObject;
+                        orientationNull) as GameObject;
+                if (!float.IsNaN(dests[i].OrientationFinale))
+                {
+                    Quaternion orientation = Quaternion.AngleAxis(dests[i].OrientationFinale, Vector3.back);
+                    GameObject direction = go.transform.Find("position_apparence/direction_apparence").gameObject;
+                    direction.SetActive(true);
+                    direction.transform.localRotation = orientation;
+                }
                 instances.Add(go);
 
                 // affichage du trait

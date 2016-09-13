@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 497674}
   - 95: {fileID: 9577956}
   - 212: {fileID: 21243496}
+  - 208: {fileID: 208000011095562998}
   m_Layer: 0
   m_Name: FeuDeCamp
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -147241701
+  m_SortingLayerID: 2147248213
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300002, guid: 5f63f015030bc4c4f9b323244b592382, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99,3 +100,18 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 105846}
   m_IsPrefabParent: 1
+--- !u!208 &208000011095562998
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105846}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.155, y: 0.155, z: 0.155}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

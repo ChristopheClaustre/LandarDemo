@@ -53,9 +53,9 @@ TagManager:
   - name: Vivant
     uniqueID: 4147725595
     locked: 0
-  - name: FoW
-    uniqueID: 903934397
-    locked: 0
   - name: UI
     uniqueID: 500664061
+    locked: 0
+  - name: FoW
+    uniqueID: 903934397
     locked: 0

@@ -16,7 +16,7 @@ public class meshAllocation : MonoBehaviour {
 	void Start () {
 		theTarget = initialObject;
         //Remise à zero de la roatation du mesh
-        theTarget.transform.eulerAngles = new Vector3(0, 0, 0);
+        theTarget.transform.eulerAngles = new Vector3(0, initialObject.transform.eulerAngles.y, 0);
         //initialMesh = initialObject.GetComponent<MeshFilter>().mesh;
         swapMesh = player.GetComponent<ShadowRayScan2>().getMesh();
 		
