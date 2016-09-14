@@ -55,6 +55,7 @@ public class GUINavigation : MonoBehaviour, Navigation.IAbonneNavigation {
                         prefab_position,
                         dests[i].Cible,
                         orientationNull) as GameObject;
+                // si il faut affichage de l'orientation
                 if (!float.IsNaN(dests[i].OrientationFinale))
                 {
                     Quaternion orientation = Quaternion.AngleAxis(dests[i].OrientationFinale, Vector3.back);
