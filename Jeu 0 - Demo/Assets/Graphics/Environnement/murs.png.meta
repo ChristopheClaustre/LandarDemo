@@ -1,0 +1,353 @@
+fileFormatVersion: 2
+guid: 35ed0def845cd1c41b9e3968c8e1861b
+timeCreated: 1473888668
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: murs_200
+    21300002: murs_100
+    21300004: murs_20
+    21300006: murs_200+5
+    21300008: murs_100+5
+    21300010: murs_20+5
+    21300012: murs_200+10
+    21300014: murs_100+10
+    21300016: murs_20+10
+    21300018: murs_150
+    21300020: murs_75
+    21300022: murs_50
+    21300024: murs_25
+    21300026: murs_150+5
+    21300028: murs_75+5
+    21300030: murs_50+5
+    21300032: murs_25+5
+    21300034: murs_150+10
+    21300036: murs_75+10
+    21300038: murs_50+10
+    21300040: murs_25+10
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: murs_200
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 131
+        width: 200
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_100
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 131
+        width: 100
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_20
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 131
+        width: 20
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_200+5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 105
+        width: 210
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_100+5
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 105
+        width: 110
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_20+5
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 105
+        width: 30
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_200+10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 79
+        width: 210
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_100+10
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 79
+        width: 110
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_20+10
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 79
+        width: 30
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_150
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 53
+        width: 150
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_75
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 53
+        width: 75
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_50
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 53
+        width: 50
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_25
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 53
+        width: 25
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_150+5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 27
+        width: 160
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_75+5
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 27
+        width: 85
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_50+5
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 27
+        width: 60
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_25+5
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 27
+        width: 35
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_150+10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 160
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_75+10
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 1
+        width: 85
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_50+10
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 1
+        width: 60
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: murs_25+10
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 1
+        width: 35
+        height: 25
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
