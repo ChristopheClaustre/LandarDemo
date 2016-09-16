@@ -73,7 +73,7 @@ public class ShadowRayScan2 : MonoBehaviour
 			{
 				Debug.DrawLine (transform.position, hit.point,new Color(1,1,0,1));
 				var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
-				vertices2d[i] = new Vector2(tmp.x*(float)1.1,tmp.z*(float)1.1);
+				vertices2d[i] = new Vector2(tmp.x,tmp.z);
 			}else{ // no hit
 							Debug.DrawRay (transform.position, dir*distance, new Color(1,1,0,1));
 				var tmp2 = lightmeshholder.transform.InverseTransformPoint(lightmeshholder.transform.position+dir*distance);

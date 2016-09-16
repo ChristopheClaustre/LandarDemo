@@ -14,9 +14,6 @@ Shader "Custom/FogOfWarGeom" {
         _MainTex ("Color (RGB) Alpha (A)", 2D) = "white"
         _FogRadius ("FogRadius", Float) = 1.0
         _FogMaxRadius ("FogMaxRadius", Float) = 0.5
-        _Player1_Pos ("UnitPos1", Vector) = (0,0,0,1)
-        _Player2_Pos ("UnitPos2", Vector) = (0,0,0,1)
-        _Player3_Pos ("UnitPos3", Vector) = (0,0,0,1)
     }
 
     SubShader {
@@ -32,9 +29,6 @@ Shader "Custom/FogOfWarGeom" {
 
         sampler2D _MainTex;
         fixed4 _Color;
-        float4 _Player1_Pos;
-        float4 _Player2_Pos;
-        float4 _Player3_Pos;
         float _FogRadius;
         float _FogMaxRadius;
 
@@ -59,7 +53,7 @@ Shader "Custom/FogOfWarGeom" {
 
         void surf (Input IN, inout SurfaceOutput o) {
         	fixed4 baseColor = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-        	float alpha = (1.0 - (baseColor.a + powerForPos(_Player1_Pos, IN.location) + powerForPos(_Player2_Pos, IN.location) + powerForPos(_Player3_Pos, IN.location)));
+			float alpha = (1.0 - (baseColor.a));
             o.Albedo = baseColor.rgb;
             o.Alpha = alpha;
         }

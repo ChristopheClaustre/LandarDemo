@@ -5,7 +5,7 @@
 		_BlurPower ("BlurPower" , float) = 0.002
 	}
 	SubShader {
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" "LightMode"="ForwardBase"}
+		Tags { "Queue"="Transparent" "RenderType"="fade" "LightMode"="ForwardBase"}
 		Blend SrcAlpha OneMinusSrcAlpha
 		Lighting Off
 		LOD 200
