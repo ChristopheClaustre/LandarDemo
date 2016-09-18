@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-public class randomBoolGenerator : MonoBehaviour
+public class randomAnimBool : MonoBehaviour
 {
     private Animator anim;
 
