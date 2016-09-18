@@ -9,75 +9,105 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000011768911024}
+  m_RootGameObject: {fileID: 1000011275972018}
   m_IsPrefabParent: 1
---- !u!1 &1000011121638192
+--- !u!1 &1000011275972018
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000011264068304}
-  - 212: {fileID: 212000011603201624}
+  - 4: {fileID: 4000011611047842}
+  - 95: {fileID: 95000012625593948}
   m_Layer: 0
-  m_Name: sprite_mur
+  m_Name: porte_65
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1000011768911024
+--- !u!1 &1000011362143186
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 4000012796703220}
-  - 65: {fileID: 65000013601863430}
-  - 208: {fileID: 208000010673510682}
-  - 23: {fileID: 23000010514031612}
+  - 4: {fileID: 4000011865970812}
+  - 65: {fileID: 65000010739688376}
+  - 208: {fileID: 208000010968414098}
+  - 23: {fileID: 23000012921325910}
   m_Layer: 0
-  m_Name: murs_25
+  m_Name: battant_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000011264068304
+--- !u!1 &1000013182553932
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011390174002}
+  - 212: {fileID: 212000011705801742}
+  m_Layer: 0
+  m_Name: Sprite_battant
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4000011390174002
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011121638192}
+  m_GameObject: {fileID: 1000013182553932}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 4000012796703220}
+  m_Father: {fileID: 4000011865970812}
   m_RootOrder: 0
---- !u!4 &4000012796703220
+--- !u!4 &4000011611047842
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011768911024}
+  m_GameObject: {fileID: 1000011275972018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 4000011264068304}
+  - {fileID: 4000011865970812}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &23000010514031612
+--- !u!4 &4000011865970812
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011362143186}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 4000011390174002}
+  m_Father: {fileID: 4000011611047842}
+  m_RootOrder: 0
+--- !u!23 &23000012921325910
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011768911024}
+  m_GameObject: {fileID: 1000011362143186}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 0
@@ -101,39 +131,56 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!65 &65000013601863430
+--- !u!65 &65000010739688376
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011768911024}
+  m_GameObject: {fileID: 1000011362143186}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 3, z: 0.25}
-  m_Center: {x: 0, y: 1.5, z: 0.125}
---- !u!208 &208000010673510682
+  m_Size: {x: 0.7, y: 3, z: 0.19}
+  m_Center: {x: 0, y: 1.5, z: 0.095}
+--- !u!95 &95000012625593948
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011275972018}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 92731050646c4554fabcd279cccd2ca5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!208 &208000010968414098
 NavMeshObstacle:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011768911024}
+  m_GameObject: {fileID: 1000011362143186}
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.125, y: 1.5, z: 0.125}
+  m_Extents: {x: 0.35, y: 1.5, z: 0.095}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 1.5, z: 0.125}
+  m_Center: {x: 0, y: 1.5, z: 0.095}
   m_TimeToStationary: 0.5
---- !u!212 &212000011603201624
+--- !u!212 &212000011705801742
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011121638192}
+  m_GameObject: {fileID: 1000013182553932}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -155,9 +202,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1951135317
+  m_SortingLayerID: 2147248213
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300024, guid: 35ed0def845cd1c41b9e3968c8e1861b, type: 3}
+  m_Sprite: {fileID: 21300010, guid: f6cbd426fed43e348912355c7e866369, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -39,7 +39,7 @@ GameObject:
   - 4: {fileID: 4000010972337664}
   - 212: {fileID: 212000010803445246}
   m_Layer: 0
-  m_Name: model_mur
+  m_Name: sprite_mur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
