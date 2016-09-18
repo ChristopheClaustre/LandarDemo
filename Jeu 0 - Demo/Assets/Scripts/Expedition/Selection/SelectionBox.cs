@@ -34,7 +34,7 @@ public class SelectionBox : MonoBehaviour {
             return end;
         }
     }
-	
+
 	// Update is called once per frame
 	void Update () {
         if (pressed)
@@ -52,8 +52,6 @@ public class SelectionBox : MonoBehaviour {
             }
             else
             {
-                ExpeditionManager.Inst.clearNewSelection();
-
                 // on récupère la position de fin courante
                 end = Input.mousePosition;
                 worldEnd = Camera.main.ScreenToWorldPoint(end);
@@ -80,7 +78,9 @@ public class SelectionBox : MonoBehaviour {
 
                     // si c'est bon, c'est bon !
                     if (xCheck && zCheck)
-                        ExpeditionManager.Inst.addNewSelection(i);
+                        ExpeditionManager.Inst.addToNewSelection(i);
+                    else
+                        ExpeditionManager.Inst.removeToNewSelection(i);
                 }
             }
         }

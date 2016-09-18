@@ -2,8 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ExpeditionManager : MonoBehaviour
-{
+public class ExpeditionManager : MonoBehaviour {
+
+    public interface IAbonneEM
+    {
+        void newSelected();
+    }
 
     // Singleton management about an ExpeditionManager instance
     private static ExpeditionManager instance;
@@ -42,6 +46,9 @@ public class ExpeditionManager : MonoBehaviour
     [Range(-1, 9)]
     private int formationSelected = -1;
     [Header("Just watch, don't modify ;)")]
+    [SerializeField]
+    private bool selecting = false;
+    [SerializeField]
     private List<int> selected;
     [SerializeField]
     private List<int> newSelection;
@@ -57,7 +64,7 @@ public class ExpeditionManager : MonoBehaviour
     {
         get
         {
-            if (newSelection.Count != 0)
+            if (selecting)
             {
                 List<int> selec = new List<int>();
                 
@@ -110,6 +117,7 @@ public class ExpeditionManager : MonoBehaviour
                     formationSelected = i;
                     selected.Clear();
                     selected.AddRange(formations[i]);
+                    newSelected();
                 }
             }
         }
@@ -117,15 +125,27 @@ public class ExpeditionManager : MonoBehaviour
 
     // some public function
 
-    public void clearNewSelection()
+    private void clearNewSelection()
     {
         newSelection.Clear();
+        selecting = false;
+        newSelected();
     }
 
-    public void addNewSelection(int i)
+    public void addToNewSelection(int ind)
     {
-        if (!newSelection.Contains(i))
-            newSelection.Add(i);
+        if (!newSelection.Contains(ind))
+            newSelection.Add(ind);
+        selecting = true;
+        newSelected();
+    }
+
+    public void removeToNewSelection(int ind)
+    {
+        if (newSelection.Contains(ind))
+            newSelection.Remove(ind);
+        selecting = true;
+        newSelected();
     }
 
     public void applyNewSelection()
@@ -153,8 +173,6 @@ public class ExpeditionManager : MonoBehaviour
 
     public void monoSelection(int i)
     {
-        clearNewSelection();
-
         // complétion de sélection
         if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
         {
@@ -171,5 +189,27 @@ public class ExpeditionManager : MonoBehaviour
         }
 
         formationSelected = -1;
+        clearNewSelection();
+    }
+
+    // abonnement
+    private List<IAbonneEM> abonnes;
+
+    void Awake()
+    {
+        abonnes = new List<IAbonneEM>();
+    }
+    
+    public void abonnement(IAbonneEM abonne)
+    {
+        abonnes.Add(abonne);
+    }
+
+    public void newSelected()
+    {
+        foreach(IAbonneEM abonne in abonnes)
+        {
+            abonne.newSelected();
+        }
     }
 }

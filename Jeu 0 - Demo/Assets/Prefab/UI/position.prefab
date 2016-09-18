@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011974745458}
   - 212: {fileID: 212000011219904548}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: direction_apparence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010170273172}
   - 212: {fileID: 212000011368013142}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: position_apparence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011126607922}
   - 95: {fileID: 95000012600712640}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: position
   m_TagString: Untagged
   m_Icon: {fileID: 0}

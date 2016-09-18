@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000010870957366}
   - 212: {fileID: 212000012832891324}
-  m_Layer: 0
-  m_Name: direction_selec_apparence
+  m_Layer: 5
+  m_Name: direction_apparence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,8 +36,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011328027452}
   - 212: {fileID: 212000011950676686}
-  m_Layer: 0
-  m_Name: pos_selec_apparence
+  m_Layer: 5
+  m_Name: posSelection_apparence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,8 +52,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012153756452}
   - 95: {fileID: 95000011495130816}
-  m_Layer: 0
-  m_Name: position_selection
+  - 114: {fileID: 114000013532728572}
+  - 114: {fileID: 114000011615358408}
+  - 65: {fileID: 65000010710086520}
+  m_Layer: 5
+  m_Name: posSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,6 +103,18 @@ Transform:
   - {fileID: 4000011328027452}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!65 &65000010710086520
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013811803350}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95000011495130816
 Animator:
   serializedVersion: 3
@@ -117,6 +132,32 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000011615358408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013811803350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7029c52c240ed45aa3a0725d249c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114000013532728572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013811803350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cefe5f3e0b2dda49a28abbc6d0c2880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mov: {fileID: 0}
+  dest:
+    cible: {x: 0, y: 0, z: 0}
+    orientationFinale: 0
 --- !u!212 &212000011950676686
 SpriteRenderer:
   m_ObjectHideFlags: 1

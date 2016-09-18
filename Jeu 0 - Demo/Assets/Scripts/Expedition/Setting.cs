@@ -52,54 +52,22 @@ public class Setting : MonoBehaviour {
             return mapTransform;
         }
     }
-    public float PercentMargin
-    {
-        get
-        {
-            return percentMargin;
-        }
-    }
-    public float MoveMaxSpeed
-    {
-        get
-        {
-            return moveMaxSpeed;
-        }
-    }
-    public float ZoomSpeed
-    {
-        get
-        {
-            return zoomSpeed;
-        }
-    }
-    public float ZoomMin
-    {
-        get
-        {
-            return zoomMin;
-        }
-    }
-    public float ZoomMax
-    {
-        get
-        {
-            return zoomMax;
-        }
-    }
+    public float PercentMargin { get { return percentMargin; } }
+    public float MoveMaxSpeed { get { return moveMaxSpeed; } }
+    public float ZoomSpeed { get { return zoomSpeed; } }
+    public float ZoomMin { get { return zoomMin; } }
+    public float ZoomMax { get { return zoomMax; } }
 
     /* increment de formation */
     [Header("Formation de personage")]
     [SerializeField]
     private Vector2 formationIncr = new Vector2(0.75f, 0.75f);
+    [SerializeField]
+    private int maxDestinationsPerTraject = 15;
 
-    public Vector2 FormationIncr
-    {
-        get
-        {
-            return formationIncr;
-        }
-    }
+    public Vector2 FormationIncr { get { return formationIncr; } }
+    public int MaxDestinationsPerTraject { get { return maxDestinationsPerTraject; } }
+
 
     /* gestion du singleton */
 

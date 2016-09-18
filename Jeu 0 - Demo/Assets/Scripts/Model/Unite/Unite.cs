@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class Unite {
+public abstract class Unite {
 
     public enum EnumIAState {
         ETDRF,
@@ -20,7 +20,7 @@ public class Unite {
     private Description desc = null;
     private EnumIAState etatIA = EnumIAState.ETDRF;
     [SerializeField]
-    private Trajet trajet = new Trajet();
+    private Trajet trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
     private CaracUnite carac = null;
 
     public int Vie

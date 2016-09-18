@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Movement : MonoBehaviour {
+
+    public interface IAbonneMovement {
+        void newTrajet(Trajet t);
+    }
 
     [SerializeField]
     private float rotatingDistance = 25;
@@ -62,10 +67,15 @@ public class Movement : MonoBehaviour {
 
     private Trajet trajet;
 
+    void Awake()
+    {
+        abonnes = new List<IAbonneMovement>();
+    }
+
     void Start()
     {
         pc = GetComponent<PersoController>();
-        trajet = new Trajet();
+        trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
     }
 
     void Update()
@@ -110,49 +120,89 @@ public class Movement : MonoBehaviour {
 
                 // add the new destination
                 trajet.addDestination(dest);
+                newTrajet();
 
                 // finished !
-                rPressed = false;
-                rStartClick = -Vector3.one;
-                rEndClick = -Vector3.one;
-                rotationRequired = false;
+                reinit();
             }
         }
 
         // Is it the end ??
-        if (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl) && trajet.hasDestination())
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift) && trajet.hasDestinations())
         {
             pc.Trajet = trajet;
             resetTrajet();
 
             // finished !
-            rPressed = false;
-            rStartClick = -Vector3.one;
-            rEndClick = -Vector3.one;
-            rotationRequired = false;
+            reinit();
         }
     }
 
     // right down
     void OnRightDown()
     {
-        if (!Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(0) && !(trajet.WillLoop) && !ClickValidator.Inst.isOnBlackFoW(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
         {
             rStartClick = Input.mousePosition;
             rPressed = true;
         }
     }
 
+    public void bouclerTrajet(Destination candidat)
+    {
+        trajet.addDestination(candidat);
+        if (trajet.WillLoop)
+        {
+            Debug.Log("(la bite à cricri == victoire) = vérité générale");
+            pc.Trajet = trajet;
+            resetTrajet();
+
+            // finished !
+            reinit();
+        }
+    }
+
+    public bool canLoopOn(Destination d)
+    {
+        return trajet.Destinations.IndexOf(d) < trajet.Destinations.Count - 1;
+    }
+
     // Some private function
+
+    private void reinit()
+    {
+        rPressed = false;
+        rStartClick = -Vector3.one;
+        rEndClick = -Vector3.one;
+        rotationRequired = false;
+    }
 
     private void resetTrajet()
     {
-        trajet = new Trajet();
+        trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
+        newTrajet();
     }
 
     private float angleBetweenVectorNAxis(Vector3 pivot, Vector3 point)
     {
         Vector2 diff = point - pivot;
         return Vector2.Angle(Vector2.up, diff) * ((point.x < pivot.x)?-1:+1);
+    }
+
+    // abonnement
+
+    private List<IAbonneMovement> abonnes;
+    
+    public void abonnement(IAbonneMovement abonne)
+    {
+        abonnes.Add(abonne);
+    }
+
+    private void newTrajet()
+    {
+        foreach(IAbonneMovement abonne in abonnes)
+        {
+            abonne.newTrajet(trajet);
+        }
     }
 }

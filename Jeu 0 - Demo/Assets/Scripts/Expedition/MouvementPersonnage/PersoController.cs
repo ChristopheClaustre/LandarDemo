@@ -47,7 +47,7 @@ public class PersoController : CI_caller {
         List<Trajet> trajets = new List<Trajet>();
         for (int i = 0; i < nbPerso; i++)
         {
-            trajets.Add(new Trajet());
+            trajets.Add(new Trajet(Setting.Inst.MaxDestinationsPerTraject));
         }
 
         // calcul the destination(s)
@@ -88,8 +88,8 @@ public class PersoController : CI_caller {
         // assign the destination
         for (int i = 0; i < selec.Count; i++)
         {
-            Navigation nav = ExpeditionManager.Persos[selec[i]].GetComponent<Navigation>();
-            nav.nouveauTrajet(trajets[i]);
+            PersonnageScript perso = ExpeditionManager.Persos[selec[i]].GetComponent<PersonnageScript>();
+            perso.setTrajet(trajets[i]);
         }
     }
 

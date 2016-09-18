@@ -141,6 +141,7 @@ GameObject:
   - 114: {fileID: 114000010886242398}
   - 114: {fileID: 114000012180722728}
   - 114: {fileID: 114000011917002964}
+  - 114: {fileID: 114000013127854180}
   m_Layer: 0
   m_Name: Sphen
   m_TagString: Player
@@ -234,7 +235,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012557892604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -261,7 +262,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010115143304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -317,7 +318,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013528766078}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
@@ -330,7 +331,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014163363434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1.0000001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -343,7 +344,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013518983224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -529,8 +530,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 1.5, z: 0.25}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.25, y: 1, z: 0.25}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!95 &95000010133762832
 Animator:
   serializedVersion: 3
@@ -559,15 +560,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bd57cbb2a5ff745928c6906c86ecc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unite:
-    trajet:
-      destinations: []
-      boucler: 0
   rotatingDistance: 0.5
-  selected: 0
-  moving: 0
-  rotating: 0
-  rectifying: 0
+  etatName: glide
+  state: 0
 --- !u!114 &114000011917002964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -613,6 +608,18 @@ MonoBehaviour:
   rotationX: 0
   rotationY: 0
   rotationZ: 0
+--- !u!114 &114000013127854180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013518983224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a651294d84b4c1b4d89ced1d5e0663cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selected: 0
 --- !u!114 &114000013513666234
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -648,7 +655,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1000013518983224}
   m_Enabled: 1
   m_Radius: 0.12
-  m_Speed: 3.5
+  m_Speed: 2.9
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

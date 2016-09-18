@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GUINavigation : MonoBehaviour, Navigation.IAbonneNavigation {
+public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
 
     [SerializeField]
     private GameObject prefab_position;
@@ -11,88 +11,124 @@ public class GUINavigation : MonoBehaviour, Navigation.IAbonneNavigation {
 
     private List<GameObject> instances;
     
-    private Navigation nav;
+    private PersonnageScript ps;
     private GameObject go_selec;
     private GameObject startingLine = null;
+    private GameObject endingLine = null;
+    private bool show = false;
 
     // pour faciliter la lecture
     private Quaternion orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
 
     // Use this for initialization
     void Start () {
-        nav = GetComponent<Navigation>();
-        nav.abonnement(this);
+        ps = GetComponent<PersonnageScript>();
+        ps.abonnement(this);
         go_selec = this.transform.Find("selector").gameObject;
         instances = new List<GameObject>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (nav.Selected && nav.unite.Trajet.hasDestination())
+        // gestion input
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            eraseStartingLine();
-            startingLine = createLine(nav.unite.Trajet.currentDestination().Cible, transform.position);
+            show = true;
+            newTrajet();
+        }
+        if (Input.GetKeyUp(KeyCode.T))
+        {
+            show = false;
+            eraseStaticPrefab();
+            eraseDynamicPrefab();
+        }
+        // affichage de la première ligne
+        if (show && ps.Selected && ps.Trajet_hasDestinations())
+        {
+            eraseDynamicPrefab();
+            startingLine = createLine(ps.Trajet_currentDestination().Cible, transform.position);
+            if (ps.Trajet_Boucler())
+            {
+                IList <Destination> dests = ps.Trajet_Destinations();
+                endingLine = createLine(dests[dests.Count - 1].Cible, transform.position);
+            }
         }
     }
+
+    // abonnement
 
     public void newTrajet()
     {
-        // d'abord on supprime tout
-        eraseStaticPrefab();
-        eraseStartingLine();
-
-        if (nav.unite.Trajet.hasDestination())
+        if (ps.Selected & show)
         {
-            // on récupére les destinations
-            List<Destination> dests = nav.unite.Trajet.Destinations;
+            // d'abord on supprime tout
+            eraseStaticPrefab();
+            eraseDynamicPrefab();
 
-            // on créé les marqueurs
-            for (int i = 0; i < dests.Count; i++)
+            if (ps.Trajet_hasDestinations())
             {
-                // affichage de la position
-                GameObject go =
-                    Instantiate(
-                        prefab_position,
-                        dests[i].Cible,
-                        orientationNull) as GameObject;
-                // si il faut affichage de l'orientation
-                if (!float.IsNaN(dests[i].OrientationFinale))
-                {
-                    Quaternion orientation = Quaternion.AngleAxis(dests[i].OrientationFinale, Vector3.back);
-                    GameObject direction = go.transform.Find("position_apparence/direction_apparence").gameObject;
-                    direction.SetActive(true);
-                    direction.transform.localRotation = orientation;
-                }
-                instances.Add(go);
+                // on récupére les destinations
+                IList<Destination> dests = ps.Trajet_Destinations();
 
-                // affichage du trait
-                if (i != 0)
+                // on créé les marqueurs
+                for (int i = 0; i < dests.Count; i++)
                 {
-                    go = createLine(dests[i].Cible, dests[i - 1].Cible);
+                    // affichage de la position
+                    GameObject go =
+                        Instantiate(
+                            prefab_position,
+                            dests[i].Cible,
+                            orientationNull) as GameObject;
+                    // si il faut affichage de l'orientation
+                    if (!float.IsNaN(dests[i].OrientationFinale))
+                    {
+                        Quaternion orientation = Quaternion.AngleAxis(dests[i].OrientationFinale, Vector3.back);
+                        GameObject direction = go.transform.Find("position_apparence/direction_apparence").gameObject;
+                        direction.SetActive(true);
+                        direction.transform.localRotation = orientation;
+                    }
                     instances.Add(go);
+
+                    // affichage du trait
+                    if (i != 0)
+                    {
+                        go = createLine(dests[i].Cible, dests[i - 1].Cible);
+                        instances.Add(go);
+                    }
+                }
+
+                // on créé la première ligne
+                startingLine = createLine(ps.Trajet_currentDestination().Cible, transform.position);
+                if (ps.Trajet_Boucler())
+                {
+                    endingLine = createLine(dests[dests.Count - 1].Cible, transform.position);
                 }
             }
-
-            // on créé la première ligne
-            startingLine = createLine(nav.unite.Trajet.currentDestination().Cible, transform.position);
         }
     }
 
-    public void newSelected()
+    public void newSelected(bool s)
     {
         // on affiche l'état selectionné
-        go_selec.SetActive(nav.Selected);
+        go_selec.SetActive(s);
         // si il est sélectionné
-        if (nav.Selected)
+        if (s)
         {
             newTrajet();
         }
         else
         {
             eraseStaticPrefab();
-            eraseStartingLine();
+            eraseDynamicPrefab();
         }
     }
+    
+    public void newPerso(Personnage p)
+    {
+        // Rien à faire
+    }
+
+    // some private function
 
     private void eraseStaticPrefab()
     {
@@ -114,9 +150,11 @@ public class GUINavigation : MonoBehaviour, Navigation.IAbonneNavigation {
         return go;
     }
 
-    private void eraseStartingLine()
+    private void eraseDynamicPrefab()
     {
         Destroy(startingLine);
         startingLine = null;
+        Destroy(endingLine);
+        endingLine = null;
     }
 }
