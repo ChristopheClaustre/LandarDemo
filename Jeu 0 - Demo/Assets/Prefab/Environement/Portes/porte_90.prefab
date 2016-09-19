@@ -37,6 +37,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000010025958560}
+  - 95: {fileID: 95000014144685448}
   m_Layer: 0
   m_Name: porte_90
   m_TagString: Untagged
@@ -245,6 +246,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.46, y: 3, z: 0.19}
   m_Center: {x: 0, y: 1.5, z: 0.095}
+--- !u!95 &95000014144685448
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010358972558}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 07ee55a638169e54a9a3b85763ae01a3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!208 &208000012558597800
 NavMeshObstacle:
   m_ObjectHideFlags: 1
