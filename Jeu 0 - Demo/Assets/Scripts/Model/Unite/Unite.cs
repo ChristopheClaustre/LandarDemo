@@ -22,6 +22,7 @@ public abstract class Unite {
     [SerializeField]
     private Trajet trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
     private CaracUnite carac = null;
+    private float luminosite = 0.0f;
 
     public int Vie
     {
@@ -81,6 +82,18 @@ public abstract class Unite {
         get
         {
             return carac;
+        }
+    }
+
+    public float Luminosite
+    {
+        get
+        {
+            return luminosite;
+        }
+        set
+        {
+            luminosite = value;
         }
     }
 
