@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public abstract class UniteScript : MonoBehaviour {
 
-
     public interface IAbonneUnite
     {
         void newTrajet();
@@ -14,6 +13,19 @@ public abstract class UniteScript : MonoBehaviour {
     [SerializeField]
     protected Unite unite;
 
+    public List<Light> lampes;
+    public LightStateGenerator Lsg;
+
+    void Update()
+    {
+        if (lampes.Count > 0)
+        {
+            float lum = Lsg.calculLight(lampes);
+            //unite.Luminosite = lum;
+            Debug.Log(lum);
+        }
+    }
+    
     protected abstract Trajet Trajet
     {
         get;
