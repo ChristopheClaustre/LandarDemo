@@ -141,10 +141,13 @@ public class Movement : MonoBehaviour {
     // right down
     void OnRightDown()
     {
-        if (!Input.GetMouseButton(0) && !(trajet.WillLoop) && (ClickValidator.Inst == null  || !ClickValidator.Inst.isOnBlackFoW(Camera.main.ScreenToWorldPoint(Input.mousePosition))))
+        if (ClickValidator.Inst == null || !ClickValidator.Inst.isOnBlackFoW(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
         {
-            rStartClick = Input.mousePosition;
-            rPressed = true;
+            if (!Input.GetMouseButton(0) && !(trajet.WillLoop))
+            {
+                rStartClick = Input.mousePosition;
+                rPressed = true;
+            }
         }
     }
 
