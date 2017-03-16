@@ -6,9 +6,13 @@ All the script should be writed in `C#`
 
 ### Script naming
 
-```Notes```
+```
+Notes
+```
 CamelCase
+
 prefixe GUI, if it's intended to act on GUI
+
 GUI script should not store game informations
 
 ### Format of `C#` files

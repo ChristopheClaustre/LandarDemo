@@ -1,5 +1,5 @@
 # LandarDemo
-Source of the future demo for the next SquirrelSoft's game
+Source of the future demo for the next SquirrelSoft's game.
 Coding rules [here](CodingRules.md).
 
 ## 1. Folder
