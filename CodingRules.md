@@ -90,8 +90,7 @@ public class NewBehaviourScript :
 
 ### variable naming
 
-Every variable must follow this naming's pattern : **[PREFIX]**_
-**clearlyComprehensibleAndUniqueCamelCasedName**
+Every variable must follow this naming's pattern : **[PREFIX]**_clearlyComprehensibleAndUniqueCamelCasedName
 
 Here is a list of the existing prefixes, every variable should have at least one.
 
