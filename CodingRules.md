@@ -17,90 +17,84 @@ GUI script should not store game informations
 
 ### Format of `C#` files
 
-`C#` files should follow this format :
+`C#` files should follow this template : [this file](./template.cs)
+
+Note: You can use this template as the default ```.cs``` template in Unity (see [here](http://answers.unity3d.com/questions/120957/change-the-default-script-template.html))
+
+### Scope
 
 ```C#
-/***************************************************
- *** INCLUDE                ************************
- ***************************************************/
-using UnityEngine;
-using System.Collections;
-
-/***************************************************
- *** THE CLASS              ************************
- ***************************************************/
-
-public class NewBehaviourScript :
-	MonoBehaviour
+/* if */
+if ( condition )
 {
-	/***************************************************
-	 ***  UNITY GUI PROPERTY    ************************
-	 ***************************************************/
-	
-	/********  PUBLIC           ************************/
-	
-	/********  PROTECTED        ************************/
-	
-	/********  PRIVATE          ************************/
-	
-	/***************************************************
-	 ***  SUB-CLASSES           ************************
-	 ***************************************************/
-	
-	/********  PUBLIC           ************************/
-	
-	/********  PROTECTED        ************************/
-	
-	/********  PRIVATE          ************************/
-	
-	/***************************************************
-	 ***  ATTRIBUTES            ************************
-	 ***************************************************/
-	
-	/********  PUBLIC           ************************/
-	
-	/********  PROTECTED        ************************/
-	
-	/********  PRIVATE          ************************/
-	
-	/***************************************************
-	 ***  METHODS               ************************
-	 ***************************************************/
-	
-	/********  PUBLIC           ************************/
-	
-	// Use this for initialization
-	public void Start ()
-	{
-		
-	}
-	
-	// Update is called once per frame
-	public void Update ()
-	{
-		
-	}
-	
-	/********  PROTECTED        ************************/
-	
-	/********  PRIVATE          ************************/
-	
+	// stuff here
 }
+
+/* ternary */
+( cond )? stuff1 : stuff2 ;
+
+function( ( cond )? stuff1 : stuff2 )
+
+/* switch */
+
+// TODO
+
+/* while */
+while ( condition )
+{
+	// stuff here
+}
+
+/* for */
+for ( int i = 0 ; cond ; ++i )
+{
+	// stuff here
+}
+
+// TODO 'for each' syntax
+
+/* strictly forbidden */
+( cond )? ( ( cond )? stuff11 : stuff12 ) : stuff2
+
 ```
 
-### variable naming
+### Variable naming
 
 Every variable must follow this naming's pattern : **[PREFIX]**_clearlyComprehensibleAndUniqueCamelCasedName
 
-Here is a list of the existing prefixes, every variable should have at least one.
+Here is a list of the existing prefixes, every variable should have at least one (excepts for iteration variable).
 
 Prefixes | Meaning
 -------- | --------
-A | assessor on a variable (or not)
+A | C#'s assessor
 c | constant variable
 g | global variable
-l[num] | local variable (num is an optional digit representing the scope level)
-m | member variable
+l[num] | local variable (num is an optional digit representing the declaration's scope level) [1]
+m | attribute
 p | parameter
 s | static member variable
 
+[1]
+```C#
+class Something
+{
+	// SCOPE nothing
+	void function()
+	{
+		// SCOPE 0
+		if (cond)
+		{
+			// SCOPE 1
+			while ()
+			{
+				// SCOPE 2
+			}
+			
+			for ()
+			{
+				// SCOPE 2
+			}
+		}
+	}
+}
+```
