@@ -17,7 +17,7 @@ public class Navigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
     // the destination for next call of the pathfinder
     private Destination dest;
 
-    private NavMeshAgent agent;
+    private UnityEngine.AI.NavMeshAgent agent;
 
     // état de la nav
     private enum EtatNav
@@ -36,7 +36,7 @@ public class Navigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
     // Use this for initialization
     void Start () {
         persoScript = GetComponent<PersonnageScript>();
-        agent = this.GetComponent<NavMeshAgent>();
+        agent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
         persoScript.abonnement(this);
     }
 
