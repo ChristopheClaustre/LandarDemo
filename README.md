@@ -3,6 +3,10 @@ Source of the future demo for the next SquirrelSoft's game
 
 **Coding rules [here](CodingRules.md)**
 
+## 0. Unity's version
+
+Actual version of Unity to use : 5.6.3f1
+
 ## 1. Folder
 
  * **bin** : latest working build
