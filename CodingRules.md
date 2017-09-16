@@ -1,8 +1,28 @@
 # CODING RULES
 
+## Empty directory
+
+Empty directory must be filled with an empty file named ```no_media```. To make git able to version the empty directory.
+
+## Commit messages
+
+Every commit message must follow this naming’s pattern : 
+```[PRE] Here is a new commit```
+
+Here is a list of the existing prefixes, every commit message should have exactly one.
+
+Prefixes | Meaning
+-------- | --------
+FCT | new functionnality
+BUG | bug fixes
+FIX | compilation fixes
+GRP | new graphics
+CDR | coding rules fixes
+OTH | other commit
+
 ## Script
 
-All the script should be writed in `C#`
+All the script should be writed in `C#`.
 
 ### Script naming
 
@@ -60,7 +80,8 @@ for ( int i = 0 ; cond ; ++i )
 
 ### Variable naming
 
-Every variable must follow this naming's pattern : **[PREFIX]**_clearlyComprehensibleAndUniqueCamelCasedName
+Every variable must follow this naming's pattern :
+`prefix_clearlyComprehensibleAndUniqueCamelCasedName`
 
 Here is a list of the existing prefixes, every variable should have at least one (excepts for iteration variable).
 
