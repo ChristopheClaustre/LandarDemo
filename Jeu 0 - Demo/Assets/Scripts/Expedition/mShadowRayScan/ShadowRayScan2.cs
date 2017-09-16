@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ShadowRayScan2 : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class ShadowRayScan2 : MonoBehaviour
 	private Vector2[] vertices2d;
 	private int[] triangles;
 	private Mesh mesh;
+
+    public List<GameObject> objectsDetected;
 
     // texture grabber
     //Utilisé si l'allocation de texture se fait dans ce scipte
@@ -49,7 +52,12 @@ public class ShadowRayScan2 : MonoBehaviour
 		float deltaDistance = distanceMax - distanceMin;
 		float angle = lightmeshholder.transform.eulerAngles.y * Mathf.Deg2Rad ;
 		vertices2d[0] = new Vector2(0,0);
-		for (int i = 1; i<RaysToShoot+1; i++) {
+
+        //Update flags and lists
+        objectsDetected.Clear();
+
+
+        for (int i = 1; i<RaysToShoot+1; i++) {
 			var x = Mathf.Sin (angle);
 			var y = Mathf.Cos (angle);
 			angle += 2 * Mathf.PI / RaysToShoot;
@@ -67,13 +75,15 @@ public class ShadowRayScan2 : MonoBehaviour
 			}else{
 				distance = distanceMin;
 				}
-			//Transform transform = new Transform();
 
 			if (Physics.Raycast(transform.position, dir,out hit, distance, maskLayer)) 
 			{
 				Debug.DrawLine (transform.position, hit.point,new Color(1,1,0,1));
 				var tmp = lightmeshholder.transform.InverseTransformPoint(hit.point);
 				vertices2d[i] = new Vector2(tmp.x,tmp.z);
+
+                analyserRayHit(hit);
+
 			}else{ // no hit
 							Debug.DrawRay (transform.position, dir*distance, new Color(1,1,0,1));
 				var tmp2 = lightmeshholder.transform.InverseTransformPoint(lightmeshholder.transform.position+dir*distance);
@@ -113,14 +123,14 @@ public class ShadowRayScan2 : MonoBehaviour
 	{
 		return mesh;//(MeshFilter)gameObject.GetComponent("MeshFilter");
 	}
+    
+    private void analyserRayHit(RaycastHit hit)
+    {
+        if (hit.collider != null)
+        {
+            if(!objectsDetected.Contains(hit.collider.gameObject))
+                objectsDetected.Add(hit.collider.gameObject);
+        }
+    }
 }
-/*
-function GrabToTexture()
-{
-	yield WaitForEndOfFrame();
-  	texture.ReadPixels(new Rect(0, 0, screenwidth, screenheight), 0, 0, false);
-	texture.Apply();
-	renderer.material.mainTexture = texture;
-	grab=0;
-}
-*/
+
