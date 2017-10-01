@@ -5,7 +5,7 @@ Source of the future demo for the next SquirrelSoft's game
 
 ## 0. Unity's version
 
-Actual version of Unity to use : 5.6.3f1
+Actual version of Unity to use : 2017.1.0f3
 
 ## 1. Folder
 
