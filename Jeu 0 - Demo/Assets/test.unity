@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1609,7 +1609,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 03793e6a95e3689478bc76cc4533260c, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: f717cf2c6829e064da36578544f0023b, type: 2}
 --- !u!114 &1648970582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1635,9 +1635,9 @@ MonoBehaviour:
   m_OverrideTileSize: 1
   m_TileSize: 512
   m_OverrideVoxelSize: 1
-  m_VoxelSize: 0.01
+  m_VoxelSize: 0.015
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 4776534eb2dc38e43b4ea417e0ee425f, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: bf2125dfa8db81c428e72fdb4d810a7b, type: 2}
 --- !u!114 &1648970583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 9d0b91bb819189b4c9576f4c20bce404, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 383eb5e086547f6439ecb02c1001609f, type: 2}
 --- !u!114 &1648970584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1693,7 +1693,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 8ed0b06e08ea42f41901e5fe55c01713, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ee7fbd9f7b0368442942f9022fac4897, type: 2}
 --- !u!4 &1648970585
 Transform:
   m_ObjectHideFlags: 0
