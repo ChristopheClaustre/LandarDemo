@@ -13,7 +13,7 @@ Here is a list of the existing prefixes, every commit message should have exactl
 
 Prefixes | Meaning
 -------- | --------
-FCT | new functionnality
+FCT | new functionality
 BUG | bug fixes
 FIX | compilation fixes
 GRP | new graphics
@@ -31,9 +31,8 @@ Notes
 ```
 CamelCase
 
-prefixe GUI, if it's intended to act on GUI
-
-GUI script should not store game informations
+Prefix GUI, if it's intended to act on GUI. GUI script should not store game informations.
+Prefix MONO, if it's intended to be instantiated only one time in a scene (singleton for example).
 
 ### Format of `C#` files
 
@@ -41,7 +40,28 @@ GUI script should not store game informations
 
 Note: You can use this template as the default ```.cs``` template in Unity (see [here](http://answers.unity3d.com/questions/120957/change-the-default-script-template.html))
 
-### Scope
+### Variable naming
+
+Every variable must follow this naming's pattern : `prefix_clearAndUniqueCamelCasedName`
+
+Here is a list of the existing prefixes :
+Prefixes | Meaning
+-------- | --------
+c | constant variable
+g | global variable
+l[num] | local variable (num is an optional digit representing the declaration's scope level) [1]
+m | member variable
+p | parameter
+s | static member variable
+e | element in a list (exemple: foreach)
+
+There is two exceptions :
+* the C#'s assessor that should follow this pattern : `ClearAndUniqueCamelCasedName`
+* iteration variable that should be named by only one letter :
+  * coordinate : x, y, z, w
+  * array : i, j, k, l
+
+### Formatting
 
 ```C#
 /* if */
@@ -51,13 +71,36 @@ if ( condition )
 }
 
 /* ternary */
-( cond )? stuff1 : stuff2 ;
+( condition )? stuff1 : stuff2 ;
 
-function( ( cond )? stuff1 : stuff2 )
+method( ( condition )? stuff1 : stuff2 )
 
 /* switch */
+switch ( value )
+{
+	case one:
+		// stuff here
+		break;
+	case two:
+		// stuff here
+		break;
+	//...
+	default: break;
+}
 
-// TODO
+switch ( value )
+{
+	case one:
+		// stuff here
+		break;
+	case two:
+		// stuff here
+		break;
+	//...
+	default:
+		// stuff here
+		break;
+}
 
 /* while */
 while ( condition )
@@ -66,41 +109,41 @@ while ( condition )
 }
 
 /* for */
-for ( int i = 0 ; cond ; ++i )
+for ( int i = 0 ; condition ; ++i )
 {
 	// stuff here
 }
 
+/* method */
+[public/private/protected] [return type] clearAndUniqueCamelCasedName([type] p_parameter1, [type] p_parameter2, ...)
+{
+	// code here
+}
+
+/* foreach */
+for ( Type e_element in p_list )
+{
+	// stuff here
+}
 // TODO 'for each' syntax
 
 /* strictly forbidden */
-( cond )? ( ( cond )? stuff11 : stuff12 ) : stuff2
+( condition )? ( ( condition )? stuff11 : stuff12 ) : stuff2
 
 ```
 
-### Variable naming
+### Scope
 
-Every variable must follow this naming's pattern :
-`prefix_clearlyComprehensibleAndUniqueCamelCasedName`
+No more than 3 level of scope.
 
-Here is a list of the existing prefixes, every variable should have at least one (excepts for iteration variable).
-
-Prefixes | Meaning
--------- | --------
-A | C#'s assessor
-c | constant variable
-g | global variable
-l[num] | local variable (num is an optional digit representing the declaration's scope level) [1]
-m | attribute
-p | parameter
-s | static member variable
+## Reference
 
 [1]
 ```C#
 class Something
 {
 	// SCOPE nothing
-	void function()
+	public void method()
 	{
 		// SCOPE 0
 		if (cond)
