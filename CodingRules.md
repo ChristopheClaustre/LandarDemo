@@ -51,13 +51,13 @@ Prefixes | Meaning
 -------- | --------
 c | constant or static readonly variable
 g | global variable
-l | local variable
 m | member variable
 p | method's or function's parameter
 s | static member variable
 
 There is two exceptions :
-* the C#'s property that should follow this pattern : `ClearAndUniqueCamelCasedName`
+* local variable
+* the C#'s property that should follow this pattern : `ClearAndUniquePascalCasedName`
 * iteration variable that should be named by only one letter :
   * coordinate : x, y, z, w, u, v
   * array : i, j, k, l
@@ -131,13 +131,13 @@ for (int i = 0; condition; ++i)
 }
 
 /* method */
-public void clearAndUniqueCamelCasedName(int p_parameter1, float p_parameter2, ...)
+public void ClearAndUniquePascalCasedName(int p_parameter1, float p_parameter2, ...)
 {
 	// stuff here
 }
 
 /* foreach */
-for (Type l_element in p_list)
+for (Type element in p_list)
 {
 	// stuff here
 }
