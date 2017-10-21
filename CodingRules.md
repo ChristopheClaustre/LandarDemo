@@ -24,7 +24,9 @@ OTH | other commit
 ## C- Script
 
 All the script should be writed in `C#`.
-Scripts should follow the template you can found here : ```./ScriptTemplates/81-C#%20Script-NewBehaviourScript.cs.txt```
+
+Scripts should follow the template you can found here :
+```./ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt```
 
 Note: You can use this template as the default ```.cs``` template in Unity by replacing the file located in :
 ```%UNITY_INSTALL_DIR%/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt```
