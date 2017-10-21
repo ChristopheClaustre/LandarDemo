@@ -8,7 +8,6 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-
 public class NewBehaviourScript :
     MonoBehaviour
 {
@@ -24,9 +23,25 @@ public class NewBehaviourScript :
     /********  PRIVATE          ************************/
 
     #endregion
-    #region Unity GUI property
+    #region Unity's inspector attributes
     /***************************************************/
-    /***  UNITY GUI PROPERTY    ************************/
+    /***  INSPECTOR ATTRIBUTES  ************************/
+    /***************************************************/
+
+    #endregion
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    #endregion
+    #region Constants
+    /***************************************************/
+    /***  CONSTANTS             ************************/
     /***************************************************/
 
     /********  PUBLIC           ************************/
@@ -36,19 +51,10 @@ public class NewBehaviourScript :
     /********  PRIVATE          ************************/
 
     #endregion
-    #region Assessor
-    /***************************************************/
-    /***  ASSESSOR              ************************/
-    /***************************************************/
-    
-    
-    #endregion
     #region Attributes
     /***************************************************/
     /***  ATTRIBUTES            ************************/
     /***************************************************/
-
-    /********  PUBLIC           ************************/
 
     /********  PROTECTED        ************************/
 
@@ -63,13 +69,13 @@ public class NewBehaviourScript :
     /********  UNITY MESSAGES   ************************/
 
     // Use this for initialization
-    public void Start()
+    private void Start()
     {
 
     }
 
     // Update is called once per frame
-    public void Update()
+    private void Update()
     {
 
     }
