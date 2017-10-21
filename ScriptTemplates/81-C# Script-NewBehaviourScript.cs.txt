@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-public class NewBehaviourScript :
+public class #SCRIPTNAME# :
     MonoBehaviour
 {
     #region Sub-classes/enum
@@ -67,13 +67,13 @@ public class NewBehaviourScript :
     // Use this for initialization
     private void Start()
     {
-
+        #NOTRIM#
     }
 
     // Update is called once per frame
     private void Update()
     {
-
+        #NOTRIM#
     }
 
     /********  OUR MESSAGES     ************************/
