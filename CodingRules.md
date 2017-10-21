@@ -1,12 +1,10 @@
 # CODING RULES
 
 ## A- Empty directory
-***
 
 Empty directory must be filled with an empty file named `no_media`. To make git able to version the empty directory.
 
 ## B- Commit messages
-***
 
 Every commit message must follow this naming’s pattern : 
 ```[PRE] Here is a new commit```
@@ -24,7 +22,6 @@ QA | coding rules fixes, quality of code or optimisations
 OTH | other commit
 
 ## C- Script
-***
 
 All the script should be writed in `C#`.
 Scripts should follow the template you can found here : ```./ScriptTemplates/81-C#%20Script-NewBehaviourScript.cs.txt```
@@ -56,7 +53,7 @@ m | member variable
 p | method's or function's parameter
 s | static member variable
 
-There is two exceptions :
+There is three exceptions :
 * local variable
 * the C#'s property that should follow this pattern : `ClearAndUniquePascalCasedName`
 * iteration variable that should be named by only one letter :
