@@ -1,92 +1,108 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 
-public class Setting : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class Setting :
+    MonoBehaviour
+{
+    #region Unity GUI property
+    /***************************************************/
+    /***  UNITY GUI PROPERTY    ************************/
+    /***************************************************/
 
     /* gestion des settings du curseur */
     [Header("Curseur")]
-    [SerializeField]
-    private Texture2D cursorTex;
-    [SerializeField]
-    private Vector2 hotspot;
-
-    public Texture2D CursorTex
-    {
-        get
-        {
-            return cursorTex;
-        }
-    }
-    public Vector2 Hotspot
-    {
-        get
-        {
-            return hotspot;
-        }
-    }
+    [SerializeField] private Texture2D m_cursorTex;
+    [SerializeField] private Vector2 m_hotspot;
 
     /* gestion des settings de déplacement de la cam */
     [Header("Déplacements de la caméra")]
-    [SerializeField]
-    private string mapName = "map";
-    [SerializeField]
-    public float percentMargin = 0.1f;
-    [SerializeField]
-    private float moveMaxSpeed = 5;
-    [SerializeField]
-    private float zoomSpeed = 1;
-    [SerializeField]
-    private float zoomMin = 6;
-    [SerializeField]
-    private float zoomMax = 1;
+    [SerializeField] private float m_mouseMarginInPercent = 0.015f;
+    [SerializeField] private float m_cameraVelocity = 5;
+    [SerializeField] private float m_zoomVelocity = 2;
+    [SerializeField] private float m_minimalZoom = 1;
 
-    private Transform mapTransform;
-
-    public Transform Map
-    {
-        get
-        {
-            if (mapTransform == null)
-                mapTransform = GameObject.Find(mapName).transform;
-
-            return mapTransform;
-        }
-    }
-    public float PercentMargin { get { return percentMargin; } }
-    public float MoveMaxSpeed { get { return moveMaxSpeed; } }
-    public float ZoomSpeed { get { return zoomSpeed; } }
-    public float ZoomMin { get { return zoomMin; } }
-    public float ZoomMax { get { return zoomMax; } }
+//    private Transform mapTransform;
 
     /* increment de formation */
     [Header("Formation de personage")]
-    [SerializeField]
-    private Vector2 formationIncr = new Vector2(0.75f, 0.75f);
-    [SerializeField]
-    private int maxDestinationsPerTraject = 15;
+    [SerializeField] private Vector2 m_formationPadding = new Vector2(0.75f, 0.75f);
+    [SerializeField] private int m_maxDestinationsPerTraject = 15;
 
-    public Vector2 FormationIncr { get { return formationIncr; } }
-    public int MaxDestinationsPerTraject { get { return maxDestinationsPerTraject; } }
+    #endregion
+    #region Assessor
+    /***************************************************/
+    /***  ASSESSOR              ************************/
+    /***************************************************/
 
+    /* gestion des settings du curseur */
+    public Texture2D CursorTex { get { return m_cursorTex; } }
+    public Vector2 Hotspot { get { return m_hotspot; } }
+
+    /* gestion des settings de déplacement de la cam */
+    public float MouseMarginInPercent { get { return m_mouseMarginInPercent; } }
+    public float CameraVelocity { get { return m_cameraVelocity; } }
+    public float ZoomVelocity { get { return m_zoomVelocity; } }
+    public float MinimalZoom { get { return m_minimalZoom; } }
+
+    /* padding de formation */
+    public Vector2 FormationPadding { get { return m_formationPadding; } }
+    public int MaxDestinationsPerTraject { get { return m_maxDestinationsPerTraject; } }
 
     /* gestion du singleton */
-
-    private static Setting instance;
-    public static Setting Inst
+    public static Setting Instance
     {
         get
         {
-            if (instance == null)
-            {
-                instance = Camera.main.GetComponent<Setting>();
-            }
             return instance;
         }
     }
 
-    // Use this for initialization
-    void Start () {
-        Cursor.SetCursor(cursorTex, hotspot, CursorMode.Auto);
-	}
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
 
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    /* gestion du singleton */
+    private static Setting instance;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    void Awake()
+    {
+//        instance = Camera.main.GetComponent<Setting>();
+        instance = this;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        Cursor.SetCursor(m_cursorTex, m_hotspot, CursorMode.Auto);
+    }
+
+    // Update is called once per frame
+    public void Update()
+    {
+
+    }
+
+    #endregion
 }
