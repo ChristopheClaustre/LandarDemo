@@ -2,30 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
+public class GUINavigation :
+    MonoBehaviour
+{
+    [SerializeField, ReadOnly]
+    private GameObject m_prefabPosition;
+    [SerializeField, ReadOnly]
+    private GameObject m_prefabLine;
 
-    [SerializeField]
-    private GameObject prefab_position;
-    [SerializeField]
-    private GameObject prefab_line;
-
-    private List<GameObject> instances;
+    private List<GameObject> m_instances;
     
-    private PersonnageScript ps;
-    private GameObject go_selec;
-    private GameObject startingLine = null;
-    private GameObject endingLine = null;
-    private bool show = false;
+    private PersonnageScript m_personnageScript;
+    private GameObject m_goSelec;
+    private GameObject m_startingLine = null;
+    private GameObject m_endingLine = null;
+    private bool m_show = false;
 
     // pour faciliter la lecture
-    private Quaternion orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
+    private readonly static Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
 
     // Use this for initialization
     void Start () {
-        ps = GetComponent<PersonnageScript>();
-        ps.abonnement(this);
-        go_selec = this.transform.Find("selector").gameObject;
-        instances = new List<GameObject>();
+        m_personnageScript = GetComponent<PersonnageScript>();
+        //m_personnageScript.abonnement(this);
+        m_goSelec = this.transform.Find("selector").gameObject;
+        m_instances = new List<GameObject>();
     }
 	
 	// Update is called once per frame
@@ -33,42 +34,42 @@ public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
         // gestion input
         if (Input.GetKeyDown(KeyCode.T))
         {
-            show = true;
-            newTrajet();
+            m_show = true;
+            newJourney();
         }
         if (Input.GetKeyUp(KeyCode.T))
         {
-            show = false;
+            m_show = false;
             eraseStaticPrefab();
-            eraseDynamicPrefab();
+            EraseDynamicPrefab();
         }
         // affichage de la première ligne
-        if (show && ps.Selected && ps.Trajet_hasDestinations())
+        if (m_show && m_personnageScript.Selected && m_personnageScript.Journey_hasDestinations())
         {
-            eraseDynamicPrefab();
-            startingLine = createLine(ps.Trajet_currentDestination().Cible, transform.position);
-            if (ps.Trajet_Boucler())
+            EraseDynamicPrefab();
+            m_startingLine = CreateLine(m_personnageScript.Journey_currentDestination().Cible, transform.position, m_prefabLine);
+            if (m_personnageScript.Journey_Boucler())
             {
-                IList <Destination> dests = ps.Trajet_Destinations();
-                endingLine = createLine(dests[dests.Count - 1].Cible, transform.position);
+                IList <Destination> dests = m_personnageScript.Journey_Destinations();
+                m_endingLine = CreateLine(dests[dests.Count - 1].Cible, transform.position, m_prefabLine);
             }
         }
     }
 
     // abonnement
 
-    public void newTrajet()
+    public void newJourney()
     {
-        if (ps.Selected & show)
+        if (m_personnageScript.Selected & m_show)
         {
             // d'abord on supprime tout
             eraseStaticPrefab();
-            eraseDynamicPrefab();
+            EraseDynamicPrefab();
 
-            if (ps.Trajet_hasDestinations())
+            if (m_personnageScript.Journey_hasDestinations())
             {
                 // on récupére les destinations
-                IList<Destination> dests = ps.Trajet_Destinations();
+                IList<Destination> dests = m_personnageScript.Journey_Destinations();
 
                 // on créé les marqueurs
                 for (int i = 0; i < dests.Count; i++)
@@ -76,9 +77,9 @@ public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
                     // affichage de la position
                     GameObject go =
                         Instantiate(
-                            prefab_position,
+                            m_prefabPosition,
                             dests[i].Cible,
-                            orientationNull) as GameObject;
+                            c_orientationNull) as GameObject;
                     // si il faut affichage de l'orientation
                     if (!float.IsNaN(dests[i].OrientationFinale))
                     {
@@ -87,43 +88,44 @@ public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
                         direction.SetActive(true);
                         direction.transform.localRotation = orientation;
                     }
-                    instances.Add(go);
+                    m_instances.Add(go);
 
                     // affichage du trait
                     if (i != 0)
                     {
-                        go = createLine(dests[i].Cible, dests[i - 1].Cible);
-                        instances.Add(go);
+                        go = CreateLine(dests[i].Cible, dests[i - 1].Cible, m_prefabLine);
+                        m_instances.Add(go);
                     }
                 }
 
                 // on créé la première ligne
-                startingLine = createLine(ps.Trajet_currentDestination().Cible, transform.position);
-                if (ps.Trajet_Boucler())
+                m_startingLine = CreateLine(m_personnageScript.Journey_currentDestination().Cible, transform.position, m_prefabLine);
+                if (m_personnageScript.Journey_Boucler())
                 {
-                    endingLine = createLine(dests[dests.Count - 1].Cible, transform.position);
+                    m_endingLine = CreateLine(dests[dests.Count - 1].Cible, transform.position, m_prefabLine);
                 }
             }
         }
     }
 
-    public void newSelected(bool s)
+    public void NewSelected()
     {
+        bool l0_s = m_personnageScript.Selected;
         // on affiche l'état selectionné
-        go_selec.SetActive(s);
+        m_goSelec.SetActive(l0_s);
         // si il est sélectionné
-        if (s)
+        if (l0_s)
         {
-            newTrajet();
+            newJourney();
         }
         else
         {
             eraseStaticPrefab();
-            eraseDynamicPrefab();
+            EraseDynamicPrefab();
         }
     }
     
-    public void newPerso(Personnage p)
+    public void NewPerso()
     {
         // Rien à faire
     }
@@ -133,28 +135,28 @@ public class GUINavigation : MonoBehaviour, PersonnageScript.IAbonnePerso {
     private void eraseStaticPrefab()
     {
         // les prefab "static"
-        foreach (GameObject i in instances)
+        foreach (GameObject i in m_instances)
         {
             Destroy(i);
         }
-        instances.Clear();
+        m_instances.Clear();
     }
 
-    private GameObject createLine(Vector3 start, Vector3 end)
+    private GameObject CreateLine(Vector3 p_start, Vector3 p_end, GameObject p_prefab)
     {
-        GameObject go = Instantiate(prefab_line, start, orientationNull) as GameObject;
+        GameObject go = Instantiate(p_prefab, p_start, c_orientationNull) as GameObject;
         LineRenderer lr = go.GetComponent<LineRenderer>();
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
+        lr.SetPosition(0, p_start);
+        lr.SetPosition(1, p_end);
 
         return go;
     }
 
-    private void eraseDynamicPrefab()
+    private void EraseDynamicPrefab()
     {
-        Destroy(startingLine);
-        startingLine = null;
-        Destroy(endingLine);
-        endingLine = null;
+        Destroy(m_startingLine);
+        m_startingLine = null;
+        Destroy(m_endingLine);
+        m_endingLine = null;
     }
 }

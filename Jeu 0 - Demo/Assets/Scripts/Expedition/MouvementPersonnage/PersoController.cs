@@ -14,17 +14,17 @@ public class PersoController : CI_caller {
 #endif
 
     [SerializeField]
-    private Trajet trajet;
+    private Journey m_journey;
 
-    public Trajet Trajet
+    public Journey Journey
     {
         get
         {
-            return trajet;
+            return m_journey;
         }
         set
         {
-            trajet = value;
+            m_journey = value;
             go();
         }
     }
@@ -34,62 +34,136 @@ public class PersoController : CI_caller {
 
     }
 
-    private static List<Trajet> createFormation(Trajet pivots, int nbPerso)
+    private static List<Journey> createDestinations(Journey p_pivots, int p_nbPerso)
     {
-        // on calcule le nombre d'unité par ligne
-        int nbPerRow = 2;
-        if (nbPerso > 6)
-            nbPerRow = 3;
-
-        // init du nombre de ligne
-        int nbRow = (nbPerso / nbPerRow) + 1;
         // init des destinations
-        List<Trajet> trajets = new List<Trajet>();
-        for (int i = 0; i < nbPerso; i++)
+        List<Journey> l0_journey = new List<Journey>();
+        for (int i = 0; i < p_nbPerso; i++)
         {
-            trajets.Add(new Trajet(Setting.Inst.MaxDestinationsPerTraject));
+            l0_journey.Add(new Journey());
         }
 
-        // calcul the destination(s)
-        float baseZ = ((nbRow - 1.0f) / 2.0f) * Setting.Inst.FormationIncr.y;
-        foreach (Destination pivot in pivots.Destinations) {
-            for (int i = 0; i < nbRow; i++)
+        // define radius
+        float l0_sRadius = Setting.Instance.FormationPadding.x * Mathf.Sqrt(p_nbPerso) / 2.0f;
+        float l0_gRadius = Setting.Instance.FormationPadding.y * Mathf.Sqrt(p_nbPerso) / 2.0f;
+
+        // compute the destination(s)
+        foreach (Destination l1_pivot in p_pivots.Destinations)
+        {
+            for (int i = 0; i < p_nbPerso; ++i)
             {
-                int _i = i * nbPerRow;
-                // the incrementation from the original position
-                float incrX = ((Mathf.Min(nbPerRow, nbPerso - _i) - 1.0f) / -2.0f) * Setting.Inst.FormationIncr.x;
-                float incrZ = baseZ - (i * Setting.Inst.FormationIncr.y);
-                // we calculate each row of the formation
-                for (int j = 0; (_i + j) < nbPerso && j < nbPerRow; j++)
-                {
-                    // on calcul la destination
-                    Vector3 _v = new Vector3(pivot.Cible.x + incrX + (j * Setting.Inst.FormationIncr.x), pivot.Cible.y, pivot.Cible.z + incrZ);
-                    // on la rotate si il faut
-                    if (!float.IsNaN(pivot.OrientationFinale))
-                        _v = RotatePointAroundPivot(_v, pivot.Cible, new Vector3(0, pivot.OrientationFinale));
-                    // on l'ajoute au trajet !
-                    trajets[_i + j].addDestination(new Destination(_v, pivot.OrientationFinale));
-                }
+                float l2_incrX = Random.Range(-l0_sRadius, l0_sRadius);
+                float l2_incrY = Random.Range(-l0_gRadius, l0_gRadius);
+                Vector2 l2_v = new Vector3(l1_pivot.Cible.x + l2_incrX, l1_pivot.Cible.y + l2_incrY);
+                l0_journey[i].addDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
             }
         }
 
-        return trajets;
+        return l0_journey;
+    }
+
+    private static List<Journey> createFormation(Journey p_pivots, int p_nbPerso)
+    {
+        // init du nombre de ligne
+        int l0_nbRow = numberOfRows(p_nbPerso);
+
+        // on calcule le nombre d'unité par ligne
+        int l0_nbPerRow = Mathf.CeilToInt(p_nbPerso / l0_nbRow);
+
+        // init des destinations
+        List<Journey> l0_journey = new List<Journey>();
+        for (int i = 0; i < p_nbPerso; i++)
+        {
+            l0_journey.Add(new Journey());
+        }
+
+        // récupérer le delta de chaque perso sur la formation
+        List<Vector2> l0_deltas;
+        getFormationDelta(p_nbPerso, l0_nbRow, l0_nbPerRow, out l0_deltas);
+
+
+        foreach (Destination l1_pivot in p_pivots.Destinations)
+        {
+            int i = 0;
+            foreach (Vector2 l2_delta in l0_deltas)
+            {
+                // compute aboslute destination
+                Vector2 l2_v = l1_pivot.Cible + l2_delta;
+                // rotation
+                if (!float.IsNaN(l1_pivot.OrientationFinale))
+                    l2_v = RotatePointAroundPivot(l2_v, l1_pivot.Cible, new Vector3(0, 0, l1_pivot.OrientationFinale));
+
+                // store
+                l0_journey[i].addDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
+
+                i++;
+            }
+        }
+
+        return l0_journey;
+    }
+
+    private static int numberOfRows(int p_count)
+    {
+        if (p_count <= 2)
+            return 1; // 1x1, 1x2
+        else if (p_count <= 8)
+            return 2; // 2x2, 2x2, 2x3, 2x3, 2x4, 2x4
+        else
+            return 3; // 3x3, 3x4, 3x4, 3x4, 3x5, 3x5, 3x5
+    }
+
+    private static void getFormationDelta(int p_nbPerso, int p_nbRows, int p_nbCols, out List<Vector2> o_deltas)
+    {
+        // init
+        o_deltas = new List<Vector2>();
+
+        // init base y for each lines
+        float l0_baseY = ((p_nbRows - 1.0f) / -2.0f);
+
+        int l0_remainingPerso = p_nbPerso;
+        for (int i = 0; i < p_nbRows; i++)
+        {
+            // actual number of cols for this line
+            int l1_nbCols = 0;
+            if (l0_remainingPerso > p_nbPerso)
+                l1_nbCols = p_nbCols;
+            else
+                l1_nbCols = l0_remainingPerso;
+
+            // the incrementation from the original position
+            float l1_incrX = ((l1_nbCols - 1.0f) / -2.0f) * Setting.Instance.FormationPadding.x;
+            float l1_incrY = l0_baseY - (i * Setting.Instance.FormationPadding.y);
+            // we calculate each row of the formation
+            for (int j = 0; j < l1_nbCols; j++)
+            {
+                // on calcul la destination
+                o_deltas.Add(new Vector2(l1_incrX + (j * Setting.Instance.FormationPadding.x), l1_incrY));
+            }
+
+            // update remaining perso
+            l0_remainingPerso -= p_nbPerso;
+        }
     }
 
     // function to calculate and send the destinations to all the selected personages
     private void go()
     {
         // on récupère les sélectionnés
-        List<int> selec = ExpeditionManager.Inst.Selected;
+        List<int> selec = ExpeditionManager.Instance.Selected;
 
         // on créé les destinations
-        List<Trajet> trajets = createFormation(trajet, selec.Count);
+        List<Journey> l0_journey;
+        if (ExpeditionManager.Instance.FormationSelected == -1)
+            l0_journey = createDestinations(m_journey, selec.Count);
+        else
+            l0_journey = createFormation(m_journey, selec.Count);
         
         // assign the destination
         for (int i = 0; i < selec.Count; i++)
         {
             PersonnageScript perso = ExpeditionManager.Persos[selec[i]].GetComponent<PersonnageScript>();
-            perso.setTrajet(trajets[i]);
+            perso.setJourney(l0_journey[i]);
         }
     }
 

@@ -4,23 +4,13 @@ using System.Collections.Generic;
 
 public class Movement : MonoBehaviour {
 
-    public interface IAbonneMovement {
-        void newTrajet(Trajet t);
-    }
-
     [SerializeField]
     private float rotatingDistance = 25;
-    [Header("Just watch, don't modify !")]
-    [SerializeField]
-    private float rotationValue;
-    [SerializeField]
-    private bool rotationRequired;
-    [SerializeField]
-    private Vector3 rStartClick;
-    [SerializeField]
-    private Vector3 rEndClick;
-    [SerializeField]
-    private bool rPressed = false;
+    [SerializeField, ReadOnly] private float rotationValue;
+    [SerializeField, ReadOnly] private bool rotationRequired;
+    [SerializeField, ReadOnly] private Vector3 rStartClick;
+    [SerializeField, ReadOnly] private Vector3 rEndClick;
+    [SerializeField, ReadOnly] private bool rPressed = false;
 
     public float RotationValue
     {
@@ -63,19 +53,14 @@ public class Movement : MonoBehaviour {
     }
 
     // the script this script have to send to the infos
-    private PersoController pc;
+    private PersoController m_PersoController;
 
-    private Trajet trajet;
-
-    void Awake()
-    {
-        abonnes = new List<IAbonneMovement>();
-    }
+    private Journey m_journey;
 
     void Start()
     {
-        pc = GetComponent<PersoController>();
-        trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
+        m_PersoController = GetComponent<PersoController>();
+        m_journey = new Journey();
     }
 
     void Update()
@@ -109,18 +94,20 @@ public class Movement : MonoBehaviour {
 
                 // get the new wanted destination ;)
                 Destination dest;
-                Vector3 cible = Camera.main.ScreenToWorldPoint(rStartClick);
-                cible.y = 0;
+
+                // retrieve the cible
+                Vector3 cible3 = Camera.main.ScreenToWorldPoint(rStartClick);
+                Vector2 cible2 = new Vector2(cible3.x, cible3.z);
 
                 // create the new destination
                 if (rotationRequired)
-                    dest = new Destination(cible, rotationValue);
+                    dest = new Destination(cible2, rotationValue);
                 else
-                    dest = new Destination(cible);
+                    dest = new Destination(cible2);
 
                 // add the new destination
-                trajet.addDestination(dest);
-                newTrajet();
+                m_journey.addDestination(dest);
+                gameObject.SendMessage("NewJourney", m_journey, SendMessageOptions.DontRequireReceiver);
 
                 // finished !
                 reinit();
@@ -128,10 +115,10 @@ public class Movement : MonoBehaviour {
         }
 
         // Is it the end ??
-        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift) && trajet.hasDestinations())
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift) && m_journey.hasDestinations())
         {
-            pc.Trajet = trajet;
-            resetTrajet();
+            m_PersoController.Journey = m_journey;
+            resetJourney();
 
             // finished !
             reinit();
@@ -143,7 +130,7 @@ public class Movement : MonoBehaviour {
     {
         if (ClickValidator.Inst == null || !ClickValidator.Inst.isOnBlackFoW(Camera.main.ScreenToWorldPoint(Input.mousePosition)))
         {
-            if (!Input.GetMouseButton(0) && !(trajet.WillLoop))
+            if (!Input.GetMouseButton(0) && !(m_journey.WillLoop))
             {
                 rStartClick = Input.mousePosition;
                 rPressed = true;
@@ -151,14 +138,13 @@ public class Movement : MonoBehaviour {
         }
     }
 
-    public void bouclerTrajet(Destination candidat)
+    public void LoopJourney(Destination p_candidat)
     {
-        trajet.addDestination(candidat);
-        if (trajet.WillLoop)
+        m_journey.addDestination(p_candidat);
+        if (m_journey.WillLoop)
         {
-            Debug.Log("(la bite à cricri == victoire) = vérité générale");
-            pc.Trajet = trajet;
-            resetTrajet();
+            m_PersoController.Journey = m_journey;
+            resetJourney();
 
             // finished !
             reinit();
@@ -167,7 +153,7 @@ public class Movement : MonoBehaviour {
 
     public bool canLoopOn(Destination d)
     {
-        return trajet.Destinations.IndexOf(d) < trajet.Destinations.Count - 1;
+        return m_journey.Destinations.IndexOf(d) < m_journey.Destinations.Count - 1;
     }
 
     // Some private function
@@ -180,32 +166,15 @@ public class Movement : MonoBehaviour {
         rotationRequired = false;
     }
 
-    private void resetTrajet()
+    private void resetJourney()
     {
-        trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
-        newTrajet();
+        m_journey = new Journey();
+        gameObject.SendMessage("NewJourney", m_journey, SendMessageOptions.DontRequireReceiver);
     }
 
     private float angleBetweenVectorNAxis(Vector3 pivot, Vector3 point)
     {
         Vector2 diff = point - pivot;
         return Vector2.Angle(Vector2.up, diff) * ((point.x < pivot.x)?-1:+1);
-    }
-
-    // abonnement
-
-    private List<IAbonneMovement> abonnes;
-    
-    public void abonnement(IAbonneMovement abonne)
-    {
-        abonnes.Add(abonne);
-    }
-
-    private void newTrajet()
-    {
-        foreach(IAbonneMovement abonne in abonnes)
-        {
-            abonne.newTrajet(trajet);
-        }
     }
 }
