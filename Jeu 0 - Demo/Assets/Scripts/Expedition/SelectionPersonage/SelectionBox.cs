@@ -41,7 +41,7 @@ public class SelectionBox : MonoBehaviour {
         {
             if (Input.GetMouseButtonUp(0))
             {
-                ExpeditionManager.Inst.applyNewSelection();
+                ExpeditionManager.Instance.applyNewSelection();
 
                 // Reset
                 pressed = false;
@@ -78,9 +78,9 @@ public class SelectionBox : MonoBehaviour {
 
                     // si c'est bon, c'est bon !
                     if (xCheck && zCheck)
-                        ExpeditionManager.Inst.addToNewSelection(i);
+                        ExpeditionManager.Instance.addToNewSelection(i);
                     else
-                        ExpeditionManager.Inst.removeToNewSelection(i);
+                        ExpeditionManager.Instance.removeToNewSelection(i);
                 }
             }
         }
