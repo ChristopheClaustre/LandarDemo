@@ -5,11 +5,11 @@ using System.Collections;
 public class Destination {
 
     [SerializeField]
-    private Vector3 cible;
+    private Vector2 cible;
     [SerializeField]
     private float orientationFinale;
 
-    public Vector3 Cible
+    public Vector2 Cible
     {
         get
         {
@@ -35,14 +35,14 @@ public class Destination {
     /* constructeur */
 
     // const avec orientation demande
-    public Destination(Vector3 _c, float _o)
+    public Destination(Vector2 _c, float _o)
     {
         orientationFinale = (float.IsNaN(_o))? _o : MyMathf.posModulo(_o, 360);
         cible = _c;
     }
 
     // const sans orientation demande
-    public Destination(Vector3 _c)
+    public Destination(Vector2 _c)
     {
         orientationFinale = float.NaN;
         cible = _c;

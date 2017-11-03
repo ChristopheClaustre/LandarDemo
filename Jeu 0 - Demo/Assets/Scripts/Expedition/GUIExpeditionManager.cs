@@ -7,7 +7,7 @@ public class GUIExpeditionManager : MonoBehaviour, ExpeditionManager.IAbonneEM {
 
 	// Use this for initialization
 	void Start () {
-        em = ExpeditionManager.Inst;
+        em = ExpeditionManager.Instance;
         em.abonnement(this);
 	}
 

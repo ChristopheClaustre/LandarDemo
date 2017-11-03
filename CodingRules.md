@@ -1,12 +1,10 @@
 # CODING RULES
 
 ## A- Empty directory
-***
 
 Empty directory must be filled with an empty file named `no_media`. To make git able to version the empty directory.
 
 ## B- Commit messages
-***
 
 Every commit message must follow this naming’s pattern : 
 ```[PRE] Here is a new commit```
@@ -24,12 +22,14 @@ QA | coding rules fixes, quality of code or optimisations
 OTH | other commit
 
 ## C- Script
-***
 
 All the script should be writed in `C#`.
-Scripts should follow this template : [this file](./template.cs).
 
-Note: You can use this template as the default ```.cs``` template in Unity (see [here](http://answers.unity3d.com/questions/120957/change-the-default-script-template.html))
+Scripts should follow the template you can found here :
+```./ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt```
+
+Note: You can use this template as the default ```.cs``` template in Unity by replacing the file located in :
+```%UNITY_INSTALL_DIR%/Editor/Data/Resources/ScriptTemplates/81-C# Script-NewBehaviourScript.cs.txt```
 
 ### 1. Script naming
 
@@ -51,13 +51,13 @@ Prefixes | Meaning
 -------- | --------
 c | constant or static readonly variable
 g | global variable
-l | local variable
 m | member variable
 p | method's or function's parameter
 s | static member variable
 
-There is two exceptions :
-* the C#'s property that should follow this pattern : `ClearAndUniqueCamelCasedName`
+There is three exceptions :
+* local variable
+* the C#'s property that should follow this pattern : `ClearAndUniquePascalCasedName`
 * iteration variable that should be named by only one letter :
   * coordinate : x, y, z, w, u, v
   * array : i, j, k, l
@@ -131,13 +131,13 @@ for (int i = 0; condition; ++i)
 }
 
 /* method */
-public void clearAndUniqueCamelCasedName(int p_parameter1, float p_parameter2, ...)
+public void ClearAndUniquePascalCasedName(int p_parameter1, float p_parameter2, ...)
 {
 	// stuff here
 }
 
 /* foreach */
-for (Type l_element in p_list)
+for (Type element in p_list)
 {
 	// stuff here
 }

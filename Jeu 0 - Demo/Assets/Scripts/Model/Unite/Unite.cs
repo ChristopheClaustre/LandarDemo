@@ -13,75 +13,75 @@ public abstract class Unite {
         FUITE
     }
 
-    private int vie = 0;
-    private int vieTemporaire = 0;
-    private Unite cible = null;
-    private Vector3 position = Vector3.one;
-    private Description desc = null;
-    private EnumIAState etatIA = EnumIAState.ETDRF;
+    private int m_vie = 0;
+    private int m_vieTemporaire = 0;
+    private Unite m_cible = null;
+    private Vector3 m_position = Vector3.one;
+    private Description m_description = null;
+    private EnumIAState m_etatIA = EnumIAState.ETDRF;
     [SerializeField]
-    private Trajet trajet = new Trajet(Setting.Inst.MaxDestinationsPerTraject);
-    private CaracUnite carac = null;
-    private float luminosite = 0.0f;
+    private Journey m_journey = new Journey();
+    private CaracteristicUnite m_caracteristic = null;
+    private float m_luminosite = 0.0f;
 
     public int Vie
     {
         get
         {
-            return vie;
+            return m_vie;
         }
     }
     public int VieTemporaire
     {
         get
         {
-            return vieTemporaire;
+            return m_vieTemporaire;
         }
     }
     public Unite Cible
     {
         get
         {
-            return cible;
+            return m_cible;
         }
     }
     public Vector3 Position
     {
         get
         {
-            return position;
+            return m_position;
         }
     }
     public Description Desc
     {
         get
         {
-            return desc;
+            return m_description;
         }
     }
     public EnumIAState EtatIA
     {
         get
         {
-            return etatIA;
+            return m_etatIA;
         }
     }
-    public Trajet Trajet
+    public Journey Journey
     {
         get
         {
-            return trajet;
+            return m_journey;
         }
         set
         {
-            trajet = value;
+            m_journey = value;
         }
     }
-    public CaracUnite Carac
+    public CaracteristicUnite Carac
     {
         get
         {
-            return carac;
+            return m_caracteristic;
         }
     }
 
@@ -89,11 +89,11 @@ public abstract class Unite {
     {
         get
         {
-            return luminosite;
+            return m_luminosite;
         }
         set
         {
-            luminosite = value;
+            m_luminosite = value;
         }
     }
 

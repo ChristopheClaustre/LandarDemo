@@ -2,13 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UniteScript : MonoBehaviour {
-
-    public interface IAbonneUnite
-    {
-        void newTrajet();
-    }
-
+public abstract class UniteScript :
+    MonoBehaviour
+{
     // les variables de model
     [SerializeField]
     protected Unite unite;
@@ -26,58 +22,56 @@ public abstract class UniteScript : MonoBehaviour {
         }
     }
     
-    protected abstract Trajet Trajet
+    protected abstract Journey Journey
     {
         get;
         set;
     }
 
-    // Abonnement
-
-    protected abstract void newTrajet();
-
     // gestion des trajets
 
-    public void Trajet_nextDestination()
+    public void Journey_nextDestination()
     {
-        Trajet t = Trajet;
+        Journey t = Journey;
         t.nextDestination();
-        Trajet = t;
+        Journey = t;
+
         // appel à la fonction qui prévient du changement
-        newTrajet();
+        gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
     }
     
-    public Destination Trajet_currentDestination()
+    public Destination Journey_currentDestination()
     {
-        return Trajet.currentDestination();
+        return Journey.currentDestination();
     }
 
-    public IList<Destination> Trajet_Destinations()
+    public IList<Destination> Journey_Destinations()
     {
-        return Trajet.Destinations;
+        return Journey.Destinations;
     }
 
-    public bool Trajet_hasDestinations()
+    public bool Journey_hasDestinations()
     {
-        return Trajet.hasDestinations();
+        return Journey.hasDestinations();
     }
 
-    public bool Trajet_WillLoop()
+    public bool Journey_WillLoop()
     {
-        return Trajet.WillLoop;
+        return Journey.WillLoop;
     }
 
-    public bool Trajet_Boucler()
+    public bool Journey_Boucler()
     {
-        return Trajet.Boucler;
+        return Journey.Loop;
     }
 
-    public void setTrajet(Trajet t)
+    public void setJourney(Journey t)
     {
-        if (!Trajet.Equals(t))
+        if (!Journey.Equals(t))
         {
-            Trajet = t;
-            newTrajet();
+            Journey = t;
+
+            gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
         }
     }
 }

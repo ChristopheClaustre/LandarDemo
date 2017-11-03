@@ -2,14 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PersonnageScript : UniteScript {
-
-    public interface IAbonnePerso : IAbonneUnite
-    {
-        void newSelected(bool s);
-        void newPerso(Personnage p);
-    }
-
+public class PersonnageScript :
+    UniteScript
+{
     new Personnage unite;
 
     public virtual Personnage Perso
@@ -23,25 +18,25 @@ public class PersonnageScript : UniteScript {
             if (!unite.Equals(value))
             {
                 unite = value;
-                newTrajet();
-                newPerso();
+                gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
+                gameObject.SendMessage("NewPerso", null, SendMessageOptions.DontRequireReceiver);
             }
         }
     }
 
-    protected override Trajet Trajet
+    protected override Journey Journey
     {
         get
         {
-            return Perso.Trajet;
+            return Perso.Journey;
         }
         set
         {
-            if (!Perso.Trajet.Equals(value))
+            if (!Perso.Journey.Equals(value))
             {
-                Perso.Trajet = value;
-                newTrajet();
-                newPerso();
+                Perso.Journey = value;
+                gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
+                gameObject.SendMessage("NewPerso", null, SendMessageOptions.DontRequireReceiver);
             }
         }
     }
@@ -60,7 +55,7 @@ public class PersonnageScript : UniteScript {
             if (selected != value)
             {
                 selected = value;
-                newSelected(selected);
+                gameObject.SendMessage("NewSelected", null, SendMessageOptions.DontRequireReceiver);
             }
         }
     }
@@ -68,49 +63,5 @@ public class PersonnageScript : UniteScript {
     void Start()
     {
         unite = new Personnage();
-    }
-
-    // Abonement
-
-    private List<IAbonnePerso> abonnes;
-
-    void Awake()
-    {
-        abonnes = new List<IAbonnePerso>();
-    }
-
-    public void abonnement(IAbonnePerso abonne)
-    {
-        abonnes.Add(abonne);
-    }
-
-    protected override void newTrajet()
-    {
-        // changement sur le perso en général donc
-        newPerso();
-        // je prévient les abonnés
-        foreach (IAbonnePerso a in abonnes)
-        {
-            a.newTrajet();
-        }
-    }
-
-    protected void newPerso()
-    {
-        foreach (IAbonnePerso a in abonnes)
-        {
-            a.newPerso(unite);
-        }
-    }
-
-    private void newSelected(bool s)
-    {
-        // changement sur le perso en général donc
-        newPerso();
-        // je prévient les abonnés
-        foreach(IAbonnePerso a in abonnes)
-        {
-            a.newSelected(s);
-        }
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c18cb906116d058409d7409440909686
+timeCreated: 1506986856
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_prefabPosition: {fileID: 1000013811803350, guid: 21e01de8e8b47464a899103c8066141f,
+      type: 2}
+  - m_prefabLine: {fileID: 1000014162334246, guid: 6c0f16e8a59dbc845962c3cad804ef1b,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

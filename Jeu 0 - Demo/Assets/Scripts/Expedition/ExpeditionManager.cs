@@ -11,7 +11,7 @@ public class ExpeditionManager : MonoBehaviour {
 
     // Singleton management about an ExpeditionManager instance
     private static ExpeditionManager instance;
-    public static ExpeditionManager Inst
+    public static ExpeditionManager Instance
     {
         get
         {
@@ -67,7 +67,7 @@ public class ExpeditionManager : MonoBehaviour {
             if (selecting)
             {
                 List<int> selec = new List<int>();
-                
+
                 // complétion de sélection
                 if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
                 {
@@ -88,7 +88,9 @@ public class ExpeditionManager : MonoBehaviour {
                 return selec;
             }
             else
+            {
                 return selected;
+            }
         }
     }
 

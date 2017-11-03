@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - model_ennemy
+  - dora_the_explorer
   layers:
   - Default
   - TransparentFX

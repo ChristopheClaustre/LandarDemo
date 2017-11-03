@@ -2,7 +2,7 @@
 using System.Collections;
 
 [System.Serializable]
-public class CaracUnite {
+public class CaracteristicUnite {
 
     public enum EnumMalus
     {
@@ -68,7 +68,7 @@ public class CaracUnite {
         }
     }
 
-    public CaracUnite(int vieMax, int agilite, int force, int vision, int precision, EnumMalus malus)
+    public CaracteristicUnite(int vieMax, int agilite, int force, int vision, int precision, EnumMalus malus)
     {
         this.vieMax = vieMax;
         this.agilite = agilite;
