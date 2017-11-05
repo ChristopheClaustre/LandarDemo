@@ -14,12 +14,6 @@ public abstract class UniteScript :
 
     void Update()
     {
-        if (lampes.Count > 0)
-        {
-            float lum = Lsg.calculLight(lampes);
-            //unite.Luminosite = lum;
-            Debug.Log(lum);
-        }
     }
     
     protected abstract Journey Journey
