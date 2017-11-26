@@ -1,42 +1,100 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
 public abstract class UniteScript :
     MonoBehaviour
 {
-    // les variables de model
-    [SerializeField]
-    protected Unite unite;
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
 
-    public List<Light> lampes;
-    public LightStateGenerator Lsg;
+    /********  PUBLIC           ************************/
 
-    void Update()
-    {
-    }
-    
+    /********  PROTECTED        ************************/
+
     protected abstract Journey Journey
     {
         get;
         set;
     }
 
+    public List<Light> Lampes
+    {
+        get { return m_lampes; }
+        set { m_lampes = value; }
+    }
+
+    public LightStateGenerator Lsg
+    {
+        get { return m_lsg; }
+        set { m_lsg = value; }
+    }
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    /********  PROTECTED        ************************/
+
+    // les variables de model
+    [SerializeField] protected Unite m_unite;
+
+    /********  PRIVATE          ************************/
+
+    private List<Light> m_lampes;
+    private LightStateGenerator m_lsg;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
+    private void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        
+    }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
     // gestion des trajets
 
     public void Journey_nextDestination()
     {
         Journey t = Journey;
-        t.nextDestination();
+        t.NextDestination();
         Journey = t;
 
         // appel à la fonction qui prévient du changement
         gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
     }
-    
+
     public Destination Journey_currentDestination()
     {
-        return Journey.currentDestination();
+        return Journey.CurrentDestination();
     }
 
     public IList<Destination> Journey_Destinations()
@@ -46,7 +104,7 @@ public abstract class UniteScript :
 
     public bool Journey_hasDestinations()
     {
-        return Journey.hasDestinations();
+        return Journey.HasDestinations();
     }
 
     public bool Journey_WillLoop()
@@ -59,13 +117,20 @@ public abstract class UniteScript :
         return Journey.Loop;
     }
 
-    public void setJourney(Journey t)
+    public void SetJourney(Journey p_journey)
     {
-        if (!Journey.Equals(t))
+        if (!Journey.Equals(p_journey))
         {
-            Journey = t;
+            Journey = p_journey;
 
             gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
         }
     }
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }
+

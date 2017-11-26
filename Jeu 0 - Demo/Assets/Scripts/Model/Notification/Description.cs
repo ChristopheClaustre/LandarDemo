@@ -1,31 +1,64 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
 
-public class Description {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+[System.Serializable]
+public class Description
+{
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
 
-    private string nom;
-    private string resume;
+    /********  PUBLIC           ************************/
 
     public string Nom
     {
-        get
-        {
-            return nom;
-        }
+        get { return m_nom; }
     }
     public string Resume
     {
-        get
-        {
-            return resume;
-        }
+        get { return m_resume; }
     }
 
+    /********  PROTECTED        ************************/
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private string m_nom;
+    private string m_resume;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
     // const
-    public Description(string _n, string _r)
+    public Description(string p_nom, string p_resume)
     {
-        nom = _n;
-        resume = _r;
+        m_nom = p_nom;
+        m_resume = p_resume;
     }
-    
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

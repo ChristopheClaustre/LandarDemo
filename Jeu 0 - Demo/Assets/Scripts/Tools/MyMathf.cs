@@ -1,9 +1,20 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
 
-public class MyMathf : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class MyMathf
+{
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
 
-	public static float posModulo(float f, float m)
+    /********  PUBLIC           ************************/
+
+    public static float PosModulo(float f, float m)
     {
         f = f % m;
         if (f < 0)
@@ -11,11 +22,17 @@ public class MyMathf : MonoBehaviour {
         return f;
     }
 
-    public static int posModulo(int i, int m)
+    public static int PosModulo(int i, int m)
     {
         i = i % m;
         if (i < 0)
             i += m;
         return i;
     }
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

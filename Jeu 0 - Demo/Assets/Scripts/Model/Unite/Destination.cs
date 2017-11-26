@@ -1,50 +1,73 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
 [System.Serializable]
-public class Destination {
+public class Destination
+{
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
 
-    [SerializeField]
-    private Vector2 cible;
-    [SerializeField]
-    private float orientationFinale;
+    /********  PUBLIC           ************************/
 
     public Vector2 Cible
     {
-        get
-        {
-            return cible;
-        }
-        set
-        {
-            cible = value;
-        }
+        get { return m_cible; }
+        set { m_cible = value; }
     }
     public float OrientationFinale
     {
         get
         {
-            return orientationFinale;
+            return m_orientationFinale;
         }
         set
         {
-            orientationFinale = MyMathf.posModulo(value, 360);
+            m_orientationFinale = MyMathf.PosModulo(value, 360);
         }
     }
 
-    /* constructeur */
+    /********  PROTECTED        ************************/
 
-    // const avec orientation demande
-    public Destination(Vector2 _c, float _o)
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private Vector2 m_cible;
+    private float m_orientationFinale;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
+    // constructeur
+    public Destination(Vector2 _c, float _o = float.NaN)
     {
-        orientationFinale = (float.IsNaN(_o))? _o : MyMathf.posModulo(_o, 360);
-        cible = _c;
+        m_orientationFinale = (float.IsNaN(_o)) ? _o : MyMathf.PosModulo(_o, 360);
+        m_cible = _c;
     }
 
-    // const sans orientation demande
-    public Destination(Vector2 _c)
-    {
-        orientationFinale = float.NaN;
-        cible = _c;
-    }
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

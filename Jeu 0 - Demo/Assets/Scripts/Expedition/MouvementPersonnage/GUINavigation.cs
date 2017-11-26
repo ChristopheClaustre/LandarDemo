@@ -1,46 +1,83 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
 public class GUINavigation :
     MonoBehaviour
 {
-    [SerializeField, ReadOnly]
-    private GameObject m_prefabPosition;
-    [SerializeField, ReadOnly]
-    private GameObject m_prefabLine;
+    #region Constants
+    /***************************************************/
+    /***  CONSTANTS             ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    // pour faciliter la lecture
+    private readonly static Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private GameObject m_prefabPosition;
+    [SerializeField] private GameObject m_prefabLine;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
 
     private List<GameObject> m_instances;
-    
+
     private PersonnageScript m_personnageScript;
     private GameObject m_goSelec;
     private GameObject m_startingLine = null;
     private GameObject m_endingLine = null;
     private bool m_show = false;
 
-    // pour faciliter la lecture
-    private readonly static Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_personnageScript = GetComponent<PersonnageScript>();
         //m_personnageScript.abonnement(this);
         m_goSelec = this.transform.Find("selector").gameObject;
         m_instances = new List<GameObject>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         // gestion input
         if (Input.GetKeyDown(KeyCode.T))
         {
             m_show = true;
-            newJourney();
+            NewJourney();
         }
         if (Input.GetKeyUp(KeyCode.T))
         {
             m_show = false;
-            eraseStaticPrefab();
+            EraseStaticPrefab();
             EraseDynamicPrefab();
         }
         // affichage de la première ligne
@@ -50,20 +87,20 @@ public class GUINavigation :
             m_startingLine = CreateLine(m_personnageScript.Journey_currentDestination().Cible, transform.position, m_prefabLine);
             if (m_personnageScript.Journey_Boucler())
             {
-                IList <Destination> dests = m_personnageScript.Journey_Destinations();
+                IList<Destination> dests = m_personnageScript.Journey_Destinations();
                 m_endingLine = CreateLine(dests[dests.Count - 1].Cible, transform.position, m_prefabLine);
             }
         }
     }
 
-    // abonnement
+    /********  OUR MESSAGES     ************************/
 
-    public void newJourney()
+    public void NewJourney()
     {
         if (m_personnageScript.Selected & m_show)
         {
             // d'abord on supprime tout
-            eraseStaticPrefab();
+            EraseStaticPrefab();
             EraseDynamicPrefab();
 
             if (m_personnageScript.Journey_hasDestinations())
@@ -110,29 +147,33 @@ public class GUINavigation :
 
     public void NewSelected()
     {
-        bool l0_s = m_personnageScript.Selected;
+        bool isSelected = m_personnageScript.Selected;
         // on affiche l'état selectionné
-        m_goSelec.SetActive(l0_s);
+        m_goSelec.SetActive(isSelected);
         // si il est sélectionné
-        if (l0_s)
+        if (isSelected)
         {
-            newJourney();
+            NewJourney();
         }
         else
         {
-            eraseStaticPrefab();
+            EraseStaticPrefab();
             EraseDynamicPrefab();
         }
     }
-    
+
     public void NewPerso()
     {
         // Rien à faire
     }
 
-    // some private function
+    /********  PUBLIC           ************************/
 
-    private void eraseStaticPrefab()
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private void EraseStaticPrefab()
     {
         // les prefab "static"
         foreach (GameObject i in m_instances)
@@ -145,9 +186,9 @@ public class GUINavigation :
     private GameObject CreateLine(Vector3 p_start, Vector3 p_end, GameObject p_prefab)
     {
         GameObject go = Instantiate(p_prefab, p_start, c_orientationNull) as GameObject;
-        LineRenderer lr = go.GetComponent<LineRenderer>();
-        lr.SetPosition(0, p_start);
-        lr.SetPosition(1, p_end);
+        LineRenderer lineRenderer = go.GetComponent<LineRenderer>();
+        lineRenderer.SetPosition(0, p_start);
+        lineRenderer.SetPosition(1, p_end);
 
         return go;
     }
@@ -159,4 +200,6 @@ public class GUINavigation :
         Destroy(m_endingLine);
         m_endingLine = null;
     }
+
+    #endregion
 }

@@ -1,29 +1,56 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 
-public class ClickDetector : MonoBehaviour
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class ClickDetector :
+    MonoBehaviour
 {
-    public bool HandleRightClick = true;
-    public bool HandleMiddleClick = false;
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
 
-    public string OnRightClickMethodName = "OnRightUpAsButton";
-    public string OnRightDownMethodName = "OnRightDown";
-    public string OnRightUpMethodName = "OnRightUp";
-    public string OnMiddleClickMethodName = "OnMiddleUpAsButton";
-    public string OnMiddleDownMethodName = "OnMiddleDown";
-    public string OnMiddleUpMethodName = "OnMiddleUp";
+    /********  INSPECTOR        ************************/
 
-    public LayerMask layerMask;
+    [SerializeField] private bool m_handleRightClick = true;
+    [SerializeField] private bool m_handleMiddleClick = false;
 
-    private GameObject rClicked;
-    private GameObject mClicked;
-    
+    [SerializeField] private string m_onRightClickMethodName  = "OnRightUpAsButton";
+    [SerializeField] private string m_onRightDownMethodName   = "OnRightDown";
+    [SerializeField] private string m_onRightUpMethodName     = "OnRightUp";
+    [SerializeField] private string m_onMiddleClickMethodName = "OnMiddleUpAsButton";
+    [SerializeField] private string m_onMiddleDownMethodName  = "OnMiddleDown";
+    [SerializeField] private string m_onMiddleUpMethodName    = "OnMiddleUp";
+
+    public LayerMask m_layerMask;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private GameObject m_rightClickedGO;
+    private GameObject m_middleClickedGO;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Update is called once per frame
     void Update()
     {
         GameObject clickedGmObj = null;
         bool clickedGmObjAcquired = false;
         // Right down
-        if (HandleRightClick && Input.GetMouseButtonDown(1))
+        if (m_handleRightClick && Input.GetMouseButtonDown(1))
         {
             if (!clickedGmObjAcquired)
             {
@@ -32,12 +59,12 @@ public class ClickDetector : MonoBehaviour
             }
             if (clickedGmObj != null)
             {
-                clickedGmObj.SendMessage(OnRightDownMethodName, null, SendMessageOptions.DontRequireReceiver);
-                rClicked = clickedGmObj;
+                clickedGmObj.SendMessage(m_onRightDownMethodName, null, SendMessageOptions.DontRequireReceiver);
+                m_rightClickedGO = clickedGmObj;
             }
         }
         // Middle down
-        if (HandleMiddleClick && Input.GetMouseButtonDown(2))
+        if (m_handleMiddleClick && Input.GetMouseButtonDown(2))
         {
             if (!clickedGmObjAcquired)
             {
@@ -46,12 +73,12 @@ public class ClickDetector : MonoBehaviour
             }
             if (clickedGmObj != null)
             {
-                clickedGmObj.SendMessage(OnMiddleDownMethodName, null, SendMessageOptions.DontRequireReceiver);
-                mClicked = clickedGmObj;
+                clickedGmObj.SendMessage(m_onMiddleDownMethodName, null, SendMessageOptions.DontRequireReceiver);
+                m_middleClickedGO = clickedGmObj;
             }
         }
         // Right up and up as button
-        if (HandleRightClick && Input.GetMouseButtonUp(1))
+        if (m_handleRightClick && Input.GetMouseButtonUp(1))
         {
             if (!clickedGmObjAcquired)
             {
@@ -60,15 +87,15 @@ public class ClickDetector : MonoBehaviour
             }
             if (clickedGmObj != null)
             {
-                clickedGmObj.SendMessage(OnRightUpMethodName, null, SendMessageOptions.DontRequireReceiver);
-                if (clickedGmObj == rClicked)
+                clickedGmObj.SendMessage(m_onRightUpMethodName, null, SendMessageOptions.DontRequireReceiver);
+                if (clickedGmObj == m_rightClickedGO)
                 {
-                    clickedGmObj.SendMessage(OnRightClickMethodName, null, SendMessageOptions.DontRequireReceiver);
+                    clickedGmObj.SendMessage(m_onRightClickMethodName, null, SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
         // Middle up and up as button
-        if (HandleMiddleClick && Input.GetMouseButtonUp(2))
+        if (m_handleMiddleClick && Input.GetMouseButtonUp(2))
         {
             if (!clickedGmObjAcquired)
             {
@@ -77,14 +104,22 @@ public class ClickDetector : MonoBehaviour
             }
             if (clickedGmObj != null)
             {
-                clickedGmObj.SendMessage(OnMiddleUpMethodName, null, SendMessageOptions.DontRequireReceiver);
-                if (clickedGmObj == mClicked)
+                clickedGmObj.SendMessage(m_onMiddleUpMethodName, null, SendMessageOptions.DontRequireReceiver);
+                if (clickedGmObj == m_middleClickedGO)
                 {
-                    clickedGmObj.SendMessage(OnMiddleClickMethodName, null, SendMessageOptions.DontRequireReceiver);
+                    clickedGmObj.SendMessage(m_onMiddleClickMethodName, null, SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
     }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
 
     private GameObject GetClickedGameObject()
     {
@@ -92,9 +127,11 @@ public class ClickDetector : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         // Casts the ray and get the first game object hit
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, m_layerMask))
             return hit.transform.gameObject;
         else
             return null;
     }
+
+    #endregion
 }

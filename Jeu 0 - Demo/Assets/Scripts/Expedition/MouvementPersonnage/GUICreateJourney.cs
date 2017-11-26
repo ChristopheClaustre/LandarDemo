@@ -12,9 +12,9 @@ using System.Collections.Generic;
 public class GUICreateJourney :
     MonoBehaviour
 {
-    #region Unity GUI property
+    #region Constants
     /***************************************************/
-    /***  UNITY GUI PROPERTY    ************************/
+    /***  CONSTANTS             ************************/
     /***************************************************/
 
     /********  PUBLIC           ************************/
@@ -23,17 +23,8 @@ public class GUICreateJourney :
 
     /********  PRIVATE          ************************/
 
-    [SerializeField, ReadOnly]
-    private GameObject m_prefabPosition;
-    [SerializeField, ReadOnly]
-    private GameObject m_prefabLine;
-
-    #endregion
-    #region Assessor
-    /***************************************************/
-    /***  ASSESSOR              ************************/
-    /***************************************************/
-
+    // pour faciliter la lecture
+    private static readonly Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
 
     #endregion
     #region Attributes
@@ -41,7 +32,10 @@ public class GUICreateJourney :
     /***  ATTRIBUTES            ************************/
     /***************************************************/
 
-    /********  PUBLIC           ************************/
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private GameObject m_prefabPosition;
+    [SerializeField] private GameObject m_prefabLine;
 
     /********  PROTECTED        ************************/
 
@@ -50,9 +44,6 @@ public class GUICreateJourney :
     private List<GameObject> m_instances;
     
     private Journey m_journey;
-
-    // pour faciliter la lecture
-    private static readonly Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
 
     #endregion
     #region Methods
@@ -84,7 +75,7 @@ public class GUICreateJourney :
         // d'abord on supprime tout
         EraseStaticPrefab();
 
-        if (m_journey.hasDestinations())
+        if (m_journey.HasDestinations())
         {
             // on récupére les destinations
             IList<Destination> l1_dests = m_journey.Destinations;

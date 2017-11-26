@@ -10,34 +10,9 @@ using System.Collections;
 public class Setting :
     MonoBehaviour
 {
-    #region Unity GUI property
+    #region Property
     /***************************************************/
-    /***  UNITY GUI PROPERTY    ************************/
-    /***************************************************/
-
-    /* gestion des settings du curseur */
-    [Header("Curseur")]
-    [SerializeField] private Texture2D m_cursorTex;
-    [SerializeField] private Vector2 m_hotspot;
-
-    /* gestion des settings de déplacement de la cam */
-    [Header("Déplacements de la caméra")]
-    [SerializeField] private float m_mouseMarginInPercent = 0.015f;
-    [SerializeField] private float m_cameraVelocity = 5;
-    [SerializeField] private float m_zoomVelocity = 2;
-    [SerializeField] private float m_minimalZoom = 1;
-
-//    private Transform mapTransform;
-
-    /* increment de formation */
-    [Header("Formation de personage")]
-    [SerializeField] private Vector2 m_formationPadding = new Vector2(0.75f, 0.75f);
-    [SerializeField] private int m_maxDestinationsPerTraject = 15;
-
-    #endregion
-    #region Assessor
-    /***************************************************/
-    /***  ASSESSOR              ************************/
+    /***  PROPERTY              ************************/
     /***************************************************/
 
     /* gestion des settings du curseur */
@@ -69,7 +44,26 @@ public class Setting :
     /***  ATTRIBUTES            ************************/
     /***************************************************/
 
-    /********  PUBLIC           ************************/
+    /********  INSPECTOR        ************************/
+
+    /* gestion des settings du curseur */
+    [Header("Curseur")]
+    [SerializeField] private Texture2D m_cursorTex;
+    [SerializeField] private Vector2 m_hotspot;
+
+    /* gestion des settings de déplacement de la cam */
+    [Header("Déplacements de la caméra")]
+    [SerializeField] private float m_mouseMarginInPercent = 0.015f;
+    [SerializeField] private float m_cameraVelocity = 5;
+    [SerializeField] private float m_zoomVelocity = 2;
+    [SerializeField] private float m_minimalZoom = 1;
+
+//    private Transform mapTransform;
+
+    /* increment de formation */
+    [Header("Formation de personage")]
+    [SerializeField] private Vector2 m_formationPadding = new Vector2(0.75f, 0.75f);
+    [SerializeField] private int m_maxDestinationsPerTraject = 15;
 
     /********  PROTECTED        ************************/
 

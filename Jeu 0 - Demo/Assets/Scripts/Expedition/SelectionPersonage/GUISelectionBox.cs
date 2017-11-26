@@ -1,7 +1,24 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
-public class GUISelectionBox : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class GUISelectionBox :
+    MonoBehaviour
+{
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
 
     // Draggable inspector reference to the Image GameObject's RectTransform.
     private RectTransform selectionBox;
@@ -10,13 +27,23 @@ public class GUISelectionBox : MonoBehaviour {
 
     private bool working = false;
 
-    void Start ()
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
+    private void Start()
     {
         selectionBox = (RectTransform)GameObject.Find("selectionBox").transform;
         box = GetComponent<SelectionBox>();
     }
 
-    void Update ()
+    // Update is called once per frame
+    private void Update()
     {
         if (box.LeftPressed)
         {
@@ -108,5 +135,14 @@ public class GUISelectionBox : MonoBehaviour {
         // the user pressed on this go
         pressed = true;
     }*/
-}
 
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
+}

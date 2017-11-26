@@ -1,60 +1,98 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
-public class SelectionBox : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class SelectionBox :
+    MonoBehaviour
+{
+    #region Sub-classes/enum
+    /***************************************************/
+    /***  SUB-CLASSES/ENUM      ************************/
+    /***************************************************/
 
-    [SerializeField]
-    private bool pressed = false;
-    private Vector3 begin;
-    private Vector3 worldBegin;
-    private Vector3 end;
-    private Vector3 worldEnd;
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
 
     public bool LeftPressed
     {
-        get
-        {
-            return pressed;
-        }
+        get { return m_pressed; }
     }
 
     public Vector3 LeftStartClick
     {
-        get
-        {
-            return begin;
-        }
+        get { return m_begin; }
     }
 
     public Vector3 LeftEndClick
     {
-        get
-        {
-            return end;
-        }
+        get { return m_end; }
     }
 
-	// Update is called once per frame
-	void Update () {
-        if (pressed)
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private bool m_pressed = false;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private Vector3 m_begin;
+    private Vector3 m_worldBegin;
+    private Vector3 m_end;
+    private Vector3 m_worldEnd;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (m_pressed)
         {
             if (Input.GetMouseButtonUp(0))
             {
                 ExpeditionManager.Instance.applyNewSelection();
 
                 // Reset
-                pressed = false;
-                begin = Vector3.zero;
-                end = Vector3.zero;
-                worldBegin = Vector3.zero;
-                worldEnd = Vector3.zero;
+                m_pressed = false;
+                m_begin = Vector3.zero;
+                m_end = Vector3.zero;
+                m_worldBegin = Vector3.zero;
+                m_worldEnd = Vector3.zero;
             }
             else
             {
                 // on récupère la position de fin courante
-                end = Input.mousePosition;
-                worldEnd = Camera.main.ScreenToWorldPoint(end);
+                m_end = Input.mousePosition;
+                m_worldEnd = Camera.main.ScreenToWorldPoint(m_end);
 
                 // quels sont les persos dans la selectionBox ?
                 for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
@@ -65,16 +103,16 @@ public class SelectionBox : MonoBehaviour {
                     bool zCheck = false;
 
                     // on check en X (en vérifiant la forme de la box)
-                    if (worldBegin.x < worldEnd.x)
-                        xCheck = (worldBegin.x <= pPos.x && pPos.x <= worldEnd.x);
+                    if (m_worldBegin.x < m_worldEnd.x)
+                        xCheck = (m_worldBegin.x <= pPos.x && pPos.x <= m_worldEnd.x);
                     else
-                        xCheck = (worldEnd.x <= pPos.x && pPos.x <= worldBegin.x);
+                        xCheck = (m_worldEnd.x <= pPos.x && pPos.x <= m_worldBegin.x);
 
                     // on check en Z (en vérifiant la forme de la box)
-                    if (worldBegin.z < worldEnd.z)
-                        zCheck = (worldBegin.z <= pPos.z && pPos.z <= worldEnd.z);
+                    if (m_worldBegin.z < m_worldEnd.z)
+                        zCheck = (m_worldBegin.z <= pPos.z && pPos.z <= m_worldEnd.z);
                     else
-                        zCheck = (worldEnd.z <= pPos.z && pPos.z <= worldBegin.z);
+                        zCheck = (m_worldEnd.z <= pPos.z && pPos.z <= m_worldBegin.z);
 
                     // si c'est bon, c'est bon !
                     if (xCheck && zCheck)
@@ -84,19 +122,29 @@ public class SelectionBox : MonoBehaviour {
                 }
             }
         }
-	}
+    }
 
-    void OnMouseDown ()
+    void OnMouseDown()
     {
         if (!Input.GetMouseButton(1))
         {
             // on récupère la position de début
-            begin = Input.mousePosition;
-            worldBegin = Camera.main.ScreenToWorldPoint(begin);
-            pressed = true;
+            m_begin = Input.mousePosition;
+            m_worldBegin = Camera.main.ScreenToWorldPoint(m_begin);
+            m_pressed = true;
             // on init la fin
-            end = begin;
-            worldEnd = worldBegin;
+            m_end = m_begin;
+            m_worldEnd = m_worldBegin;
         }
     }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

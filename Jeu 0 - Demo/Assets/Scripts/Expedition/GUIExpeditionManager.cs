@@ -1,22 +1,59 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class GUIExpeditionManager : MonoBehaviour, ExpeditionManager.IAbonneEM {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class GUIExpeditionManager :
+    MonoBehaviour
+{
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
 
-    private ExpeditionManager em;
+    /********  INSPECTOR        ************************/
 
-	// Use this for initialization
-	void Start () {
-        em = ExpeditionManager.Instance;
-        em.abonnement(this);
-	}
+    /********  PROTECTED        ************************/
 
-    public void newSelected()
+    /********  PRIVATE          ************************/
+
+    private ExpeditionManager m_expeditionManager;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
+    void Start()
+    {
+        m_expeditionManager = ExpeditionManager.Instance;
+    }
+
+    /********  OUR MESSAGES     ************************/
+
+    public void NewSelected()
     {
         // affichage
         for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
         {
-            ExpeditionManager.Persos[i].GetComponent<PersonnageScript>().Selected = em.Selected.Contains(i);
+            ExpeditionManager.Persos[i].GetComponent<PersonnageScript>().Selected = m_expeditionManager.Selected.Contains(i);
         }
     }
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

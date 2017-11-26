@@ -1,23 +1,29 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
 public class PersonnageScript :
     UniteScript
 {
-    new Personnage unite;
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
 
     public virtual Personnage Perso
     {
-        get
-        {
-            return unite;
-        }
+        get { return m_unite; }
         set
         {
-            if (!unite.Equals(value))
+            if (!m_unite.Equals(value))
             {
-                unite = value;
+                m_unite = value;
                 gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
                 gameObject.SendMessage("NewPerso", null, SendMessageOptions.DontRequireReceiver);
             }
@@ -26,10 +32,7 @@ public class PersonnageScript :
 
     protected override Journey Journey
     {
-        get
-        {
-            return Perso.Journey;
-        }
+        get { return Perso.Journey; }
         set
         {
             if (!Perso.Journey.Equals(value))
@@ -41,27 +44,64 @@ public class PersonnageScript :
         }
     }
 
-    [SerializeField]
-    private bool selected = false;
-
     public bool Selected
     {
-        get
-        {
-            return selected;
-        }
+        get { return m_selected; }
         set
         {
-            if (selected != value)
+            if (m_selected != value)
             {
-                selected = value;
+                m_selected = value;
                 gameObject.SendMessage("NewSelected", null, SendMessageOptions.DontRequireReceiver);
             }
         }
     }
 
-    void Start()
+    /********  PROTECTED        ************************/
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private bool m_selected = false;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    new Personnage m_unite;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
+    private void Start()
     {
-        unite = new Personnage();
+        m_unite = new Personnage();
     }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        
+    }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

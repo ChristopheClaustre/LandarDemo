@@ -31,23 +31,6 @@ public class Navigation :
     }
 
     #endregion
-    #region Unity's inspector attributes
-    /***************************************************/
-    /***  INSPECTOR ATTRIBUTES  ************************/
-    /***************************************************/
-
-    /********  PROTECTED        ************************/
-
-    /********  PRIVATE          ************************/
-
-    // information about rotation
-    [Header("Rotation")]
-    [SerializeField]
-    private float u_rotatingDistance = 0.5f;
-    [SerializeField, Range(1, 4)]
-    private float u_coeffRotation = 1.5f;
-
-    #endregion
     #region Constants
     /***************************************************/
     /***  CONSTANTS             ************************/
@@ -68,12 +51,17 @@ public class Navigation :
     /***  ATTRIBUTES            ************************/
     /***************************************************/
 
+    /********  INSPECTOR        ************************/
+
+    // information about rotation
+    [Header("Rotation")]
+    [SerializeField] private float m_rotatingDistance = 0.5f;
+    [SerializeField, Range(1, 4)] private float m_coeffRotation = 1.5f;
+
     /********  PROTECTED        ************************/
 
     /********  PRIVATE          ************************/
 
-    [Header("Navigation State")]
-    [SerializeField, ReadOnly]
     private EnumNavigationState m_state = EnumNavigationState.e_none;
 
     // les variables de model
@@ -91,7 +79,7 @@ public class Navigation :
     /***  METHODS               ************************/
     /***************************************************/
 
-    /********  MESSAGES         ************************/
+    /********  UNITY MESSAGES   ************************/
 
     // Use this for initialization
     void Start()
@@ -120,7 +108,7 @@ public class Navigation :
                     MovementEnding();
                     m_state = EnumNavigationState.e_none;
                 }
-                else if (!float.IsNaN(m_dest.OrientationFinale) && m_agent.remainingDistance <= u_rotatingDistance)
+                else if (!float.IsNaN(m_dest.OrientationFinale) && m_agent.remainingDistance <= m_rotatingDistance)
                 {
                     RotationBegining();
                     m_state = EnumNavigationState.e_rotatingAndMoving;
@@ -149,7 +137,7 @@ public class Navigation :
         }
     }
 
-    /********  PUBLIC           ************************/
+    /********  OUR MESSAGES     ************************/
 
     public void NewSelected()
     {
@@ -165,6 +153,8 @@ public class Navigation :
     {
         Go();
     }
+
+    /********  PUBLIC           ************************/
 
     /********  PRIVATE          ************************/
 
@@ -200,7 +190,7 @@ public class Navigation :
         transform.rotation =
             Quaternion.Slerp(transform.rotation,
                 Quaternion.AngleAxis(m_dest.OrientationFinale, Vector3.up),
-                Time.deltaTime * u_coeffRotation);
+                Time.deltaTime * m_coeffRotation);
     }
 
     private void Go()

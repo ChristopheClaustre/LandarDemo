@@ -1,11 +1,36 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
-public class IndividualSelection : MonoBehaviour {
-    void OnMouseUpAsButton ()
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class IndividualSelection :
+    MonoBehaviour
+{
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    /********  OUR MESSAGES     ************************/
+
+    void OnMouseUpAsButton()
     {
         if (!Input.GetMouseButton(1))
+        {
             ExpeditionManager.Instance.monoSelection(ExpeditionManager.Persos.IndexOf(this.gameObject));
+        }
     }
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }

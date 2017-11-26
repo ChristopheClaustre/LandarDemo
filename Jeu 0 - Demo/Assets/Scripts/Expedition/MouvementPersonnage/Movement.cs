@@ -1,88 +1,111 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Movement : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class Movement :
+    MonoBehaviour
+{
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
 
-    [SerializeField]
-    private float rotatingDistance = 25;
-    [SerializeField, ReadOnly] private float rotationValue;
-    [SerializeField, ReadOnly] private bool rotationRequired;
-    [SerializeField, ReadOnly] private Vector3 rStartClick;
-    [SerializeField, ReadOnly] private Vector3 rEndClick;
-    [SerializeField, ReadOnly] private bool rPressed = false;
+    /********  PUBLIC           ************************/
 
     public float RotationValue
     {
-        get
-        {
-            return rotationValue;
-        }
+        get { return m_rotationValue; }
     }
 
     public bool RotationRequired
     {
-        get
-        {
-            return rotationRequired;
-        }
+        get { return m_rotationRequired; }
     }
 
     public Vector3 RightStartClick
     {
-        get
-        {
-            return rStartClick;
-        }
+        get { return m_rightClickStart; }
     }
 
     public Vector3 RightEndClick
     {
-        get
-        {
-            return rEndClick;
-        }
+        get { return m_rightClickEnd; }
     }
 
     public bool RightPressed
     {
-        get
-        {
-            return rPressed;
-        }
+        get { return m_rightButtonPressed; }
     }
 
-    // the script this script have to send to the infos
+    /********  PROTECTED        ************************/
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private float m_rotatingDistance = 25;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    private float m_rotationValue;
+    private bool m_rotationRequired;
+    private Vector3 m_rightClickStart;
+    private Vector3 m_rightClickEnd;
+    private bool m_rightButtonPressed = false;
+
+    // the script this script has to send the infos to
     private PersoController m_PersoController;
 
     private Journey m_journey;
 
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
     void Start()
     {
         m_PersoController = GetComponent<PersoController>();
         m_journey = new Journey();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (rPressed)
+        if (m_rightButtonPressed)
         {
             // right is pressed actually
             if (Input.GetMouseButton(1))
             {
                 // get the current end of click
-                rEndClick = Input.mousePosition;
+                m_rightClickEnd = Input.mousePosition;
 
                 // if needed
-                if (Mathf.Abs(Vector3.Distance(rStartClick, rEndClick)) > rotatingDistance)
+                if (Mathf.Abs(Vector3.Distance(m_rightClickStart, m_rightClickEnd)) > m_rotatingDistance)
                 {
-                    rotationRequired = true;
+                    m_rotationRequired = true;
                     // calculate the orientation
-                    rotationValue = angleBetweenVectorNAxis(rStartClick, rEndClick);
+                    m_rotationValue = AngleBetweenVectorNAxis(m_rightClickStart, m_rightClickEnd);
                 }
                 else
                 {
-                    rotationRequired = false;
+                    m_rotationRequired = false;
                 }
             }
 
@@ -90,40 +113,42 @@ public class Movement : MonoBehaviour {
             if (Input.GetMouseButtonUp(1))
             {
                 // get the final end of click
-                rEndClick = Input.mousePosition;
+                m_rightClickEnd = Input.mousePosition;
 
                 // get the new wanted destination ;)
                 Destination dest;
 
                 // retrieve the cible
-                Vector3 cible3 = Camera.main.ScreenToWorldPoint(rStartClick);
+                Vector3 cible3 = Camera.main.ScreenToWorldPoint(m_rightClickStart);
                 Vector2 cible2 = new Vector2(cible3.x, cible3.z);
 
                 // create the new destination
-                if (rotationRequired)
-                    dest = new Destination(cible2, rotationValue);
+                if (m_rotationRequired)
+                    dest = new Destination(cible2, m_rotationValue);
                 else
                     dest = new Destination(cible2);
 
                 // add the new destination
-                m_journey.addDestination(dest);
+                m_journey.AddDestination(dest);
                 gameObject.SendMessage("NewJourney", m_journey, SendMessageOptions.DontRequireReceiver);
 
                 // finished !
-                reinit();
+                Reinit();
             }
         }
 
         // Is it the end ??
-        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift) && m_journey.hasDestinations())
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift) && m_journey.HasDestinations())
         {
             m_PersoController.Journey = m_journey;
-            resetJourney();
+            ResetJourney();
 
             // finished !
-            reinit();
+            Reinit();
         }
     }
+
+    /********  OUR MESSAGES     ************************/
 
     // right down
     void OnRightDown()
@@ -132,49 +157,55 @@ public class Movement : MonoBehaviour {
         {
             if (!Input.GetMouseButton(0) && !(m_journey.WillLoop))
             {
-                rStartClick = Input.mousePosition;
-                rPressed = true;
+                m_rightClickStart = Input.mousePosition;
+                m_rightButtonPressed = true;
             }
         }
     }
 
+    /********  PUBLIC           ************************/
+
     public void LoopJourney(Destination p_candidat)
     {
-        m_journey.addDestination(p_candidat);
+        m_journey.AddDestination(p_candidat);
         if (m_journey.WillLoop)
         {
             m_PersoController.Journey = m_journey;
-            resetJourney();
+            ResetJourney();
 
             // finished !
-            reinit();
+            Reinit();
         }
     }
 
-    public bool canLoopOn(Destination d)
+    public bool canLoopOn(Destination p_destination)
     {
-        return m_journey.Destinations.IndexOf(d) < m_journey.Destinations.Count - 1;
+        return m_journey.Destinations.IndexOf(p_destination) < m_journey.Destinations.Count - 1;
     }
 
-    // Some private function
+    /********  PROTECTED        ************************/
 
-    private void reinit()
+    /********  PRIVATE          ************************/
+
+    private void Reinit()
     {
-        rPressed = false;
-        rStartClick = -Vector3.one;
-        rEndClick = -Vector3.one;
-        rotationRequired = false;
+        m_rightButtonPressed = false;
+        m_rightClickStart = -Vector3.one;
+        m_rightClickEnd = -Vector3.one;
+        m_rotationRequired = false;
     }
 
-    private void resetJourney()
+    private void ResetJourney()
     {
         m_journey = new Journey();
         gameObject.SendMessage("NewJourney", m_journey, SendMessageOptions.DontRequireReceiver);
     }
 
-    private float angleBetweenVectorNAxis(Vector3 pivot, Vector3 point)
+    private float AngleBetweenVectorNAxis(Vector3 p_pivot, Vector3 p_point)
     {
-        Vector2 diff = point - pivot;
-        return Vector2.Angle(Vector2.up, diff) * ((point.x < pivot.x)?-1:+1);
+        Vector2 diff = p_point - p_pivot;
+        return Vector2.Angle(Vector2.up, diff) * ((p_point.x < p_pivot.x)?-1:+1);
     }
+
+    #endregion
 }

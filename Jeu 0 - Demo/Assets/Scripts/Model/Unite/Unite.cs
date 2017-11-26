@@ -1,10 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
 [System.Serializable]
-public abstract class Unite {
+public abstract class Unite
+{
+    #region Sub-classes/enum
+    /***************************************************/
+    /***  SUB-CLASSES/ENUM      ************************/
+    /***************************************************/
 
-    public enum EnumIAState {
+    /********  PUBLIC           ************************/
+
+    public enum EnumIAState
+    {
         ETDRF,
         BALLADE,
         CHASSE,
@@ -13,93 +26,105 @@ public abstract class Unite {
         FUITE
     }
 
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
+
+    /********  PUBLIC           ************************/
+
+    public int Vie
+    {
+        get { return m_vie; }
+    }
+
+    public int VieTemporaire
+    {
+        get { return m_vieTemporaire; }
+    }
+
+    public Unite Cible
+    {
+        get { return m_cible; }
+    }
+
+    public Vector3 Position
+    {
+        get { return m_position; }
+    }
+
+    public Description Desc
+    {
+        get { return m_description; }
+    }
+
+    public EnumIAState EtatIA
+    {
+        get { return m_etatIA; }
+    }
+
+    public Journey Journey
+    {
+        get { return m_journey; }
+        set { m_journey = value; }
+    }
+
+    public CaracteristicUnite Carac
+    {
+        get { return m_caracteristic; }
+    }
+
+    public float Luminosite
+    {
+        get { return m_luminosite; }
+        set { m_luminosite = value; }
+    }
+
+/********  PROTECTED        ************************/
+
+#endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+    
+    /********  INSPECTOR        ************************/
+    
+    /********  PROTECTED        ************************/
+    
+    /********  PRIVATE          ************************/
+
     private int m_vie = 0;
     private int m_vieTemporaire = 0;
     private Unite m_cible = null;
     private Vector3 m_position = Vector3.one;
     private Description m_description = null;
     private EnumIAState m_etatIA = EnumIAState.ETDRF;
-    [SerializeField]
-    private Journey m_journey = new Journey();
+    [SerializeField] private Journey m_journey = new Journey();
     private CaracteristicUnite m_caracteristic = null;
     private float m_luminosite = 0.0f;
+    
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+    
+    /********  PUBLIC           ************************/
 
-    public int Vie
+    public Unite()
     {
-        get
-        {
-            return m_vie;
-        }
-    }
-    public int VieTemporaire
-    {
-        get
-        {
-            return m_vieTemporaire;
-        }
-    }
-    public Unite Cible
-    {
-        get
-        {
-            return m_cible;
-        }
-    }
-    public Vector3 Position
-    {
-        get
-        {
-            return m_position;
-        }
-    }
-    public Description Desc
-    {
-        get
-        {
-            return m_description;
-        }
-    }
-    public EnumIAState EtatIA
-    {
-        get
-        {
-            return m_etatIA;
-        }
-    }
-    public Journey Journey
-    {
-        get
-        {
-            return m_journey;
-        }
-        set
-        {
-            m_journey = value;
-        }
-    }
-    public CaracteristicUnite Carac
-    {
-        get
-        {
-            return m_caracteristic;
-        }
+
     }
 
-    public float Luminosite
-    {
-        get
-        {
-            return m_luminosite;
-        }
-        set
-        {
-            m_luminosite = value;
-        }
-    }
+    /********  PROTECTED        ************************/
 
-    public Unite ()
-    {
-        
-    }
+    /********  PRIVATE          ************************/
 
+    #endregion
 }

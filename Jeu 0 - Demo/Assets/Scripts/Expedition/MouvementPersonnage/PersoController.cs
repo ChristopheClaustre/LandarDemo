@@ -1,38 +1,75 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections.Generic;
 
-public class PersoController : CI_caller {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class PersoController :
+    MonoBehaviour
+{
+    #region Property
+    /***************************************************/
+    /***  PROPERTY              ************************/
+    /***************************************************/
 
-    // Some code for the CustomInspector
-    // use the getter after an update of v2Destination (via button)
-#if (UNITY_EDITOR)
-    public override void updateVarFromCI()
-    {
-        go();
-    }
-#endif
-
-    [SerializeField]
-    private Journey m_journey;
+    /********  PUBLIC           ************************/
 
     public Journey Journey
     {
-        get
-        {
-            return m_journey;
-        }
+        get { return m_journey; }
         set
         {
             m_journey = value;
             go();
         }
     }
-    
-    void Start ()
+
+    /********  PROTECTED        ************************/
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  INSPECTOR        ************************/
+
+    [SerializeField] private Journey m_journey;
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
+
+    // Use this for initialization
+    private void Start()
     {
 
     }
+
+    // Update is called once per frame
+    private void Update()
+    {
+
+    }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
 
     private static List<Journey> createDestinations(Journey p_pivots, int p_nbPerso)
     {
@@ -55,7 +92,7 @@ public class PersoController : CI_caller {
                 float l2_incrX = Random.Range(-l0_sRadius, l0_sRadius);
                 float l2_incrY = Random.Range(-l0_gRadius, l0_gRadius);
                 Vector2 l2_v = new Vector3(l1_pivot.Cible.x + l2_incrX, l1_pivot.Cible.y + l2_incrY);
-                l0_journey[i].addDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
+                l0_journey[i].AddDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
             }
         }
 
@@ -94,7 +131,7 @@ public class PersoController : CI_caller {
                     l2_v = RotatePointAroundPivot(l2_v, l1_pivot.Cible, new Vector3(0, 0, l1_pivot.OrientationFinale));
 
                 // store
-                l0_journey[i].addDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
+                l0_journey[i].AddDestination(new Destination(l2_v, l1_pivot.OrientationFinale));
 
                 i++;
             }
@@ -158,15 +195,14 @@ public class PersoController : CI_caller {
             l0_journey = createDestinations(m_journey, selec.Count);
         else
             l0_journey = createFormation(m_journey, selec.Count);
-        
+
         // assign the destination
         for (int i = 0; i < selec.Count; i++)
         {
             PersonnageScript perso = ExpeditionManager.Persos[selec[i]].GetComponent<PersonnageScript>();
-            perso.setJourney(l0_journey[i]);
+            perso.SetJourney(l0_journey[i]);
         }
     }
-
 
     // function to rotate a point around another one (the pivot)
     private static Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
@@ -176,5 +212,6 @@ public class PersoController : CI_caller {
         point = dir + pivot; // calculate rotated point
         return point; // return it
     }
-    
+
+    #endregion
 }

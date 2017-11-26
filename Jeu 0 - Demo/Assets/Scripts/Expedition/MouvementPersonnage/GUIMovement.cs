@@ -1,34 +1,70 @@
-﻿using UnityEngine;
+﻿/***************************************************/
+/***  INCLUDE               ************************/
+/***************************************************/
+using UnityEngine;
 using System.Collections;
 
-public class GUIMovement : MonoBehaviour {
+/***************************************************/
+/***  THE CLASS             ************************/
+/***************************************************/
+public class GUIMovement :
+    MonoBehaviour
+{
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
 
-    private RectTransform directionFormation;
+    /********  INSPECTOR        ************************/
 
-    private Movement mov;
+    /********  PROTECTED        ************************/
 
-    private bool working = false;
+    /********  PRIVATE          ************************/
+
+    private RectTransform m_directionFormation;
+    private Movement m_movement;
+    private bool m_working = false;
+
+    #endregion
+    #region Methods
+    /***************************************************/
+    /***  METHODS               ************************/
+    /***************************************************/
+
+    /********  UNITY MESSAGES   ************************/
 
     // Use this for initialization
-    void Start () {
-        directionFormation = (RectTransform)GameObject.Find("directionFormation").transform;
-        mov = GetComponent<Movement>();
+    void Start()
+    {
+        m_directionFormation = (RectTransform)GameObject.Find("directionFormation").transform;
+        m_movement = GetComponent<Movement>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (mov.RotationRequired)
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (m_movement.RotationRequired)
         {
-            directionFormation.anchoredPosition = mov.RightStartClick;
-            directionFormation.localEulerAngles = new Vector3(0, 0, -mov.RotationValue);
-            working = true;
+            m_directionFormation.anchoredPosition = m_movement.RightStartClick;
+            m_directionFormation.localEulerAngles = new Vector3(0, 0, -m_movement.RotationValue);
+            m_working = true;
         }
-        else if (working)
+        else if (m_working)
         {
             // Reset
-            directionFormation.anchoredPosition = new Vector2(Screen.width, Screen.height);
-            directionFormation.localEulerAngles = Vector3.zero;
-            working = false;
+            m_directionFormation.anchoredPosition = new Vector2(Screen.width, Screen.height);
+            m_directionFormation.localEulerAngles = Vector3.zero;
+            m_working = false;
         }
-	}
+    }
+
+    /********  OUR MESSAGES     ************************/
+
+    /********  PUBLIC           ************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    #endregion
 }
