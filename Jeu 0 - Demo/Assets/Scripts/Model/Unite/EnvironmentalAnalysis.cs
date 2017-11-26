@@ -26,7 +26,7 @@ public class EnvironmentalAnalysis : MonoBehaviour
     {
         //Tri des objets détectés
         ennemies.Clear();
-        foreach (GameObject objetDetected in radar.objectsDetected)
+        foreach (GameObject objetDetected in radar.ObjectsDetected)
         {
             if(objetDetected.CompareTag("model_ennemy"))
             {
