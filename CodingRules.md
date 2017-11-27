@@ -49,23 +49,21 @@ Here is a list of the existing prefixes :
 
 Prefixes | Meaning
 -------- | --------
-c | constant or static readonly variable
-g | global variable
 m | member variable
 p | method's or function's parameter
 s | static member variable
 
-There is three exceptions :
+There is four exceptions :
 * local variable
 * the C#'s property that should follow this pattern : `ClearAndUniquePascalCasedName`
+* the constant or static readonly variable that should follow this pattern : ``` CLEAR_AND_UNIQUE_UPPERCASED_NAME ```
 * iteration variable that should be named by only one letter :
   * coordinate : x, y, z, w, u, v
   * array : i, j, k, l
 
-#### a) Unity's inspector attributes
+#### a) Unity's inspector editable attributes
 
 Should only be private or protected (with [SerializeField] flags).
-Also, you can show in non-editable mode class's attributes with the [ReadOnly] flags.
 
 #### b) Member variable
 
