@@ -23,7 +23,7 @@ public class GUINavigation :
     /********  PRIVATE          ************************/
 
     // pour faciliter la lecture
-    private readonly static Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
+    private readonly static Quaternion NULL_ORIENTATION = Quaternion.AngleAxis(0, Vector3.zero);
 
     #endregion
     #region Attributes
@@ -60,8 +60,7 @@ public class GUINavigation :
     void Start()
     {
         m_personnageScript = GetComponent<PersonnageScript>();
-        //m_personnageScript.abonnement(this);
-        m_goSelec = this.transform.Find("selector").gameObject;
+        m_goSelec = transform.Find("selector").gameObject;
         m_instances = new List<GameObject>();
     }
 
@@ -116,7 +115,7 @@ public class GUINavigation :
                         Instantiate(
                             m_prefabPosition,
                             dests[i].Cible,
-                            c_orientationNull) as GameObject;
+                            NULL_ORIENTATION) as GameObject;
                     // si il faut affichage de l'orientation
                     if (!float.IsNaN(dests[i].OrientationFinale))
                     {
@@ -185,7 +184,7 @@ public class GUINavigation :
 
     private GameObject CreateLine(Vector3 p_start, Vector3 p_end, GameObject p_prefab)
     {
-        GameObject go = Instantiate(p_prefab, p_start, c_orientationNull) as GameObject;
+        GameObject go = Instantiate(p_prefab, p_start, NULL_ORIENTATION) as GameObject;
         LineRenderer lineRenderer = go.GetComponent<LineRenderer>();
         lineRenderer.SetPosition(0, p_start);
         lineRenderer.SetPosition(1, p_end);

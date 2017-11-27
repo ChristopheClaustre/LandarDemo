@@ -60,7 +60,6 @@ public class ClickValidator :
     private Camera m_fowCamera;
 
     #endregion
-
     #region Methods
     /***************************************************/
     /***  METHODS               ************************/
@@ -93,20 +92,20 @@ public class ClickValidator :
     //Warning, this function works only if the FoW's camera have the exact same dimension than the FoW's mesh
     public bool isOnBlackFoW(Vector3 p_positionOnFoW)
     {
-        Vector3 l_screenPos = m_fowCamera.WorldToScreenPoint(p_positionOnFoW);
-        l_screenPos = new Vector3(l_screenPos.x, m_fowCamera.pixelHeight - l_screenPos.y, l_screenPos.z);
+        Vector3 screenPos = m_fowCamera.WorldToScreenPoint(p_positionOnFoW);
+        screenPos = new Vector3(screenPos.x, m_fowCamera.pixelHeight - screenPos.y, screenPos.z);
 
-        RenderTexture l_renderTexture = m_fowCamera.targetTexture;
-        RenderTexture.active = l_renderTexture;
+        RenderTexture renderTexture = m_fowCamera.targetTexture;
+        RenderTexture.active = renderTexture;
 
         // Read pixels
-        Texture2D l_texture2D = new Texture2D(1, 1);
-        Rect rect = new Rect(Mathf.FloorToInt(l_screenPos.x), Mathf.FloorToInt(l_screenPos.y), 1, 1);
-        l_texture2D.ReadPixels(rect, 0, 0);
-        l_texture2D.Apply();
-        Color32 l_pixelSample = l_texture2D.GetPixel(0, 0);
+        Texture2D texture2D = new Texture2D(1, 1);
+        Rect rect = new Rect(Mathf.FloorToInt(screenPos.x), Mathf.FloorToInt(screenPos.y), 1, 1);
+        texture2D.ReadPixels(rect, 0, 0);
+        texture2D.Apply();
+        Color32 pixelSample = texture2D.GetPixel(0, 0);
 
-        return (l_pixelSample.r > 0 || l_pixelSample.g > 0 || l_pixelSample.b > 0);
+        return (pixelSample.r > 0 || pixelSample.g > 0 || pixelSample.b > 0);
     }
 
     /********  PROTECTED        ************************/

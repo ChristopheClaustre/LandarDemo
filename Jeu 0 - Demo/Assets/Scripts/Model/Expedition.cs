@@ -2,8 +2,6 @@
 /***  INCLUDE               ************************/
 /***************************************************/
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 /***************************************************/
 /***  THE CLASS             ************************/
@@ -20,17 +18,18 @@ public class Expedition :
 
     public enum EnumFormationName
     {
-        e_EXPEDITION = -1,
-        e_ONE = 0,
-        e_TWO,
-        e_THREE,
-        e_FOUR,
-        e_FIVE,
-        e_SIX,
-        e_SEVEN,
-        e_EIGHT,
-        e_NINE,
-        e_TEN
+        e_expedition = -1,
+        e_one = 0,
+        e_two,
+        e_three,
+        e_four,
+        e_five,
+        e_six,
+        e_seven,
+        e_eight,
+        e_nine,
+        e_ten,
+        e_FormationName
     }
 
     /********  PROTECTED        ************************/
@@ -66,20 +65,6 @@ public class Expedition :
     /********  PROTECTED        ************************/
 
     #endregion
-    #region Constants
-    /***************************************************/
-    /***  CONSTANTS             ************************/
-    /***************************************************/
-
-    /********  PUBLIC           ************************/
-
-    public static readonly int c_numberOfFormation = System.Enum.GetNames(typeof(EnumFormationName)).Length - 1; // -1 for the e_expedition formation
-
-    /********  PROTECTED        ************************/
-
-    /********  PRIVATE          ************************/
-
-    #endregion
     #region Attributes
     /***************************************************/
     /***  ATTRIBUTES            ************************/
@@ -90,7 +75,7 @@ public class Expedition :
     /// <summary>
     /// Name of the selected formation. If the name is EnumFormationName.e_expedition, it means that no formation is selected at this time and so the player is in free selection mode
     /// </summary>
-    [SerializeField] private EnumFormationName m_formationSelected = EnumFormationName.e_EXPEDITION;
+    [SerializeField] private EnumFormationName m_formationSelected = EnumFormationName.e_expedition;
 
     /********  PROTECTED        ************************/
 
@@ -101,7 +86,7 @@ public class Expedition :
     /// <summary> List of selected personnage </summary>
     private PersonnageList m_selected;
     /// <summary> List of formation </summary>
-    private Formation[] m_formations = new Formation[c_numberOfFormation];
+    private Formation[] m_formations = new Formation[(int) EnumFormationName.e_FormationName];
 
     #endregion
     #region Methods
@@ -114,8 +99,8 @@ public class Expedition :
     // Use this for initialization
     private void Start()
     {
-        m_formations = new Formation[c_numberOfFormation];
-        for (int i = 0; i < c_numberOfFormation; ++i)
+        m_formations = new Formation[(int) EnumFormationName.e_FormationName];
+        for (int i = 0; i < (int) EnumFormationName.e_FormationName; ++i)
         {
             m_formations[i] = new Formation();
         }
@@ -136,7 +121,7 @@ public class Expedition :
     {
         m_selected.Clear();
         m_selected.AddRange(p_personnages);
-        SelectFormation(EnumFormationName.e_EXPEDITION);
+        SelectFormation(EnumFormationName.e_expedition);
 
         return this;
     }
@@ -144,7 +129,7 @@ public class Expedition :
     public Expedition AddPersonnagesToSelection( PersonnageList p_personnagesToAdd )
     {
         m_selected.AddRange(p_personnagesToAdd);
-        SelectFormation(EnumFormationName.e_EXPEDITION);
+        SelectFormation(EnumFormationName.e_expedition);
 
         return this;
     }
@@ -152,7 +137,7 @@ public class Expedition :
     public Expedition RemovePersonnagesFromSelection( PersonnageList p_personnagesToAdd )
     {
         m_selected.RemoveRange(p_personnagesToAdd);
-        SelectFormation(EnumFormationName.e_EXPEDITION);
+        SelectFormation(EnumFormationName.e_expedition);
 
         return this;
     }
@@ -204,7 +189,7 @@ public class Expedition :
 
     public bool IsAFormation(EnumFormationName p_name)
     {
-        return p_name != EnumFormationName.e_EXPEDITION;
+        return p_name != EnumFormationName.e_expedition;
     }
 
     #endregion

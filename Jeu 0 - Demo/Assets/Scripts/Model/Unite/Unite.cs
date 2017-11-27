@@ -18,12 +18,13 @@ public abstract class Unite
 
     public enum EnumIAState
     {
-        ETDRF,
-        BALLADE,
-        CHASSE,
-        ATTAQUE,
-        POURCHASSE,
-        FUITE
+        e_ETDRF,
+        e_ballade,
+        e_chasse,
+        e_attaque,
+        e_pourchasse,
+        e_fuite,
+        e_IAState
     }
 
     /********  PROTECTED        ************************/
@@ -104,7 +105,7 @@ public abstract class Unite
     private Unite m_cible = null;
     private Vector3 m_position = Vector3.one;
     private Description m_description = null;
-    private EnumIAState m_etatIA = EnumIAState.ETDRF;
+    private EnumIAState m_etatIA = EnumIAState.e_ETDRF;
     [SerializeField] private Journey m_journey = new Journey();
     private CaracteristicUnite m_caracteristic = null;
     private float m_luminosite = 0.0f;

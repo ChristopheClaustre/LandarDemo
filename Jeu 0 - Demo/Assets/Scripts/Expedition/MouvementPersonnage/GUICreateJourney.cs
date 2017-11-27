@@ -24,7 +24,7 @@ public class GUICreateJourney :
     /********  PRIVATE          ************************/
 
     // pour faciliter la lecture
-    private static readonly Quaternion c_orientationNull = Quaternion.AngleAxis(0, Vector3.zero);
+    private static readonly Quaternion NULL_ORIENTATION = Quaternion.AngleAxis(0, Vector3.zero);
 
     #endregion
     #region Attributes
@@ -88,7 +88,7 @@ public class GUICreateJourney :
                     Instantiate(
                         m_prefabPosition,
                         l1_dests[i].Cible,
-                        c_orientationNull) as GameObject;
+                        NULL_ORIENTATION) as GameObject;
                 // si il faut affichage de l'orientation
                 if (!float.IsNaN(l1_dests[i].OrientationFinale))
                 {
@@ -131,7 +131,7 @@ public class GUICreateJourney :
 
     private GameObject CreateLine(Vector3 p_start, Vector3 p_end)
     {
-        GameObject l1_go = Instantiate(m_prefabLine, p_start, c_orientationNull) as GameObject;
+        GameObject l1_go = Instantiate(m_prefabLine, p_start, NULL_ORIENTATION) as GameObject;
         LineRenderer l1_lineRenderer = l1_go.GetComponent<LineRenderer>();
         l1_lineRenderer.SetPosition(0, p_start);
         l1_lineRenderer.SetPosition(1, p_end);

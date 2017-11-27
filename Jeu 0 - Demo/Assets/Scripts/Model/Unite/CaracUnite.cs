@@ -18,11 +18,12 @@ public class CaracteristicUnite
 
     public enum EnumMalus
     {
-        EMPOISONNE,
-        ENDORMI,
-        SONNE,
-        AVEUGLE,
-        PERDU
+        e_empoisonne,
+        e_endormi,
+        e_sonne,
+        e_aveugle,
+        e_perdu,
+        e_Malus
     }
 
     /********  PROTECTED        ************************/

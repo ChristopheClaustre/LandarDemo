@@ -43,7 +43,7 @@ public class Navigation :
     /********  PRIVATE          ************************/
 
     // aide pour l'animation
-    private const string c_etatName = "seDeplace";
+    private const string STATE_NAME = "seDeplace";
 
     #endregion
     #region Attributes
@@ -161,7 +161,7 @@ public class Navigation :
     private void MovementEnding()
     {
         // ceci n'a rien à faire ici
-        GetComponentInChildren<Animator>().SetBool(c_etatName, false);
+        GetComponentInChildren<Animator>().SetBool(STATE_NAME, false);
 
         // Reinit
         m_persoScript.Journey_nextDestination();
@@ -170,7 +170,7 @@ public class Navigation :
     private void RotationBegining()
     {
         // ceci n'a rien à faire ici
-        GetComponentInChildren<Animator>().SetBool(c_etatName, false);
+        GetComponentInChildren<Animator>().SetBool(STATE_NAME, false);
 
         // on s'assure que le syst de nav ne va pas pourir ma rotation à venir
         m_agent.updateRotation = false;
@@ -198,7 +198,7 @@ public class Navigation :
         if (m_persoScript.Journey_hasDestinations())
         {
             // ceci n'a rien à faire ici
-            GetComponentInChildren<Animator>().SetBool(c_etatName, true);
+            GetComponentInChildren<Animator>().SetBool(STATE_NAME, true);
 
             // récuperation de la destination
             m_dest = m_persoScript.Journey_currentDestination();
