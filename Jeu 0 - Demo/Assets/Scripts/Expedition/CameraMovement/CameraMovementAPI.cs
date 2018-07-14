@@ -18,11 +18,38 @@ public class CameraMovementAPI :
 
     /********  INSPECTOR        ************************/
 
-    [SerializeField] private Rect m_movementAllowedArea = new Rect();
+    /*private Rect MovementAllowedArea {
+        get {
+            if (m_movementAllowedAreaGO)
+                return new Rect();
+
+            Vector2 size = new Vector2(m_movementAllowedAreaGO.transform.localScale.x, m_movementAllowedAreaGO.transform.localScale.y);
+            Vector2 position = new Vector2(m_movementAllowedAreaGO.transform.position.x, m_movementAllowedAreaGO.transform.position.y) - (size / 2);
+
+            Rect rect = new Rect(position, size);
+            return rect;
+        }
+    }*/
 
     /********  PROTECTED        ************************/
 
     /********  PRIVATE          ************************/
+
+    #endregion
+    #region Attributes
+    /***************************************************/
+    /***  ATTRIBUTES            ************************/
+    /***************************************************/
+
+    /********  PROTECTED        ************************/
+
+    /********  PRIVATE          ************************/
+
+    [Header("Initialisation only")]
+    [SerializeField]
+    private GameObject m_movementAllowedAreaGO = null;
+
+    private Rect m_movementAllowedArea = new Rect();
 
     private Camera m_camera;
     private Setting m_setting;
@@ -41,6 +68,18 @@ public class CameraMovementAPI :
         m_setting = Setting.Instance;
 
         m_camera = GetComponent<Camera>();
+
+        if (! m_movementAllowedAreaGO)
+        {
+            m_movementAllowedArea = new Rect();
+        }
+        else
+        {
+            Vector2 size = new Vector2(m_movementAllowedAreaGO.transform.localScale.x, m_movementAllowedAreaGO.transform.localScale.y);
+            Vector2 position = new Vector2(m_movementAllowedAreaGO.transform.position.x, m_movementAllowedAreaGO.transform.position.z) - (size / 2);
+
+            m_movementAllowedArea = new Rect(position, size);
+        }
     }
 
     // Update is called once per frame
