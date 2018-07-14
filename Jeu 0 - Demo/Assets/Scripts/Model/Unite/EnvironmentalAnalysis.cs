@@ -33,6 +33,6 @@ public class EnvironmentalAnalysis : MonoBehaviour
                 ennemies.Add(objetDetected);
             }
         }
-        Debug.Log(ennemies.Count);
+        //Debug.Log(ennemies.Count);
     }
 }
