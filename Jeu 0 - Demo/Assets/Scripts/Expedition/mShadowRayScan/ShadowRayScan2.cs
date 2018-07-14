@@ -120,6 +120,7 @@ public class ShadowRayScan2 : MonoBehaviour
 
         m_vertices2d = new Vector2[m_raysToShoot + 1];
         m_mesh = Instantiate(m_lightmeshholder.GetComponent<MeshFilter>().mesh);
+        m_objectsDetected = new List<GameObject>();
         //lightmeshholder.GetComponent<MeshRenderer>().enabled = false;
     }
 
