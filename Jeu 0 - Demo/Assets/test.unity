@@ -195,12 +195,12 @@ GameObject:
   - component: {fileID: 329232250}
   - component: {fileID: 329232249}
   - component: {fileID: 329232248}
+  - component: {fileID: 329232242}
   - component: {fileID: 329232247}
   - component: {fileID: 329232246}
   - component: {fileID: 329232245}
   - component: {fileID: 329232244}
   - component: {fileID: 329232243}
-  - component: {fileID: 329232242}
   - component: {fileID: 329232251}
   m_Layer: 0
   m_Name: map
@@ -255,12 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d017170326b0a4aab7395247dd19c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotatingDistance: 25
-  rotationValue: 0
-  rotationRequired: 0
-  rStartClick: {x: 0, y: 0, z: 0}
-  rEndClick: {x: 0, y: 0, z: 0}
-  rPressed: 0
+  m_rotatingDistance: 25
 --- !u!114 &329232245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,9 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18c3e003adef1645bd11cea56ac535a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_journey:
-    m_destinations: []
-    m_loop: 0
 --- !u!114 &329232246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b6e4a22e188df42a99b3481acbf4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pressed: 0
+  m_pressed: 0
 --- !u!23 &329232248
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -886,8 +878,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 980909205}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -11, y: 100.000015, z: 7}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -11, y: 100.000046, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 442767219}
@@ -905,12 +897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0107dcfd186fe49ab61424134ed2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_movementAllowedArea:
-    serializedVersion: 2
-    x: -15
-    y: -10
-    width: 30
-    height: 20
+  m_movementAllowedAreaGO: {fileID: 329232240}
 --- !u!114 &980909213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,10 +1116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a738bb59e263f419cf58c7ec6759cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keys: 310000003200000033000000340000003500000036000000370000003800000039000000
-  selecting: 0
-  selected: 
-  newSelection: 
+  m_keys: 
 --- !u!114 &1305288075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1278,6 +1262,7 @@ GameObject:
   - component: {fileID: 1586821569}
   - component: {fileID: 1586821568}
   - component: {fileID: 1586821567}
+  - component: {fileID: 1586821570}
   m_Layer: 2
   m_Name: Dora The Explorer
   m_TagString: dora_the_explorer
@@ -1315,17 +1300,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07607825d1dcabf4d8bd1a224e06a374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HandleRightClick: 1
-  HandleMiddleClick: 1
-  OnRightClickMethodName: OnRightUpAsButton
-  OnRightDownMethodName: OnRightDown
-  OnRightUpMethodName: OnRightUp
-  OnMiddleClickMethodName: OnMiddleUpAsButton
-  OnMiddleDownMethodName: OnMiddleDown
-  OnMiddleUpMethodName: OnMiddleUp
-  layerMask:
+  m_handleRightClick: 1
+  m_handleMiddleClick: 0
+  m_onRightClickMethodName: OnRightUpAsButton
+  m_onRightDownMethodName: OnRightDown
+  m_onRightUpMethodName: OnRightUp
+  m_onMiddleClickMethodName: OnMiddleUpAsButton
+  m_onMiddleDownMethodName: OnMiddleDown
+  m_onMiddleUpMethodName: OnMiddleUp
+  m_layerMask:
     serializedVersion: 2
-    m_Bits: 4294967291
+    m_Bits: 0
 --- !u!4 &1586821569
 Transform:
   m_ObjectHideFlags: 0
@@ -1339,6 +1324,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1586821570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1586821566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73cb4a75386026040b1bda45e827b5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_formationSelected: -1
 --- !u!1 &1588306103
 GameObject:
   m_ObjectHideFlags: 0
