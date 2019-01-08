@@ -187,7 +187,7 @@ public class Expedition :
 
     /********  PRIVATE          ************************/
 
-    public bool IsAFormation(EnumFormationName p_name)
+    private bool IsAFormation(EnumFormationName p_name)
     {
         return p_name != EnumFormationName.e_expedition;
     }
