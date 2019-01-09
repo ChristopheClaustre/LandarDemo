@@ -17,6 +17,7 @@ public class PersoController :
 
     /********  PUBLIC           ************************/
 
+    [System.Obsolete("Journey system is deprecated.")]
     public Journey Journey
     {
         get { return m_journey; }
@@ -71,6 +72,7 @@ public class PersoController :
 
     /********  PRIVATE          ************************/
 
+    [System.Obsolete("Journey system is deprecated.")]
     private static List<Journey> createDestinations(Journey p_pivots, int p_nbPerso)
     {
         // init des destinations
@@ -99,6 +101,7 @@ public class PersoController :
         return l0_journey;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     private static List<Journey> createFormation(Journey p_pivots, int p_nbPerso)
     {
         // init du nombre de ligne
@@ -140,6 +143,7 @@ public class PersoController :
         return l0_journey;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     private static int numberOfRows(int p_count)
     {
         if (p_count <= 2)
@@ -150,6 +154,7 @@ public class PersoController :
             return 3; // 3x3, 3x4, 3x4, 3x4, 3x5, 3x5, 3x5
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     private static void getFormationDelta(int p_nbPerso, int p_nbRows, int p_nbCols, out List<Vector2> o_deltas)
     {
         // init
@@ -184,6 +189,7 @@ public class PersoController :
     }
 
     // function to calculate and send the destinations to all the selected personages
+    [System.Obsolete("Journey system is deprecated.")]
     private void go()
     {
         // on récupère les sélectionnés

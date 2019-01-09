@@ -20,6 +20,7 @@ public abstract class UniteScript :
 
     /********  PROTECTED        ************************/
 
+    [System.Obsolete("Journey system is deprecated.")]
     protected abstract Journey Journey
     {
         get;
@@ -82,6 +83,7 @@ public abstract class UniteScript :
 
     // gestion des trajets
 
+    [System.Obsolete("Journey system is deprecated.")]
     public void Journey_nextDestination()
     {
         Journey t = Journey;
@@ -92,31 +94,37 @@ public abstract class UniteScript :
         gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public Destination Journey_currentDestination()
     {
         return Journey.CurrentDestination();
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public IList<Destination> Journey_Destinations()
     {
         return Journey.Destinations;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public bool Journey_hasDestinations()
     {
         return Journey.HasDestinations();
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public bool Journey_WillLoop()
     {
         return Journey.WillLoop;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public bool Journey_Boucler()
     {
         return Journey.Loop;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public void SetJourney(Journey p_journey)
     {
         if (!Journey.Equals(p_journey))

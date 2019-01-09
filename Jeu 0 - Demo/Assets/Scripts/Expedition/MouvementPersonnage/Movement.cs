@@ -165,6 +165,7 @@ public class Movement :
 
     /********  PUBLIC           ************************/
 
+    [System.Obsolete("Journey system is deprecated.")]
     public void LoopJourney(Destination p_candidat)
     {
         m_journey.AddDestination(p_candidat);
@@ -195,6 +196,7 @@ public class Movement :
         m_rotationRequired = false;
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     private void ResetJourney()
     {
         m_journey = new Journey();

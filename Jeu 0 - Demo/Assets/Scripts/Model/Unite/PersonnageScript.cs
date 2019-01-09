@@ -30,6 +30,7 @@ public class PersonnageScript :
         }
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     protected override Journey Journey
     {
         get { return Perso.Journey; }

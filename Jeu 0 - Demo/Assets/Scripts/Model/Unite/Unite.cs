@@ -69,6 +69,7 @@ public abstract class Unite
         get { return m_etatIA; }
     }
 
+    [System.Obsolete("Journey system is deprecated.")]
     public Journey Journey
     {
         get { return m_journey; }
@@ -106,7 +107,10 @@ public abstract class Unite
     private Vector3 m_position = Vector3.one;
     private Description m_description = null;
     private EnumIAState m_etatIA = EnumIAState.e_ETDRF;
+
+    [System.Obsolete("Journey system is deprecated.")]
     [SerializeField] private Journey m_journey = new Journey();
+
     private CaracteristicUnite m_caracteristic = null;
     private float m_luminosite = 0.0f;
     

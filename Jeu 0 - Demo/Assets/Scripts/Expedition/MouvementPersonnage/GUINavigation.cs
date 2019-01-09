@@ -8,6 +8,7 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
+[System.Obsolete("Journey system is deprecated.")]
 public class GUINavigation :
     MonoBehaviour
 {

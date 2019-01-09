@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
+[System.Obsolete("Journey system is deprecated.")]
 [System.Serializable]
 public class Journey
 {
