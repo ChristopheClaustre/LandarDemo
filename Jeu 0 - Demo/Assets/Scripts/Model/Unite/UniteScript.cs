@@ -75,7 +75,13 @@ public abstract class UniteScript :
     // Update is called once per frame
     private void Update()
     {
-        
+        if (m_unite.CountTask() == 0) return;
+
+        Task task = m_unite.GetTask(0);
+        bool taskFinished = task.DoTask(this);
+
+        if (taskFinished)
+            m_unite.RemoveTask(0);
     }
 
     /********  OUR MESSAGES     ************************/
