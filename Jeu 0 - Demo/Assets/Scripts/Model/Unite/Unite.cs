@@ -1,6 +1,7 @@
 ﻿/***************************************************/
 /***  INCLUDE               ************************/
 /***************************************************/
+using System.Collections.Generic;
 using UnityEngine;
 
 /***************************************************/
@@ -110,6 +111,7 @@ public abstract class Unite
 
     [System.Obsolete("Journey system is deprecated.")]
     [SerializeField] private Journey m_journey = new Journey();
+    [SerializeField] private List<Task> m_tasks;
 
     private CaracteristicUnite m_caracteristic = null;
     private float m_luminosite = 0.0f;
@@ -125,6 +127,32 @@ public abstract class Unite
     public Unite()
     {
 
+    }
+
+    public Task GetTask(int i)
+    {
+        if (i < 0 || i >= m_tasks.Count) return null;
+        return m_tasks[i];
+    }
+
+    public void AddTask(Task p_task)
+    {
+        m_tasks.Add(p_task);
+    }
+
+    public void ClearTasks()
+    {
+        m_tasks.Clear();
+    }
+
+    public void RemoveTask(int i)
+    {
+        m_tasks.RemoveAt(i);
+    }
+
+    public int CountTask()
+    {
+        return m_tasks.Count;
     }
 
     /********  PROTECTED        ************************/

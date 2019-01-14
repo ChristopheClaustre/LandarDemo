@@ -81,6 +81,32 @@ public abstract class UniteScript :
 
     /********  PUBLIC           ************************/
 
+    // Tasks management
+
+    public void AddTask(Task p_task)
+    {
+        m_unite.AddTask(p_task);
+
+        // warn all the scripts
+        gameObject.SendMessage("TaskUpdated", null, SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void ClearTasks()
+    {
+        m_unite.ClearTasks();
+
+        // warn all the scripts
+        gameObject.SendMessage("TaskUpdated", null, SendMessageOptions.DontRequireReceiver);
+    }
+
+    public void RemoveTask(int i)
+    {
+        m_unite.RemoveTask(i);
+
+        // warn all the scripts
+        gameObject.SendMessage("TaskUpdated", null, SendMessageOptions.DontRequireReceiver);
+    }
+
     // gestion des trajets
 
     [System.Obsolete("Journey system is deprecated.")]
