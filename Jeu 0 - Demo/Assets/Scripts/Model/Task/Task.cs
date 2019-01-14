@@ -38,13 +38,12 @@ public abstract class Task
 
     public void Goto(UniteScript p_script)
     {
-        // @todo
+        p_script.Goto(GetLocalisation());
     }
 
     public bool GotoFinished(UniteScript p_script)
     {
-        // @todo
-        return true;
+        return p_script.GotoFinished(GetLocalisation());
     }
 
     /********  PROTECTED        ************************/
