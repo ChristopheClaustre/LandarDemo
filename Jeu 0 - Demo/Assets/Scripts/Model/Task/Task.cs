@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-public abstract class Activity
+public abstract class Task
 {
     #region Attributes
     /***************************************************/
@@ -27,21 +27,21 @@ public abstract class Activity
 
     /********  PUBLIC           ************************/
 
-    public Activity() {}
+    public Task() {}
 
-    public virtual bool CheckAction() { return true; }
-    public abstract bool DoAction(PersonnageScript p_personnageScript);
+    public virtual bool CheckTask() { return true; }
+    public abstract bool DoTask(UniteScript p_script);
     public abstract Vector3 GetLocalisation();
 
     public virtual bool HasOrientation() { return false; }
     public virtual float GetOrientation() { return float.NaN; }
 
-    public void Goto(PersonnageScript p_personnageScript)
+    public void Goto(UniteScript p_script)
     {
         // @todo
     }
 
-    public bool GotoFinished(PersonnageScript p_personnageScript)
+    public bool GotoFinished(UniteScript p_script)
     {
         // @todo
         return true;

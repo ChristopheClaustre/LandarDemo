@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-public class Goto : Activity
+public class Goto : Task
 {
     #region Sub-classes/enum
     /***************************************************/
@@ -48,33 +48,33 @@ public class Goto : Activity
         m_orientation = p_orientation;
     }
 
-    public override bool DoAction(PersonnageScript p_personnageScript)
+    public override bool DoTask(UniteScript p_script)
     {
-        bool lActionFinished = false;
+        bool lTaskFinished = false;
         switch(m_state)
         {
             case State.eBegin:
-                Goto(p_personnageScript);
+                Goto(p_script);
                 m_state = State.eMoving;
-                lActionFinished = false;
+                lTaskFinished = false;
                 break;
             case State.eMoving:
-                if (GotoFinished(p_personnageScript))
+                if (GotoFinished(p_script))
                 {
                     m_state = State.eFinished;
-                    lActionFinished = true;
+                    lTaskFinished = true;
                 }
                 else
                 {
-                    lActionFinished = false;
+                    lTaskFinished = false;
                 }
                 break;
             case State.eFinished:
-                lActionFinished = true;
+                lTaskFinished = true;
                 break;
         }
 
-        return lActionFinished;
+        return lTaskFinished;
     }
 
     public override Vector3 GetLocalisation()
