@@ -116,13 +116,13 @@ public abstract class UniteScript :
 
     public void Goto(Vector3 p_vector3)
     {
-        GetComponent<NavMeshAgent>().SetDestination(p_vector3);
+        GetComponent<Navigation>().Goto(p_vector3);
     }
 
     public bool GotoFinished(Vector3 p_vector3)
     {
-        var agent = GetComponent<NavMeshAgent>();
-        return Vector3.Distance(agent.destination, p_vector3) <= agent.stoppingDistance;
+        Navigation nav = GetComponent<Navigation>();
+        return nav.GotoFinished() && nav.CurrentDestination() == p_vector3;
     }
 
     // gestion des trajets
