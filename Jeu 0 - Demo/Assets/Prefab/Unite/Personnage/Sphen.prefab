@@ -138,10 +138,10 @@ GameObject:
   - component: {fileID: 4000014205848216}
   - component: {fileID: 65000011872694688}
   - component: {fileID: 195000012557850810}
-  - component: {fileID: 114000010886242398}
-  - component: {fileID: 114000012180722728}
-  - component: {fileID: 114000011917002964}
   - component: {fileID: 114000013127854180}
+  - component: {fileID: 114000012180722728}
+  - component: {fileID: 114000010886242398}
+  - component: {fileID: 114216610576852758}
   m_Layer: 0
   m_Name: Sphen
   m_TagString: Player
@@ -589,21 +589,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rotatingDistance: 0.5
   m_coeffRotation: 1.5
---- !u!114 &114000011917002964
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013518983224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6c045ec23b6bc245b5cf20ddb9d930f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_prefabPosition: {fileID: 1000012571442316, guid: d1cfacb7fad1dcd4db4c13ce3e6a97f0,
-    type: 2}
-  m_prefabLine: {fileID: 1000014162334246, guid: 6c0f16e8a59dbc845962c3cad804ef1b,
-    type: 2}
 --- !u!114 &114000012180722728
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -660,6 +645,17 @@ MonoBehaviour:
   initialObject: {fileID: 1000012557892604}
   player: {fileID: 1000010423291328}
   material: {fileID: 2100000, guid: c281f23520be36b4f9225c395eb63b22, type: 2}
+--- !u!114 &114216610576852758
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013518983224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e97a3fa3147924bb23d3ec7ff40670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136000013977298214
 CapsuleCollider:
   m_ObjectHideFlags: 1
