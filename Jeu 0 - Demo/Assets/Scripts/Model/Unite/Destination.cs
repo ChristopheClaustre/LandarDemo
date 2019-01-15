@@ -6,6 +6,7 @@ using UnityEngine;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
+[System.Obsolete("Destination system is deprecated.")]
 [System.Serializable]
 public class Destination
 {
