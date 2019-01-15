@@ -44,7 +44,6 @@ public class GUINavigation :
     private List<GameObject> m_instances;
 
     private PersonnageScript m_personnageScript;
-    private GameObject m_goSelec;
     private GameObject m_startingLine = null;
     private GameObject m_endingLine = null;
     private bool m_show = false;
@@ -61,7 +60,6 @@ public class GUINavigation :
     void Start()
     {
         m_personnageScript = GetComponent<PersonnageScript>();
-        m_goSelec = transform.Find("selector").gameObject;
         m_instances = new List<GameObject>();
     }
 
@@ -147,11 +145,8 @@ public class GUINavigation :
 
     public void NewSelected()
     {
-        bool isSelected = m_personnageScript.Selected;
-        // on affiche l'état selectionné
-        m_goSelec.SetActive(isSelected);
         // si il est sélectionné
-        if (isSelected)
+        if (m_personnageScript.Selected)
         {
             NewJourney();
         }
