@@ -126,7 +126,7 @@ public abstract class UniteScript :
     }
 
     // gestion des trajets
-
+    #region obsolete
     [System.Obsolete("Journey system is deprecated.")]
     public void Journey_nextDestination()
     {
@@ -178,6 +178,7 @@ public abstract class UniteScript :
             gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
         }
     }
+    #endregion
 
     /********  PROTECTED        ************************/
 
