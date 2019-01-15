@@ -65,9 +65,6 @@ public class Navigation :
 
     private EnumNavigationState m_state = EnumNavigationState.e_finished;
 
-    // les variables de model
-    private PersonnageScript m_persoScript;
-
     // the destination for next call of the pathfinder
     private Vector3 m_destination;
     private float m_orientation;
@@ -86,7 +83,6 @@ public class Navigation :
     // Use this for initialization
     void Start()
     {
-        m_persoScript = GetComponent<PersonnageScript>();
         m_agent = this.GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
