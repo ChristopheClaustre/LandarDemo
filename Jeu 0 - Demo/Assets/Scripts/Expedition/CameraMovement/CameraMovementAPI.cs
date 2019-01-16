@@ -107,33 +107,33 @@ public class CameraMovementAPI :
 
     public void MoveToLeft()
     {
-        HorizontalMove(-m_setting.CameraVelocity, Time.deltaTime);
+        HorizontalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
     }
     public void MoveToRight()
     {
-        HorizontalMove(m_setting.CameraVelocity, Time.deltaTime);
+        HorizontalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
     }
     public void MoveToTop()
     {
-        VerticalMove(m_setting.CameraVelocity, Time.deltaTime);
+        VerticalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
     }
     public void MoveToBottom()
     {
-        VerticalMove(-m_setting.CameraVelocity, Time.deltaTime);
+        VerticalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
     }
 
     public void MoveFromVector(Vector2 p_vector)
     {
-        HorizontalMove(m_setting.CameraVelocity * p_vector.x, Time.deltaTime);
-        VerticalMove  (m_setting.CameraVelocity * p_vector.y, Time.deltaTime);
+        HorizontalMove(m_setting.CameraVelocity * p_vector.x, Time.unscaledDeltaTime);
+        VerticalMove  (m_setting.CameraVelocity * p_vector.y, Time.unscaledDeltaTime);
     }
 
     public void QueryNewCameraPosition(Vector2 p_newPosition)
     {
         Vector3 actualPosition = m_camera.transform.position;
 
-        HorizontalMove(p_newPosition.x - actualPosition.x, Time.deltaTime);
-        VerticalMove(p_newPosition.y - actualPosition.y, Time.deltaTime);
+        HorizontalMove(p_newPosition.x - actualPosition.x, Time.unscaledDeltaTime);
+        VerticalMove(p_newPosition.y - actualPosition.y, Time.unscaledDeltaTime);
     }
 
     /********  PROTECTED        ************************/
