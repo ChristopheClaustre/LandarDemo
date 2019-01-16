@@ -126,7 +126,7 @@ public abstract class Unite
 
     public Unite()
     {
-
+        m_tasks = new List<Task>();
     }
 
     public Task GetTask(int i)
