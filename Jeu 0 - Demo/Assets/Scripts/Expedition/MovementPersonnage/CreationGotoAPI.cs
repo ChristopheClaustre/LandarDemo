@@ -8,7 +8,7 @@ using System.Collections.Generic;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-public class CreationDestinationAPI :
+public class CreationGotoAPI :
     MonoBehaviour
 {
     #region Sub-classes/enum
@@ -28,7 +28,10 @@ public class CreationDestinationAPI :
     /***  PROPERTY              ************************/
     /***************************************************/
 
-
+    public static CreationGotoAPI Inst
+    {
+        get { return m_instance; }
+    }
 
     #endregion
     #region Constants
@@ -60,7 +63,9 @@ public class CreationDestinationAPI :
     [Header("expedition")]
     public int element = 0;
     public float shiftExpedition = 0.5f;
-    
+
+    private static CreationGotoAPI m_instance = null;
+
     #endregion
     #region Methods
     /***************************************************/
@@ -72,7 +77,7 @@ public class CreationDestinationAPI :
     // Use this for initialization
     private void Start()
     {
-        
+        m_instance = this;
     }
 
     // Update is called once per frame
@@ -124,6 +129,16 @@ public class CreationDestinationAPI :
         }
     }
 
+    public float GetExpeditionRadius(int p_nbElement, float p_shiftBetweenElement)
+    {
+        // a : area taken by one element
+        float a = p_shiftBetweenElement * Mathf.PI * Mathf.PI;
+        // A : area of the circle where elements will be created
+        float computedA = a * ((p_nbElement - 1) * 0.75f);
+
+        return Mathf.Sqrt(computedA / Mathf.PI);
+    }
+
     public void GetFormationPositions(Vector3 p_target, Vector2 p_shifts, List<int> p_numberOfElementOnEachRow, float p_angleAroundUp, out List<List<Vector3>> p_formationPositions)
     {
         p_formationPositions = new List<List<Vector3>>();
@@ -157,16 +172,6 @@ public class CreationDestinationAPI :
     private bool CheckAPosition(Vector3 p_candidate, float p_shiftRadius, List<Vector3> p_previousPositions)
     {
         return p_previousPositions.TrueForAll(x => Mathf.Abs(Vector3.Distance(x, p_candidate)) > 2 * p_shiftRadius);
-    }
-
-    private float GetExpeditionRadius(int p_nbElement, float p_shiftBetweenElement)
-    {
-        // a : area taken by one element
-        float a = p_shiftBetweenElement * Mathf.PI * Mathf.PI;
-        // A : area of the circle where elements will be created
-        float computedA = a * ((p_nbElement-1) * 0.75f);
-
-        return Mathf.Sqrt(computedA / Mathf.PI);
     }
 
     //** Formation position
