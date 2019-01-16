@@ -18,7 +18,7 @@ public class PersonnageScript :
 
     public virtual Personnage Perso
     {
-        get { return m_unite; }
+        get { return (Personnage)m_unite; }
         set
         {
             if (!m_unite.Equals(value))
@@ -74,7 +74,7 @@ public class PersonnageScript :
 
     /********  PRIVATE          ************************/
 
-    new Personnage m_unite;
+    //new Personnage m_unite;
 
     #endregion
     #region Methods
