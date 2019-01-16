@@ -90,8 +90,11 @@ public abstract class UniteScript :
 
     // Tasks management
 
-    public void AddTask(Task p_task)
+    public void SetTask(Task p_task, bool p_append = false)
     {
+        if (! p_append)
+            m_unite.ClearTasks();
+
         m_unite.AddTask(p_task);
 
         // warn all the scripts
