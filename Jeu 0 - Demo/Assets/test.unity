@@ -210,7 +210,6 @@ GameObject:
   - component: {fileID: 329232245}
   - component: {fileID: 329232244}
   - component: {fileID: 329232243}
-  - component: {fileID: 329232251}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -250,9 +249,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 329232240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7075bf19041250647b715ed083e3ef1a, type: 3}
+  m_Script: {fileID: 11500000, guid: bda3ff1679d620344a87e59a7c20e4ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestMePlease: 0
+  origin_: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
+  m_layerMaskForPossiblePosition:
+    serializedVersion: 2
+    m_Bits: 0
+  origin: {x: 0, y: 0, z: 0}
+  elementNumbers: 01000000030000000500000004000000
+  shifts: {x: 0.5, y: 0.5}
+  orientation: 0
+  element: 0
+  shiftExpedition: 0.5
 --- !u!114 &329232244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,10 +272,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 329232240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9d017170326b0a4aab7395247dd19c5, type: 3}
+  m_Script: {fileID: 11500000, guid: dc7b8f8b3ed0fab4f873e280d95940b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rotatingDistance: 25
 --- !u!114 &329232245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,21 +365,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 329232240}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &329232251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 329232240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18cb906116d058409d7409440909686, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_prefabPosition: {fileID: 1000013811803350, guid: 21e01de8e8b47464a899103c8066141f,
-    type: 2}
-  m_prefabLine: {fileID: 1000014162334246, guid: 6c0f16e8a59dbc845962c3cad804ef1b,
-    type: 2}
 --- !u!4 &335680160 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011031872014, guid: f2a1ec656b6529e498e93bb0d1b40274,
@@ -513,6 +508,10 @@ Prefab:
         type: 2}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013336584316, guid: e90f7afede6a7b445bd98422b1182c10, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e90f7afede6a7b445bd98422b1182c10, type: 2}
@@ -1746,8 +1745,6 @@ GameObject:
   m_Component:
   - component: {fileID: 980909210}
   - component: {fileID: 980909209}
-  - component: {fileID: 980909208}
-  - component: {fileID: 980909207}
   - component: {fileID: 980909206}
   - component: {fileID: 980909211}
   - component: {fileID: 980909213}
@@ -1760,20 +1757,6 @@ GameObject:
   m_IsActive: 1
 --- !u!81 &980909206
 AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 980909205}
-  m_Enabled: 1
---- !u!124 &980909207
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 980909205}
-  m_Enabled: 1
---- !u!92 &980909208
-Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1993,6 +1976,10 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1000012305209188, guid: 567eb227f136dfc499ddcabe38975127, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 567eb227f136dfc499ddcabe38975127, type: 2}
   m_IsPrefabAsset: 0
@@ -2154,6 +2141,10 @@ Prefab:
         type: 2}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013887635210, guid: 90612508d1040af41b77642b22e9ec4f, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90612508d1040af41b77642b22e9ec4f, type: 2}
