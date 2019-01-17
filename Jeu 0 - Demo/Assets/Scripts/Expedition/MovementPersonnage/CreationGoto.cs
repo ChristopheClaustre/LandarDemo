@@ -71,6 +71,7 @@ public class CreationGoto :
     private void OnRightUp()
     {
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        position[1] = 0; // reset altitude
         if (ClickValidator.Inst != null && ClickValidator.Inst.isOnBlackFoW(position))
             return;
 
