@@ -73,7 +73,7 @@ public abstract class UniteScript :
     }
 
     // Update is called once per frame
-    private void Update()
+    protected virtual void Update()
     {
         if (m_unite.CountTask() == 0) return;
 
