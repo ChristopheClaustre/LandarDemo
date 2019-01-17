@@ -46,6 +46,8 @@ public class Goto : Task
     {
         m_localisation = p_localisation;
         m_orientation = p_orientation;
+
+        m_state = State.eBegin;
     }
 
     public override bool DoTask(UniteScript p_script)
