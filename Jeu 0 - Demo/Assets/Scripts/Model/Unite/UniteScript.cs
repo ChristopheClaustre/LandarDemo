@@ -117,6 +117,8 @@ public abstract class UniteScript :
         gameObject.SendMessage("TaskUpdated", null, SendMessageOptions.DontRequireReceiver);
     }
 
+    // navigation
+
     public void Goto(Vector3 p_vector3)
     {
         GetComponent<Navigation>().Goto(p_vector3);
