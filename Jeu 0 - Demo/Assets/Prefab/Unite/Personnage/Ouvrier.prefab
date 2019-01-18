@@ -268,10 +268,10 @@ GameObject:
   - component: {fileID: 4000013404616372}
   - component: {fileID: 65000013413748468}
   - component: {fileID: 195000010262979088}
-  - component: {fileID: 114000011763802476}
-  - component: {fileID: 114000012271634872}
-  - component: {fileID: 114000011832474394}
   - component: {fileID: 114000011680672222}
+  - component: {fileID: 114000012271634872}
+  - component: {fileID: 114000011763802476}
+  - component: {fileID: 114868602268472304}
   m_Layer: 0
   m_Name: Ouvrier
   m_TagString: Player
@@ -506,15 +506,15 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013887635210}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -11.99, y: 0, z: 8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4000011390426960}
   - {fileID: 4000011386408720}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!4 &4000013729144396
 Transform:
   m_ObjectHideFlags: 1
@@ -792,7 +792,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013887635210}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.4, y: 1, z: 0.5}
@@ -840,21 +840,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rotatingDistance: 0.5
   m_coeffRotation: 1.5
---- !u!114 &114000011832474394
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013887635210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6c045ec23b6bc245b5cf20ddb9d930f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_prefabPosition: {fileID: 1000012571442316, guid: d1cfacb7fad1dcd4db4c13ce3e6a97f0,
-    type: 2}
-  m_prefabLine: {fileID: 1000014162334246, guid: 6c0f16e8a59dbc845962c3cad804ef1b,
-    type: 2}
 --- !u!114 &114000012271634872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -899,6 +884,17 @@ MonoBehaviour:
   m_rotationX: 0
   m_rotationY: 0
   m_rotationZ: 0
+--- !u!114 &114868602268472304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013887635210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e97a3fa3147924bb23d3ec7ff40670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136000011518428342
 CapsuleCollider:
   m_ObjectHideFlags: 1
