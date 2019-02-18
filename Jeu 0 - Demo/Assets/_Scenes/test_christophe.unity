@@ -2109,6 +2109,58 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e90f7afede6a7b445bd98422b1182c10, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1497359803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1497359805}
+  - component: {fileID: 1497359804}
+  m_Layer: 0
+  m_Name: Harry Potter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1497359804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1497359803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e913cd0473b6d44a925b3e98fa4c96a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_texturesForPersonage:
+  - {fileID: 2800000, guid: 89e64d03f90f4594ea2643397c87ebd7, type: 3}
+  - {fileID: 2800000, guid: acd83017c38e11748aeb2e62eec3c592, type: 3}
+  - {fileID: 2800000, guid: b298f8032dbbad74f9785ab39224880b, type: 3}
+  m_texturesForMonsters:
+  - {fileID: 2800000, guid: b9b0bd4054f6d154dbb9ffa8259d4e9d, type: 3}
+  m_texturesForObjects:
+  - {fileID: 2800000, guid: 1fd0806c85cf511409c404b8f06b1db4, type: 3}
+  - {fileID: 2800000, guid: bf2460f807658e249ac048b937464c2e, type: 3}
+  - {fileID: 2800000, guid: edd107f6f4276fc4b9973ea08d30dc55, type: 3}
+  m_textureToKill: {fileID: 0}
+  m_textureToDelete: {fileID: 0}
+--- !u!4 &1497359805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1497359803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.097211, y: 81.984375, z: 6.6981564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1586821566
 GameObject:
   m_ObjectHideFlags: 0
@@ -2391,7 +2443,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 361a3dd75ade19a4d84ce67f9ffeac39, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 2f1fabb20af9dc64ca296bac53e6a510, type: 2}
 --- !u!114 &1648970582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2419,7 +2471,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.015
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 68ff7645e56f0fe4694e568ce7695c09, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 991a9bad5ff9873418d43e2a62cf0813, type: 2}
 --- !u!114 &1648970583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,7 +2499,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 00ef266e9a32bb74ca83bf8245edd31a, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 630db73aca396b046a4baa96ce3fefa8, type: 2}
 --- !u!114 &1648970584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,7 +2527,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 1
   m_VoxelSize: 0.01
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 951b962b874ca40418693f3c662f5737, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: b5c948bdbc8dcd440abfb739276528a2, type: 2}
 --- !u!4 &1648970585
 Transform:
   m_ObjectHideFlags: 0
