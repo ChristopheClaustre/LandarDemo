@@ -70,13 +70,6 @@ public abstract class Unite
         get { return m_etatIA; }
     }
 
-    [System.Obsolete("Journey system is deprecated.")]
-    public Journey Journey
-    {
-        get { return m_journey; }
-        set { m_journey = value; }
-    }
-
     public CaracteristicUnite Carac
     {
         get { return m_caracteristic; }
@@ -109,8 +102,6 @@ public abstract class Unite
     private Description m_description = null;
     private EnumIAState m_etatIA = EnumIAState.e_ETDRF;
 
-    [System.Obsolete("Journey system is deprecated.")]
-    [SerializeField] private Journey m_journey = new Journey();
     [SerializeField] private List<Task> m_tasks;
 
     private CaracteristicUnite m_caracteristic = null;

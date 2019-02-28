@@ -21,13 +21,6 @@ public abstract class UniteScript :
 
     /********  PROTECTED        ************************/
 
-    [System.Obsolete("Journey system is deprecated.")]
-    protected abstract Journey Journey
-    {
-        get;
-        set;
-    }
-
     public List<Light> Lampes
     {
         get { return m_lampes; }
@@ -129,61 +122,6 @@ public abstract class UniteScript :
         Navigation nav = GetComponent<Navigation>();
         return nav.GotoFinished() && nav.CurrentDestination() == p_vector3;
     }
-
-    // gestion des trajets
-    #region obsolete
-    [System.Obsolete("Journey system is deprecated.")]
-    public void Journey_nextDestination()
-    {
-        Journey t = Journey;
-        t.NextDestination();
-        Journey = t;
-
-        // appel à la fonction qui prévient du changement
-        gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public Destination Journey_currentDestination()
-    {
-        return Journey.CurrentDestination();
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public IList<Destination> Journey_Destinations()
-    {
-        return Journey.Destinations;
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public bool Journey_hasDestinations()
-    {
-        return Journey.HasDestinations();
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public bool Journey_WillLoop()
-    {
-        return Journey.WillLoop;
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public bool Journey_Boucler()
-    {
-        return Journey.Loop;
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    public void SetJourney(Journey p_journey)
-    {
-        if (!Journey.Equals(p_journey))
-        {
-            Journey = p_journey;
-
-            gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
-        }
-    }
-    #endregion
 
     /********  PROTECTED        ************************/
 

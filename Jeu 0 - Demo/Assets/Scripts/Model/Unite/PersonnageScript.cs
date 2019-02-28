@@ -24,22 +24,6 @@ public class PersonnageScript :
             if (!m_unite.Equals(value))
             {
                 m_unite = value;
-                gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
-                gameObject.SendMessage("NewPerso", null, SendMessageOptions.DontRequireReceiver);
-            }
-        }
-    }
-
-    [System.Obsolete("Journey system is deprecated.")]
-    protected override Journey Journey
-    {
-        get { return Perso.Journey; }
-        set
-        {
-            if (!Perso.Journey.Equals(value))
-            {
-                Perso.Journey = value;
-                gameObject.SendMessage("NewJourney", null, SendMessageOptions.DontRequireReceiver);
                 gameObject.SendMessage("NewPerso", null, SendMessageOptions.DontRequireReceiver);
             }
         }
