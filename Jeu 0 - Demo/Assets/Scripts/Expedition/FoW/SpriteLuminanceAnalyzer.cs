@@ -75,7 +75,7 @@ public class SpriteLuminanceAnalyzer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(getSpriteRenderingLuminance(spriteRenderer.sprite, renderCamera));
+        //Debug.Log(getSpriteRenderingLuminance(spriteRenderer.sprite, renderCamera));
     }
 
     /********  OUR METHODES     ************************/
