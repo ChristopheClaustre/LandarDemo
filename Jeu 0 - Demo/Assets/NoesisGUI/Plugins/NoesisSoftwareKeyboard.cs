@@ -80,7 +80,7 @@ namespace Noesis
 
                 if (_isActive)
                 {
-                    if (_keyboard.done || _keyboard.wasCanceled)
+                    if (_keyboard.status == UnityEngine.TouchScreenKeyboard.Status.Done || _keyboard.status == UnityEngine.TouchScreenKeyboard.Status.Canceled)
                     {
                         _isActive = false;
 
