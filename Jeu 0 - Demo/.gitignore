@@ -32,3 +32,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+### Noesis
+Noesis/Noesis/obj/
+Noesis/Noesis/bin/
+Noesis/.vs/

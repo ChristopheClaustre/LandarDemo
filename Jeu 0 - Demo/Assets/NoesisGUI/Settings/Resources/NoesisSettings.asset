@@ -11,7 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32cb0206ed0bc0d4b91a4e54d600f906, type: 3}
   m_Name: NoesisSettings
   m_EditorClassIdentifier: 
-  applicationResources: {fileID: 0}
+  applicationResources: {fileID: 11400000, guid: 65e7694ad07d37549917d0d0f51df558,
+    type: 2}
   glyphTextureSize: 2
   glyphMeshThreshold: 96
   offscreenTextureSize: {x: 0, y: 0}
@@ -19,4 +20,7 @@ MonoBehaviour:
   offscreenMaxSurfaces: 0
   previewEnabled: 1
   logVerbosity: 0
-  preloadedXamls: []
+  preloadedXamls:
+  - {fileID: 11400000, guid: 82b64db86f3fcac448f96a2e271567d7, type: 2}
+  - {fileID: 11400000, guid: d1caeb60c135cd54489164ed968073a1, type: 2}
+  - {fileID: 11400000, guid: c1fd375694598dc49a43d51b5d1476c7, type: 2}

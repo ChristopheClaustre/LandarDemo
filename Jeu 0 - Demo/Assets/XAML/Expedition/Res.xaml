@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Noesis">
+    
+    <!-- Images -->
+    <BitmapImage x:Key="SoldierIcon" UriSource="..\..\Graphics\UI\Personages\Soldat.png"/>
+    <BitmapImage x:Key="EngineerIcon" UriSource="..\..\Graphics\UI\Personages\Ingénieur.png"/>
+    <BitmapImage x:Key="WorkerIcon" UriSource="..\..\Graphics\UI\Personages\Ouvrier.png"/>
+    
+    <!-- Converters -->
+    <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    
+</ResourceDictionary>
