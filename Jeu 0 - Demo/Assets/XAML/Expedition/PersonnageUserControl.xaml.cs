@@ -40,7 +40,7 @@ namespace Noesis
             }
             set
             {
-                m_personnageScript.Selected = value;
+                ExpeditionManager.Instance.monoSelection(ExpeditionManager.Persos.IndexOf(m_personnageScript.gameObject));
             }
         }
 
