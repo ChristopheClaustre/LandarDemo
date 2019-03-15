@@ -3,6 +3,7 @@
 using Noesis;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 #else
 using System;
@@ -24,22 +25,13 @@ using System.Windows.Shapes;
 
 namespace Noesis
 {
-    public class PersonnageGUI
+#if NOESIS
+    public class PersonnageGUI : INotifyPropertyChanged
     {
-#if NOESIS
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private PersonnageScript m_personnageScript;
-#else
-        private bool m_isSelected = false;
-        private int m_maxLife = 150;
-        private int m_life = 150;
 
-        private int m_type = 0;
-        // - 0: soldier
-        // - 1: engineer
-        // - 2: worker
-#endif
-
-#if NOESIS
         public bool Selected
         {
             get
@@ -87,7 +79,31 @@ namespace Noesis
                 return false;
             }
         }
+
+        public PersonnageGUI(PersonnageScript p_personnageScript)
+        {
+            m_personnageScript = p_personnageScript;
+            m_personnageScript.m_newSelectedEvent += NewSelected;
+        }
+
+        public void NewSelected()
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("Selected"));
+        }
+    }
 #else
+    public class PersonnageGUI
+    {
+        private bool m_isSelected = false;
+        private int m_maxLife = 150;
+        private int m_life = 150;
+
+        private int m_type = 0;
+        // - 0: soldier
+        // - 1: engineer
+        // - 2: worker
+
         public bool Selected
         {
             get
@@ -131,14 +147,7 @@ namespace Noesis
                 return m_type == 2;
             }
         }
-#endif
 
-#if NOESIS
-        public PersonnageGUI(PersonnageScript p_personnageScript)
-        {
-            m_personnageScript = p_personnageScript;
-        }
-#else
         public PersonnageGUI(bool p_isSelected, int p_maxLife, int p_life, int p_type)
         {
             m_isSelected = p_isSelected;
@@ -146,8 +155,8 @@ namespace Noesis
             m_life = p_life;
             m_type = p_type;
         }
-#endif
     }
+#endif
 
     /// <summary>
     /// Logique d'interaction pour PersonnageUserControl.xaml
