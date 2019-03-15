@@ -37,7 +37,7 @@ namespace Noesis
 #if NOESIS
 		private void InitializeComponent()
 		{
-			Noesis.GUI.LoadComponent(this, "Assets/NoesisGUI/Local/Expedition/PersonnageIcon.xaml");
+			Noesis.GUI.LoadComponent(this, "Assets/XAML/Expedition/PersonnageIcon.xaml");
 		}
 #endif
     }

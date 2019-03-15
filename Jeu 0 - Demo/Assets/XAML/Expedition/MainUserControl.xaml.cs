@@ -61,7 +61,7 @@ namespace Noesis
 #if NOESIS
 		private void InitializeComponent()
 		{
-			Noesis.GUI.LoadComponent(this, "Assets/NoesisGUI/Local/Expedition/MainUserControl.xaml");
+			Noesis.GUI.LoadComponent(this, "Assets/XAML/Expedition/MainUserControl.xaml");
 		}
 #endif
 

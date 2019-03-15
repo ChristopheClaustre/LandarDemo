@@ -162,7 +162,7 @@ namespace Noesis
 #if NOESIS
 		private void InitializeComponent()
 		{
-			Noesis.GUI.LoadComponent(this, "Assets/NoesisGUI/Local/Expedition/PersonnageUserControl.xaml");
+			Noesis.GUI.LoadComponent(this, "Assets/XAML/Expedition/PersonnageUserControl.xaml");
 		}
 #endif
     }
