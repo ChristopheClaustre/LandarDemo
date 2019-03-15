@@ -8,7 +8,7 @@ using System.Collections;
 /***  THE CLASS             ************************/
 /***************************************************/
 [System.Serializable]
-public class Personnage :
+public class Character :
     Unite
 {
     #region Sub-classes/enum

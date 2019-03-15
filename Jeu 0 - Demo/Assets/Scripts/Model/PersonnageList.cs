@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 /***************************************************/
 [System.Serializable]
 public class PersonnageList :
-    ListWrapper<Personnage>
+    ListWrapper<Character>
 {
     #region Property
     /***************************************************/
@@ -20,11 +20,11 @@ public class PersonnageList :
 
     /********  PUBLIC           ************************/
 
-    public List<Personnage> Personnages
+    public List<Character> Personnages
     {
         get
         {
-            return new List<Personnage>(m_list);
+            return new List<Character>(m_list);
         }
     }
 
@@ -48,7 +48,7 @@ public class PersonnageList :
 
     /********  PUBLIC           ************************/
 
-    public PersonnageList() : base( new List<Personnage>() )
+    public PersonnageList() : base( new List<Character>() )
     {
     }
 
