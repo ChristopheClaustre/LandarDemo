@@ -9,6 +9,14 @@ using UnityEngine;
 public class PersonnageScript :
     UniteScript
 {
+    #region Sub-classes/enum
+    /***************************************************/
+    /***  SUB-CLASSES/ENUM      ************************/
+    /***************************************************/
+
+    public delegate void NewSelected();
+
+    #endregion
     #region Property
     /***************************************************/
     /***  PROPERTY              ************************/
@@ -37,7 +45,8 @@ public class PersonnageScript :
             if (m_selected != value)
             {
                 m_selected = value;
-                gameObject.SendMessage("NewSelected", null, SendMessageOptions.DontRequireReceiver);
+                if (m_newSelectedEvent != null)
+                    m_newSelectedEvent();
             }
         }
     }
@@ -59,6 +68,8 @@ public class PersonnageScript :
     /********  PRIVATE          ************************/
 
     //new Personnage m_unite;
+
+    public event NewSelected m_newSelectedEvent;
 
     #endregion
     #region Methods

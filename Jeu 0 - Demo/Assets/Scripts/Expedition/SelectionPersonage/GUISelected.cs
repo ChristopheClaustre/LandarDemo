@@ -28,13 +28,23 @@ public class GUISelected :
     /********  UNITY MESSAGES   ************************/
 
     // Use this for initialization
-    private void Start()
+    private void Awake()
     {
         m_personnageScript = GetComponent<PersonnageScript>();
         m_goSelec = transform.Find("selector").gameObject;
     }
 
-    /********  OUR MESSAGES     ************************/
+    private void OnEnable()
+    {
+        m_personnageScript.m_newSelectedEvent += NewSelected;
+    }
+
+    private void OnDisable()
+    {
+        m_personnageScript.m_newSelectedEvent -= NewSelected;
+    }
+
+    /********  OUR EVENTS       ************************/
 
     private void NewSelected()
     {
