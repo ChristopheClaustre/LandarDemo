@@ -1815,7 +1815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1a52d2531c548cb02f906c99d2a95a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _xaml: {fileID: 0}
+  _xaml: {fileID: 11400000, guid: 82b64db86f3fcac448f96a2e271567d7, type: 2}
   _isPPAAEnabled: 1
   _tessellationQuality: 1
   _renderFlags: 0
