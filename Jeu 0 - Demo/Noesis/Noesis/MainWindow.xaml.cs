@@ -28,18 +28,18 @@ namespace Noesis
 
         private void OnInitialized(object sender, EventArgs args)
         {
-            PersonnagesGUI data = new PersonnagesGUI();
+            ExpeditionModeMVVM data = new ExpeditionModeMVVM();
 
-            data.Add(new PersonnageGUI(true, 150, 150, 2));
-            data.Add(new PersonnageGUI(false, 150, 125, 1));
-            data.Add(new PersonnageGUI(true, 150, 100, 0));
-            data.Add(new PersonnageGUI(false, 150, 75, 2));
-            data.Add(new PersonnageGUI(true, 150, 50, 1));
-            data.Add(new PersonnageGUI(false, 150, 25, 0));
-            data.Add(new PersonnageGUI(true, 150, 1, 2));
+            data.Add(new CharacterMVVM(true, 150, 150, 2));
+            data.Add(new CharacterMVVM(false, 150, 125, 1));
+            data.Add(new CharacterMVVM(true, 150, 100, 0));
+            data.Add(new CharacterMVVM(false, 150, 75, 2));
+            data.Add(new CharacterMVVM(true, 150, 50, 1));
+            data.Add(new CharacterMVVM(false, 150, 25, 0));
+            data.Add(new CharacterMVVM(true, 150, 1, 2));
 
-            data.Add(new PersonnageGUI(true, 150, 75, 2));
-            data.Add(new PersonnageGUI(true, 150, 75, 2));
+            data.Add(new CharacterMVVM(true, 150, 75, 2));
+            data.Add(new CharacterMVVM(true, 150, 75, 2));
 
             DataContext = data;
         }

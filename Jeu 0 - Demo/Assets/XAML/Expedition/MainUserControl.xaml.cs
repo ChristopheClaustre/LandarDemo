@@ -24,11 +24,11 @@ using System.Windows.Shapes;
 
 namespace Noesis
 {
-    public class PersonnagesGUI
+    public class ExpeditionModeMVVM
     {
-        private List<PersonnageGUI> m_list;
+        private List<CharacterMVVM> m_list;
 
-        public List<PersonnageGUI> List
+        public List<CharacterMVVM> List
         {
             get
             {
@@ -36,12 +36,12 @@ namespace Noesis
             }
         }
 
-        public PersonnagesGUI()
+        public ExpeditionModeMVVM()
         {
-            m_list = new List<PersonnageGUI>();
+            m_list = new List<CharacterMVVM>();
         }
 
-        public void Add(PersonnageGUI p_personnage)
+        public void Add(CharacterMVVM p_personnage)
         {
             m_list.Add(p_personnage);
         }
@@ -68,11 +68,11 @@ namespace Noesis
         private void OnInitialized(object sender, EventArgs args)
         {
 #if NOESIS
-            PersonnagesGUI data = new PersonnagesGUI();
+            ExpeditionModeMVVM data = new ExpeditionModeMVVM();
 
             foreach (GameObject go in ExpeditionManager.Persos)
             {
-                data.Add(new PersonnageGUI(go.GetComponent<PersonnageScript>()));
+                data.Add(new CharacterMVVM(go.GetComponent<PersonnageScript>()));
             }
 
             DataContext = data;
