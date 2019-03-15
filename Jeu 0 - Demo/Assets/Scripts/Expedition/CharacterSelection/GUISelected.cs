@@ -16,7 +16,7 @@ public class GUISelected :
     /***  ATTRIBUTES            ************************/
     /***************************************************/
 
-    private PersonnageScript m_personnageScript;
+    private CharacterScript m_personnageScript;
     private GameObject m_goSelec;
 
     #endregion
@@ -30,7 +30,7 @@ public class GUISelected :
     // Use this for initialization
     private void Awake()
     {
-        m_personnageScript = GetComponent<PersonnageScript>();
+        m_personnageScript = GetComponent<CharacterScript>();
         m_goSelec = transform.Find("selector").gameObject;
     }
 

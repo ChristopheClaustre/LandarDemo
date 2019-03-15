@@ -45,7 +45,7 @@ public class GUIExpeditionManager :
         // affichage
         for (int i = 0; i < ExpeditionManager.Persos.Count; i++)
         {
-            ExpeditionManager.Persos[i].GetComponent<PersonnageScript>().Selected = m_expeditionManager.Selected.Contains(i);
+            ExpeditionManager.Persos[i].GetComponent<CharacterScript>().Selected = m_expeditionManager.Selected.Contains(i);
         }
     }
 

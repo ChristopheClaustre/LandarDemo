@@ -6,7 +6,7 @@ using UnityEngine;
 /***************************************************/
 /***  THE CLASS             ************************/
 /***************************************************/
-public class PersonnageScript :
+public class CharacterScript :
     UniteScript
 {
     #region Sub-classes/enum
@@ -24,9 +24,9 @@ public class PersonnageScript :
 
     /********  PUBLIC           ************************/
 
-    public virtual Personnage Perso
+    public virtual Character Perso
     {
-        get { return (Personnage)m_unite; }
+        get { return (Character)m_unite; }
         set
         {
             if (!m_unite.Equals(value))
@@ -82,7 +82,7 @@ public class PersonnageScript :
     // Use this for initialization
     private void Start()
     {
-        m_unite = new Personnage();
+        m_unite = new Character();
     }
 
     // Update is called once per frame

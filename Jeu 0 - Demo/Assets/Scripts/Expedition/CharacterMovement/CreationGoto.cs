@@ -108,7 +108,7 @@ public class CreationGoto :
     private void AffectPosition(GameObject p_perso, Vector3 p_position, bool p_append)
     {
         Goto task = new Goto(p_position);
-        p_perso.GetComponent<PersonnageScript>().SetTask(task, p_append);
+        p_perso.GetComponent<CharacterScript>().SetTask(task, p_append);
     }
 
     #endregion

@@ -90,7 +90,7 @@ namespace Noesis
 
             foreach (GameObject go in ExpeditionManager.Persos)
             {
-                data.Add(new CharacterMVVM(go.GetComponent<PersonnageScript>()));
+                data.Add(new CharacterMVVM(go.GetComponent<CharacterScript>()));
             }
 
             DataContext = data;

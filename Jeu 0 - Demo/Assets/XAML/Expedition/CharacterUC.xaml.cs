@@ -30,7 +30,7 @@ namespace Noesis
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private PersonnageScript m_personnageScript;
+        private CharacterScript m_personnageScript;
 
         public bool Selected
         {
@@ -80,7 +80,7 @@ namespace Noesis
             }
         }
 
-        public CharacterMVVM(PersonnageScript p_personnageScript)
+        public CharacterMVVM(CharacterScript p_personnageScript)
         {
             m_personnageScript = p_personnageScript;
             m_personnageScript.m_newSelectedEvent += NewSelected;
