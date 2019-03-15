@@ -3,6 +3,8 @@ Source of the future demo for the next SquirrelSoft's game
 
 **Coding rules [here](CodingRules.md)**
 
+:warning: **Warning** : it's a git-lfs repository
+
 ## 0. Unity's version
 
 Actual version of Unity to use : 2017.1.0f3
