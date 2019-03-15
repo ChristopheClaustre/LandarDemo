@@ -8,7 +8,7 @@
         mc:Ignorable="d">
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid VerticalAlignment="Bottom">
-            <ToggleButton x:Name="mPauseButton" Content="Pause&#xA;Simulation" Background="#FFD3E611" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100"/>
+            <ToggleButton Content="Pause&#xA;Simulation" Background="#FFD3E611" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="100" Width="100" IsChecked="{Binding TimePaused}"/>
 
             <Grid Height="50" VerticalAlignment="Bottom" Margin="100,0,0,0" Grid.Row="1">
                 <Grid.ColumnDefinitions>

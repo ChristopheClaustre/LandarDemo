@@ -28,7 +28,18 @@ public class PauseTime :
     /***  PROPERTY              ************************/
     /***************************************************/
 
-
+    public static bool Paused
+    {
+        get
+        {
+            return m_instance && m_instance.m_pauseTime;
+        }
+        set
+        {
+            if (m_instance)
+                m_instance.m_pauseTime = value;
+        }
+    }
 
     #endregion
     #region Constants
@@ -46,6 +57,8 @@ public class PauseTime :
 
     public bool m_pauseTime = false;
 
+    private static PauseTime m_instance = null;
+
     #endregion
     #region Methods
     /***************************************************/
@@ -57,7 +70,8 @@ public class PauseTime :
     // Use this for initialization
     private void Start()
     {
-        
+        Debug.Assert(m_instance == null);
+        m_instance = this;
     }
 
     // Update is called once per frame
@@ -72,11 +86,6 @@ public class PauseTime :
     private void FixedUpdate()
     {
         Time.timeScale = m_pauseTime ? 0.05f : 1;
-    }
-
-    private void OnGUI()
-    {
-        m_pauseTime = GUILayout.Toggle(m_pauseTime, m_pauseTime ? ">" : "||");
     }
 
     /********  OUR MESSAGES     ************************/

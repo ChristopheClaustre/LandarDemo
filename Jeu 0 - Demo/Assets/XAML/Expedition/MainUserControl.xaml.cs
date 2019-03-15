@@ -36,6 +36,24 @@ namespace Noesis
             }
         }
 
+        public bool TimePaused
+        {
+            get
+            {
+#if NOESIS
+                return PauseTime.Paused;
+#else
+                return false;
+#endif
+            }
+            set
+            {
+#if NOESIS
+                PauseTime.Paused = value;
+#endif
+            }
+        }
+
         public ExpeditionModeMVVM()
         {
             m_list = new List<CharacterMVVM>();
