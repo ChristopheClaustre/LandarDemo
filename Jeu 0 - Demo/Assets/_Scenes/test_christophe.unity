@@ -1817,9 +1817,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _xaml: {fileID: 11400000, guid: 82b64db86f3fcac448f96a2e271567d7, type: 2}
   _isPPAAEnabled: 1
-  _tessellationQuality: 1
+  _tessellationQuality: 2
   _renderFlags: 0
-  _enableKeyboard: 1
+  _enableKeyboard: 0
   _enableMouse: 1
   _enableTouch: 1
   _emulateTouch: 0
@@ -1901,6 +1901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b0c2c31b098cf49a7a74836a0e77cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_limiterGO: {fileID: 329232240}
 --- !u!1001 &1105508233
 Prefab:
   m_ObjectHideFlags: 0
