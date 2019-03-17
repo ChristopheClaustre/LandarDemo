@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Noesis
 {
-    public class Renderer
+    public class Renderer : BaseComponent
     {
         /// <summary>
         /// Initializes the Renderer with the specified render device.
@@ -16,7 +16,7 @@ namespace Noesis
                 throw new ArgumentNullException("device");
             }
 
-            Noesis_Renderer_Init_(CPtr, device.CPtr);
+            Noesis_Renderer_Init(CPtr, device.CPtr);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Noesis
         /// </summary>
         public void Shutdown()
         {
-            Noesis_Renderer_Shutdown_(CPtr);
+            Noesis_Renderer_Shutdown(CPtr);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Noesis
         /// <param name="height">Vertical size of visible region.</param>
         public void SetRenderRegion(float x, float y, float width, float height)
         {
-            Noesis_Renderer_SetRenderRegion_(CPtr, x, y, width, height);
+            Noesis_Renderer_SetRenderRegion(CPtr, x, y, width, height);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Noesis
         /// </summary>
         public bool UpdateRenderTree()
         {
-            return Noesis_Renderer_UpdateRenderTree_(CPtr);
+            return Noesis_Renderer_UpdateRenderTree(CPtr);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Noesis
         /// </summary>
         public bool NeedsOffscreen()
         {
-            return Noesis_Renderer_NeedsOffscreen_(CPtr);
+            return Noesis_Renderer_NeedsOffscreen(CPtr);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Noesis
         /// </summary>
         public void RenderOffscreen()
         {
-            Noesis_Renderer_RenderOffscreen_(CPtr);
+            Noesis_Renderer_RenderOffscreen(CPtr);
         }
 
         /// <summary>
@@ -72,65 +72,30 @@ namespace Noesis
         /// </summary>
         public void Render()
         {
-            Noesis_Renderer_Render_(CPtr);
+            Noesis_Renderer_Render(CPtr);
         }
 
         #region Private members
-        internal Renderer(View view)
+        internal Renderer(IntPtr cPtr, bool ownMemory): base(cPtr, ownMemory)
         {
-            _view = view;
         }
 
-        private HandleRef CPtr { get { return _view.CPtr; } }
+        internal new static Renderer CreateProxy(IntPtr cPtr, bool cMemoryOwn)
+        {
+            return new Renderer(cPtr, cMemoryOwn);
+        }
 
-        View _view;
+        new internal static IntPtr GetStaticType()
+        {
+            return Noesis_Renderer_GetStaticType();
+        }
+
+        private HandleRef CPtr { get { return BaseComponent.getCPtr(this); } }
         #endregion
 
         #region Imports
-        static void Noesis_Renderer_Init_(HandleRef renderer, HandleRef device)
-        {
-            Noesis_Renderer_Init(renderer, device);
-            Error.Check();
-        }
-
-        static void Noesis_Renderer_Shutdown_(HandleRef renderer)
-        {
-            Noesis_Renderer_Shutdown(renderer);
-            Error.Check();
-        }
-
-        static void Noesis_Renderer_SetRenderRegion_(HandleRef renderer,
-            float x, float y, float width, float height)
-        {
-            Noesis_Renderer_SetRenderRegion(renderer, x, y, width, height);
-            Error.Check();
-        }
-
-        static bool Noesis_Renderer_UpdateRenderTree_(HandleRef renderer)
-        {
-            bool ret = Noesis_Renderer_UpdateRenderTree(renderer);
-            Error.Check();
-            return ret;
-        }
-
-        static bool Noesis_Renderer_NeedsOffscreen_(HandleRef renderer)
-        {
-            bool ret = Noesis_Renderer_NeedsOffscreen(renderer);
-            Error.Check();
-            return ret;
-        }
-
-        static void Noesis_Renderer_RenderOffscreen_(HandleRef renderer)
-        {
-            Noesis_Renderer_RenderOffscreen(renderer);
-            Error.Check();
-        }
-
-        static void Noesis_Renderer_Render_(HandleRef renderer)
-        {
-            Noesis_Renderer_Render(renderer);
-            Error.Check();
-        }
+        [DllImport(Library.Name)]
+        static extern IntPtr Noesis_Renderer_GetStaticType();
 
         [DllImport(Library.Name)]
         static extern void Noesis_Renderer_Init(HandleRef renderer, HandleRef device);

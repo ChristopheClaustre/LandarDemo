@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows.Input;
 
 namespace Noesis
 {
@@ -89,8 +90,6 @@ namespace Noesis
                     }
 
                     ReleasePending();
-
-                    Error.Check();
                 }
                 catch (Exception)
                 {
@@ -110,15 +109,18 @@ namespace Noesis
         public static void RegisterCallbacks()
         {
             // register callbacks
-            Noesis_RegisterReflectionCallbacks_(
+            Noesis_RegisterReflectionCallbacks(
 
                 _freeString,
 
                 _registerType,
 
-                _dependencyPropertyChanged,
                 _onPostInit,
+                _dependencyPropertyChanged,
+                _frameworkElementMeasure,
+                _frameworkElementArrange,
                 _frameworkElementConnectEvent,
+                _freezableClone,
 
                 _toString,
                 _equals,
@@ -134,21 +136,11 @@ namespace Noesis
                 _listGet,
                 _listSet,
                 _listAdd,
-                _listClear,
-                _listContains,
                 _listIndexOf,
-                _listInsert,
-                _listRemove,
-                _listRemoveAt,
 
-                _dictionaryCount,
-                _dictionaryContains,
                 _dictionaryFind,
                 _dictionarySet,
                 _dictionaryAdd,
-                _dictionaryRemove,
-                _dictionaryClear,
-                _dictionaryGetKey,
 
                 _listIndexerTryGet,
                 _listIndexerTrySet,
@@ -219,15 +211,15 @@ namespace Noesis
         public static void UnregisterCallbacks()
         {
             // unregister callbacks
-            Noesis_RegisterReflectionCallbacks_(
+            Noesis_RegisterReflectionCallbacks(
                 null,
                 null,
-                null, null, null,
+                null, null, null, null, null, null,
                 null, null, null,
                 null, null,
                 null, null,
-                null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null,
+                null, null, null, null, null,
+                null, null, null,
                 null, null,
                 null, null,
                 null,
@@ -477,14 +469,20 @@ namespace Noesis
             NativeTypeInfo info;
             if (!_nativeTypes.TryGetValue(nativeType.ToInt64(), out info))
             {
-                // TODO: Use nativeType.BaseType until we find a registered type we can use
+                // Use nativeType.BaseType until we find a registered type we can use
+                IntPtr baseType = Noesis.BaseComponent.GetBaseType(nativeType);
+                if (baseType != IntPtr.Zero)
+                {
+                    return GetNativeTypeInfo(baseType);
+                }
+
                 throw new InvalidOperationException("Native type is not registered");
             }
             return info;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private static object GetProxy(IntPtr nativeType, IntPtr cPtr, bool ownMemory)
+        internal static object GetProxy(IntPtr nativeType, IntPtr cPtr, bool ownMemory)
         {
             if (cPtr != IntPtr.Zero)
             {
@@ -531,17 +529,17 @@ namespace Noesis
                         return Unbox(cPtr, info);
 
                     case NativeTypeKind.Component:
-                        return Initialize(GetProxyInstance(cPtr, ownMemory, info));
+                        return GetProxyInstance(cPtr, ownMemory, info);
 
                     case NativeTypeKind.Extended:
-                        return Initialize(GetExtendInstance(cPtr, ownMemory));
+                        return GetExtendInstance(cPtr, ownMemory);
                 }
             }
 
             return null;
         }
 
-        private static object Initialize(object instance)
+        public static object Initialize(object instance)
         {
             DependencyObject dob = instance as DependencyObject;
             if (dob != null && !(dob is FrameworkElement))
@@ -563,12 +561,15 @@ namespace Noesis
             AddNativeType(NoesisGUI_.UInt_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(uint)));
             AddNativeType(NoesisGUI_.Short_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(short)));
             AddNativeType(NoesisGUI_.UShort_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(ushort)));
+            AddNativeType(NoesisGUI_.Long_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(long)));
+            AddNativeType(NoesisGUI_.ULong_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(ulong)));
             AddNativeType(NoesisGUI_.Color_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Color)));
             AddNativeType(NoesisGUI_.Point_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Point)));
             AddNativeType(NoesisGUI_.Rect_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Rect)));
             AddNativeType(NoesisGUI_.Size_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Size)));
             AddNativeType(NoesisGUI_.Thickness_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Thickness)));
             AddNativeType(NoesisGUI_.CornerRadius_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.CornerRadius)));
+            AddNativeType(NoesisGUI_.GridLength_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.GridLength)));
             AddNativeType(NoesisGUI_.Duration_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.Duration)));
             AddNativeType(NoesisGUI_.KeyTime_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.KeyTime)));
             AddNativeType(NoesisGUI_.TimeSpan_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.TimeSpan)));
@@ -581,6 +582,8 @@ namespace Noesis
             AddNativeType(NoesisGUI_.NullableUInt32_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<uint>)));
             AddNativeType(NoesisGUI_.NullableInt16_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<short>)));
             AddNativeType(NoesisGUI_.NullableUInt16_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<ushort>)));
+            AddNativeType(NoesisGUI_.NullableInt64_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<long>)));
+            AddNativeType(NoesisGUI_.NullableUInt64_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<ulong>)));
             AddNativeType(NoesisGUI_.NullableColor_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<Noesis.Color>)));
             AddNativeType(NoesisGUI_.NullablePoint_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<Noesis.Point>)));
             AddNativeType(NoesisGUI_.NullableRect_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(System.Nullable<Noesis.Rect>)));
@@ -646,6 +649,7 @@ namespace Noesis
             AddNativeType(NoesisGUI_.ScrollUnit_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.ScrollUnit)));
             AddNativeType(NoesisGUI_.VirtualizationMode_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.VirtualizationMode)));
             AddNativeType(NoesisGUI_.VirtualizationCacheLengthUnit_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.VirtualizationCacheLengthUnit)));
+            AddNativeType(NoesisGUI_.PPAAMode_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Basic, typeof(Noesis.PPAAMode)));
 
             AddNativeType(NoesisGUI_.Boxed_String_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<string>)));
             AddNativeType(NoesisGUI_.Boxed_Bool_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<bool>)));
@@ -655,12 +659,15 @@ namespace Noesis
             AddNativeType(NoesisGUI_.Boxed_UInt_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<uint>)));
             AddNativeType(NoesisGUI_.Boxed_Short_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<short>)));
             AddNativeType(NoesisGUI_.Boxed_UShort_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<ushort>)));
+            AddNativeType(NoesisGUI_.Boxed_Long_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<long>)));
+            AddNativeType(NoesisGUI_.Boxed_ULong_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<ulong>)));
             AddNativeType(NoesisGUI_.Boxed_Color_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Color>)));
             AddNativeType(NoesisGUI_.Boxed_Point_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Point>)));
             AddNativeType(NoesisGUI_.Boxed_Rect_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Rect>)));
             AddNativeType(NoesisGUI_.Boxed_Size_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Size>)));
             AddNativeType(NoesisGUI_.Boxed_Thickness_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Thickness>)));
             AddNativeType(NoesisGUI_.Boxed_CornerRadius_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.CornerRadius>)));
+            AddNativeType(NoesisGUI_.Boxed_GridLength_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.GridLength>)));
             AddNativeType(NoesisGUI_.Boxed_Duration_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.Duration>)));
             AddNativeType(NoesisGUI_.Boxed_KeyTime_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.KeyTime>)));
             AddNativeType(NoesisGUI_.Boxed_TimeSpan_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<System.TimeSpan>)));
@@ -721,6 +728,7 @@ namespace Noesis
             AddNativeType(NoesisGUI_.Boxed_ScrollUnit_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.ScrollUnit>)));
             AddNativeType(NoesisGUI_.Boxed_VirtualizationMode_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.VirtualizationMode>)));
             AddNativeType(NoesisGUI_.Boxed_VirtualizationCacheLengthUnit_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.VirtualizationCacheLengthUnit>)));
+            AddNativeType(NoesisGUI_.Boxed_PPAAMode_GetStaticType(), new NativeTypeInfo(NativeTypeKind.Boxed, typeof(Boxed<Noesis.PPAAMode>)));
 
             AddNativeType(Noesis.BaseComponent.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.BaseComponent), Noesis.BaseComponent.CreateProxy));
             AddNativeType(Noesis.DispatcherObject.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.DispatcherObject), Noesis.DispatcherObject.CreateProxy));
@@ -728,6 +736,10 @@ namespace Noesis
             AddNativeType(Noesis.DependencyProperty.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.DependencyProperty), Noesis.DependencyProperty.CreateProxy));
             AddNativeType(Noesis.Freezable.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Freezable), Noesis.Freezable.CreateProxy));
             AddNativeType(Noesis.PropertyMetadata.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.PropertyMetadata), Noesis.PropertyMetadata.CreateProxy));
+            AddNativeType(Noesis.Expression.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Expression), Noesis.Expression.CreateProxy));
+
+            AddNativeType(Noesis.View.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.View), Noesis.View.CreateProxy));
+            AddNativeType(Noesis.Renderer.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Renderer), Noesis.Renderer.CreateProxy));
 
             AddNativeType(Noesis.AdornerDecorator.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.AdornerDecorator), Noesis.AdornerDecorator.CreateProxy));
             AddNativeType(Noesis.Animatable.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Animatable), Noesis.Animatable.CreateProxy));
@@ -751,7 +763,7 @@ namespace Noesis
             AddNativeType(Noesis.Button.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Button), Noesis.Button.CreateProxy));
             AddNativeType(Noesis.Canvas.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Canvas), Noesis.Canvas.CreateProxy));
             AddNativeType(Noesis.CheckBox.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.CheckBox), Noesis.CheckBox.CreateProxy));
-            AddNativeType(Noesis.Collection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Collection), Noesis.Collection.CreateProxy));
+            AddNativeType(Noesis.BaseUICollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.BaseUICollection), Noesis.BaseUICollection.CreateProxy));
             AddNativeType(Noesis.CollectionView.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.CollectionView), Noesis.CollectionView.CreateProxy));
             AddNativeType(Noesis.CollectionViewSource.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.CollectionViewSource), Noesis.CollectionViewSource.CreateProxy));
             AddNativeType(Noesis.ColumnDefinition.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.ColumnDefinition), Noesis.ColumnDefinition.CreateProxy));
@@ -784,7 +796,7 @@ namespace Noesis
             AddNativeType(Noesis.FrameworkElement.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.FrameworkElement), Noesis.FrameworkElement.CreateProxy));
             AddNativeType(Noesis.FrameworkTemplate.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.FrameworkTemplate), Noesis.FrameworkTemplate.CreateProxy));
             AddNativeType(Noesis.FrameworkPropertyMetadata.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.FrameworkPropertyMetadata), Noesis.FrameworkPropertyMetadata.CreateProxy));
-            AddNativeType(Noesis.FreezableCollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.FreezableCollection), Noesis.FreezableCollection.CreateProxy));
+            AddNativeType(Noesis.BaseFreezableCollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.BaseFreezableCollection), Noesis.BaseFreezableCollection.CreateProxy));
             AddNativeType(Noesis.Geometry.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Geometry), Noesis.Geometry.CreateProxy));
             AddNativeType(Noesis.GeometryCollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.GeometryCollection), Noesis.GeometryCollection.CreateProxy));
             AddNativeType(Noesis.GeometryGroup.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.GeometryGroup), Noesis.GeometryGroup.CreateProxy));
@@ -801,6 +813,7 @@ namespace Noesis
             AddNativeType(Noesis.ImageSource.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.ImageSource), Noesis.ImageSource.CreateProxy));
             AddNativeType(Noesis.Inline.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Inline), Noesis.Inline.CreateProxy));
             AddNativeType(Noesis.InlineCollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.InlineCollection), Noesis.InlineCollection.CreateProxy));
+            AddNativeType(Noesis.InlineUIContainer.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.InlineUIContainer), Noesis.InlineUIContainer.CreateProxy));
             AddNativeType(Noesis.InputBinding.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.InputBinding), Noesis.InputBinding.CreateProxy));
             AddNativeType(Noesis.InputBindingCollection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.InputBindingCollection), Noesis.InputBindingCollection.CreateProxy));
             AddNativeType(Noesis.InputGesture.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.InputGesture), Noesis.InputGesture.CreateProxy));
@@ -822,6 +835,7 @@ namespace Noesis
             AddNativeType(Noesis.LineGeometry.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.LineGeometry), Noesis.LineGeometry.CreateProxy));
             AddNativeType(Noesis.ListBox.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.ListBox), Noesis.ListBox.CreateProxy));
             AddNativeType(Noesis.ListBoxItem.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.ListBoxItem), Noesis.ListBoxItem.CreateProxy));
+            AddNativeType(Noesis.MarkupExtension.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.MarkupExtension), Noesis.MarkupExtension.CreateProxy));
             AddNativeType(Noesis.Matrix3DProjection.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Matrix3DProjection), Noesis.Matrix3DProjection.CreateProxy));
             AddNativeType(Noesis.MatrixTransform.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.MatrixTransform), Noesis.MatrixTransform.CreateProxy));
             AddNativeType(Noesis.Menu.GetStaticType(), new NativeTypeComponentInfo(NativeTypeKind.Component, typeof(Noesis.Menu), Noesis.Menu.CreateProxy));
@@ -1086,7 +1100,7 @@ namespace Noesis
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private static PropertyInfo FindIndexer(Type type, RuntimeTypeHandle kind)
+        private static PropertyInfo FindIndexer(Type type, Type paramType)
         {
 #if NETFX_CORE
             var props = type.GetRuntimeProperties().Where(p => p.GetMethod.IsPublic && !p.GetMethod.IsStatic);
@@ -1097,7 +1111,7 @@ namespace Noesis
             foreach(var p in props)
             {
                 ParameterInfo[] indexParams = p.GetIndexParameters();
-                if (indexParams.Length == 1 && indexParams[0].ParameterType.TypeHandle.Equals(kind))
+                if (indexParams.Length == 1 && indexParams[0].ParameterType.Equals(paramType))
                 {
                     return p;
                 }
@@ -1109,13 +1123,13 @@ namespace Noesis
         ////////////////////////////////////////////////////////////////////////////////////////////////
         private static PropertyInfo FindListIndexer(Type type)
         {
-            return FindIndexer(type, typeof(int).TypeHandle);
+            return FindIndexer(type, typeof(int));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
         private static PropertyInfo FindDictIndexer(Type type)
         {
-            return FindIndexer(type, typeof(string).TypeHandle);
+            return FindIndexer(type, typeof(string));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1156,13 +1170,13 @@ namespace Noesis
                 return IntPtr.Zero;
             }
 
-            if (type.GetTypeInfo().IsInterface || type.Namespace == "UnityEngine")
+            if (type.GetTypeInfo().IsInterface)
             {
                 nativeType = Noesis.BaseComponent.GetStaticType();
                 _managedTypes[type] = nativeType;
                 return nativeType;
             }
-            else if (type.TypeHandle == (object)typeof(System.Type).TypeHandle)
+            else if (type == typeof(System.Type))
             {
                 nativeType = Noesis.ResourceKeyType.GetStaticType();
                 _managedTypes[type] = nativeType;
@@ -1174,7 +1188,7 @@ namespace Noesis
                 IntPtr enumsData = CreateNativeEnumsData(type, out numEnums);
                 try
                 {
-                    nativeType = Noesis_RegisterEnumType_(TypeFullName(type), numEnums, enumsData);
+                    nativeType = Noesis_RegisterEnumType(TypeFullName(type), numEnums, enumsData);
                 }
                 finally
                 {
@@ -1207,7 +1221,7 @@ namespace Noesis
             {
                 nativeType = Noesis.ExtendStream.Extend(TypeFullName(type));
             }
-            else if (typeof(System.Windows.Input.ICommand).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+            else if (typeof(ICommand).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
             {
                 nativeType = Noesis.ExtendCommand.Extend(TypeFullName(type));
             }
@@ -1256,7 +1270,7 @@ namespace Noesis
             IntPtr propsData = CreateNativePropsData(type, props, info, out numProps);
             try
             {
-                Noesis_FillExtendType_(ref typeData, numProps, propsData);
+                Noesis_FillExtendType(ref typeData, numProps, propsData);
             }
             finally
             {
@@ -1363,7 +1377,7 @@ namespace Noesis
                 typeData.typeConverter = Marshal.StringToHGlobalAnsi(typeConverter.ConverterTypeName).ToInt64();
             }
 
-            var contentProperty = type.GetTypeInfo().GetCustomAttribute<System.Windows.Markup.ContentPropertyAttribute>();
+            var contentProperty = type.GetTypeInfo().GetCustomAttribute<ContentPropertyAttribute>();
             if (contentProperty != null)
             {
                 typeData.contentProperty = Marshal.StringToHGlobalAnsi(contentProperty.Name).ToInt64();
@@ -1393,7 +1407,7 @@ namespace Noesis
             FieldInfo field = type.GetField(name, BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
             #endif
 
-            return field != null && field.FieldType.TypeHandle.Equals(typeof(Noesis.DependencyProperty).TypeHandle);
+            return field != null && field.FieldType.Equals(typeof(Noesis.DependencyProperty));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1420,7 +1434,7 @@ namespace Noesis
                 for (int i = 0; i < propsLen; ++i)
                 {
                     var p = props[i];
-                    if (p.GetGetMethod() != null &&
+                    if (p.GetGetMethod() != null && !p.PropertyType.IsPointer &&
                         (HasTypeConverter(p) || (!IsIndexerProperty(p) && !IsDependencyProperty(type, p))))
                     {
                         ExtendPropertyData propData = AddProperty(propsInfo, p, usePropertyInfo);
@@ -1601,7 +1615,7 @@ namespace Noesis
             if (type != null)
             {
                 IntPtr nativeType = EnsureNativeType(type);
-                return new ResourceKeyType(Noesis_GetResourceKeyType_(nativeType), false);
+                return new ResourceKeyType(Noesis_GetResourceKeyType(nativeType), false);
             }
             else
             {
@@ -1622,13 +1636,18 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
         public static string StringFromNativeUtf8(IntPtr nativeUtf8)
         {
+            if (nativeUtf8 == IntPtr.Zero)
+            {
+                return null;
+            }
+
 #if __MonoCS__
             // Mono on all platforms currently uses UTF-8 encoding 
             return Marshal.PtrToStringAnsi(nativeUtf8);
@@ -1686,7 +1705,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -1705,7 +1724,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return Marshal.StringToHGlobalUni(string.Empty);
             }
         }
@@ -1726,7 +1745,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return false;
             }
         }
@@ -1745,7 +1764,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -1776,7 +1795,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -1807,8 +1826,60 @@ namespace Noesis
                 }
                 catch (Exception e)
                 {
-                    Noesis.Error.SetNativePendingError(e);
+                    Error.UnhandledException(e);
                 }
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        private delegate void Callback_FrameworkElementMeasure(IntPtr cPtr,
+            IntPtr availableSizePtr, IntPtr desiredSizePtr, [MarshalAs(UnmanagedType.U1)]ref bool callBase);
+        private static Callback_FrameworkElementMeasure _frameworkElementMeasure = FrameworkElementMeasure;
+
+        [MonoPInvokeCallback(typeof(Callback_FrameworkElementMeasure))]
+        private static void FrameworkElementMeasure(IntPtr cPtr,
+            IntPtr availableSizePtr, IntPtr desiredSizePtr, ref bool callBase)
+        {
+            try
+            {
+                FrameworkElement element = (FrameworkElement)GetExtendInstance(cPtr);
+                if (element != null)
+                {
+                    Size availableSize = Marshal.PtrToStructure<Size>(availableSizePtr);
+                    Size desiredSize = element.CallMeasureOverride(availableSize, out callBase);
+                    if (desiredSize.IsEmpty) desiredSize = new Size(0, 0);
+                    Marshal.StructureToPtr(desiredSize, desiredSizePtr, false);
+                }
+            }
+            catch (Exception e)
+            {
+                Error.UnhandledException(e);
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        private delegate void Callback_FrameworkElementArrange(IntPtr cPtr,
+            IntPtr finalSizePtr, IntPtr renderSizePtr, [MarshalAs(UnmanagedType.U1)]ref bool callBase);
+        private static Callback_FrameworkElementArrange _frameworkElementArrange = FrameworkElementArrange;
+
+        [MonoPInvokeCallback(typeof(Callback_FrameworkElementArrange))]
+        private static void FrameworkElementArrange(IntPtr cPtr,
+            IntPtr finalSizePtr, IntPtr renderSizePtr, ref bool callBase)
+        {
+            try
+            {
+                FrameworkElement element = (FrameworkElement)GetExtendInstance(cPtr);
+                if (element != null)
+                {
+                    Size finalSize = Marshal.PtrToStructure<Size>(finalSizePtr);
+                    Size renderSize = element.CallArrangeOverride(finalSize, out callBase);
+                    if (renderSize.IsEmpty) renderSize = new Size(0, 0);
+                    Marshal.StructureToPtr(renderSize, renderSizePtr, false);
+                }
+            }
+            catch (Exception e)
+            {
+                Error.UnhandledException(e);
             }
         }
 
@@ -1832,10 +1903,33 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return false;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        private delegate void Callback_FreezableClone(IntPtr cPtrType, IntPtr cPtrClone,
+            IntPtr cPtrSource);
+        private static Callback_FreezableClone _freezableClone = FreezableClone;
+
+        [MonoPInvokeCallback(typeof(Callback_FreezableClone))]
+        private static void FreezableClone(IntPtr cPtrType, IntPtr cPtrClone, IntPtr cPtrSource)
+        {
+            try
+            {
+                Freezable clone = (Freezable)GetExtendInstance(cPtrClone);
+                Freezable source = (Freezable)GetExtendInstance(cPtrSource);
+                if (clone != null && source != null)
+                {
+                    clone.CallCloneCommonCore(source);
+                }
+            }
+            catch (Exception e)
+            {
+                Error.UnhandledException(e);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1848,12 +1942,12 @@ namespace Noesis
         {
             try
             {
-                var command = (System.Windows.Input.ICommand)GetExtendInstance(cPtr);
+                var command = (ICommand)GetExtendInstance(cPtr);
                 return command != null ? command.CanExecute(GetProxy(paramType, paramPtr, false)) : false;
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return false;
             }
         }
@@ -1868,7 +1962,7 @@ namespace Noesis
         {
             try
             {
-                var command = (System.Windows.Input.ICommand)GetExtendInstance(cPtr);
+                var command = (ICommand)GetExtendInstance(cPtr);
                 if (command != null)
                 {
                     command.Execute(GetProxy(paramType, paramPtr, false));
@@ -1876,7 +1970,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -1884,8 +1978,8 @@ namespace Noesis
         private static bool IsNullableType(Type type)
         {
             return type.GetTypeInfo().IsGenericType &&
-                type.GetTypeInfo().GetGenericTypeDefinition().TypeHandle.Equals(
-                    typeof(Nullable<>).TypeHandle);
+                type.GetTypeInfo().GetGenericTypeDefinition().Equals(
+                    typeof(Nullable<>));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1908,7 +2002,7 @@ namespace Noesis
                 return true;
             }
 
-            if (targetType.TypeHandle.Equals(typeof(Noesis.BaseComponent).TypeHandle))
+            if (targetType.Equals(typeof(Noesis.BaseComponent)))
             {
                 return true;
             }
@@ -1953,7 +2047,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             result = IntPtr.Zero;
@@ -1997,7 +2091,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             result = IntPtr.Zero;
@@ -2014,11 +2108,11 @@ namespace Noesis
             try
             {
                 var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                return list != null ? (uint)list.Count : 0;
+                return list != null && Initialized ? (uint)list.Count : 0;
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -2033,11 +2127,14 @@ namespace Noesis
             try
             {
                 var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                return list != null ? GetInstanceHandle(list[(int)index]).Handle : IntPtr.Zero;
+                object item = list != null ? list[(int)index] : null;
+                HandleRef itemPtr = GetInstanceHandle(item);
+                BaseComponent.AddReference(itemPtr.Handle); // released by native bindings
+                return itemPtr.Handle;
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return IntPtr.Zero;
             }
         }
@@ -2059,7 +2156,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -2077,48 +2174,8 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ListClear(IntPtr cPtr);
-        private static Callback_ListClear _listClear = ListClear;
-
-        [MonoPInvokeCallback(typeof(Callback_ListClear))]
-        private static void ListClear(IntPtr cPtr)
-        {
-            try
-            {
-                var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                if (list != null)
-                {
-                    list.Clear();
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate bool Callback_ListContains(IntPtr cPtr, IntPtr itemType, IntPtr item);
-        private static Callback_ListContains _listContains = ListContains;
-
-        [MonoPInvokeCallback(typeof(Callback_ListContains))]
-        private static bool ListContains(IntPtr cPtr, IntPtr itemType, IntPtr item)
-        {
-            try
-            {
-                var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                return list != null ? list.Contains(GetProxy(itemType, item, false)) : false;
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-                return false;
             }
         }
 
@@ -2136,109 +2193,8 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return -1;
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ListInsert(IntPtr cPtr, uint index, IntPtr itemType, IntPtr item);
-        private static Callback_ListInsert _listInsert = ListInsert;
-
-        [MonoPInvokeCallback(typeof(Callback_ListInsert))]
-        private static void ListInsert(IntPtr cPtr, uint index, IntPtr itemType, IntPtr item)
-        {
-            try
-            {
-                var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                if (list != null)
-                {
-                    list.Insert((int)index, GetProxy(itemType, item, false));
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ListRemove(IntPtr cPtr, IntPtr itemType, IntPtr item);
-        private static Callback_ListRemove _listRemove = ListRemove;
-
-        [MonoPInvokeCallback(typeof(Callback_ListRemove))]
-        private static void ListRemove(IntPtr cPtr, IntPtr itemType, IntPtr item)
-        {
-            try
-            {
-                var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                if (list != null)
-                {
-                    list.Remove(GetProxy(itemType, item, false));
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ListRemoveAt(IntPtr cPtr, uint index);
-        private static Callback_ListRemoveAt _listRemoveAt = ListRemoveAt;
-
-        [MonoPInvokeCallback(typeof(Callback_ListRemoveAt))]
-        private static void ListRemoveAt(IntPtr cPtr, uint index)
-        {
-            try
-            {
-                var list = (System.Collections.IList)GetExtendInstance(cPtr);
-                if (list != null)
-                {
-                    list.RemoveAt((int)index);
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate uint Callback_DictionaryCount(IntPtr cPtr);
-        private static Callback_DictionaryCount _dictionaryCount = DictionaryCount;
-
-        [MonoPInvokeCallback(typeof(Callback_DictionaryCount))]
-        private static uint DictionaryCount(IntPtr cPtr)
-        {
-            try
-            {
-                var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
-                return dictionary != null ? (uint)dictionary.Count : 0;
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-                return 0;
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate bool Callback_DictionaryContains(IntPtr cPtr, string key);
-        private static Callback_DictionaryContains _dictionaryContains = DictionaryContains;
-
-        [MonoPInvokeCallback(typeof(Callback_DictionaryContains))]
-        private static bool DictionaryContains(IntPtr cPtr, string key)
-        {
-            try
-            {
-                var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
-                return dictionary != null ? dictionary.Contains(key) : false;
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-                return false;
             }
         }
 
@@ -2254,13 +2210,15 @@ namespace Noesis
                 var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
                 if (dictionary != null && dictionary.Contains(key))
                 {
-                    item = GetInstanceHandle(dictionary[key]).Handle;
+                    HandleRef itemPtr = GetInstanceHandle(dictionary[key]);
+                    BaseComponent.AddReference(itemPtr.Handle); // released by native bindings
+                    item = itemPtr.Handle;
                     return true;
                 }
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             item = IntPtr.Zero;
@@ -2284,7 +2242,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -2305,74 +2263,8 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_DictionaryRemove(IntPtr cPtr, string key);
-        private static Callback_DictionaryRemove _dictionaryRemove = DictionaryRemove;
-
-        [MonoPInvokeCallback(typeof(Callback_DictionaryRemove))]
-        private static void DictionaryRemove(IntPtr cPtr, string key)
-        {
-            try
-            {
-                var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
-                if (dictionary != null)
-                {
-                    dictionary.Remove(key);
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_DictionaryClear(IntPtr cPtr);
-        private static Callback_DictionaryClear _dictionaryClear = DictionaryClear;
-
-        [MonoPInvokeCallback(typeof(Callback_DictionaryClear))]
-        private static void DictionaryClear(IntPtr cPtr)
-        {
-            try
-            {
-                var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
-                if (dictionary != null)
-                {
-                    dictionary.Clear();
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate IntPtr Callback_DictionaryGetKey(IntPtr cPtr, uint index);
-        private static Callback_DictionaryGetKey _dictionaryGetKey = DictionaryGetKey;
-
-        [MonoPInvokeCallback(typeof(Callback_DictionaryGetKey))]
-        private static IntPtr DictionaryGetKey(IntPtr cPtr, uint index)
-        {
-            try
-            {
-                var dictionary = (System.Collections.IDictionary)GetExtendInstance(cPtr);
-                if (dictionary != null)
-                {
-                    string key = dictionary.Keys.Cast<string>().ElementAt((int)index);
-                    return Marshal.StringToHGlobalUni(key != null ? key : string.Empty);
-                }
-            }
-            catch (Exception e)
-            {
-                Noesis.Error.SetNativePendingError(e);
-            }
-
-            return Marshal.StringToHGlobalUni(string.Empty);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2393,7 +2285,9 @@ namespace Noesis
                     try
                     {
                         IndexerAccessorT<int> indexer = (IndexerAccessorT<int>)info.Indexer;
-                        item = GetInstanceHandle(indexer.Get(proxy, (int)index)).Handle;
+                        HandleRef itemPtr = GetInstanceHandle(indexer.Get(proxy, (int)index));
+                        BaseComponent.AddReference(itemPtr.Handle); // released by native bindings
+                        item = itemPtr.Handle;
                         return true;
                     }
                     catch { }
@@ -2401,7 +2295,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             item = IntPtr.Zero;
@@ -2435,7 +2329,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return false;
@@ -2459,7 +2353,9 @@ namespace Noesis
                     try
                     {
                         IndexerAccessorT<string> indexer = (IndexerAccessorT<string>)info.Indexer;
-                        item = GetInstanceHandle(indexer.Get(proxy, key)).Handle;
+                        HandleRef itemPtr = GetInstanceHandle(indexer.Get(proxy, key));
+                        BaseComponent.AddReference(itemPtr.Handle); // released by native bindings
+                        item = itemPtr.Handle;
                         return true;
                     }
                     catch { }
@@ -2467,7 +2363,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             item = IntPtr.Zero;
@@ -2501,7 +2397,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return false;
@@ -2528,7 +2424,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return IntPtr.Zero;
@@ -2551,7 +2447,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -2569,7 +2465,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -2588,14 +2484,13 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate uint Callback_StreamRead(IntPtr cPtr, IntPtr buffer,
-            uint bufferSize);
+        private delegate uint Callback_StreamRead(IntPtr cPtr, IntPtr buffer, uint bufferSize);
         private static Callback_StreamRead _streamRead = StreamRead;
 
         [MonoPInvokeCallback(typeof(Callback_StreamRead))]
@@ -2614,26 +2509,26 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return 0;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate IntPtr Callback_ProviderLoadXaml(IntPtr cPtr,
-            string filename);
+        private delegate IntPtr Callback_ProviderLoadXaml(IntPtr cPtr, IntPtr filename);
         private static Callback_ProviderLoadXaml _providerLoadXaml = ProviderLoadXaml;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderLoadXaml))]
-        private static IntPtr ProviderLoadXaml(IntPtr cPtr, string filename)
+        private static IntPtr ProviderLoadXaml(IntPtr cPtr, IntPtr filename)
         {
             try
             {
                 XamlProvider provider = (XamlProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    System.IO.Stream stream = provider.LoadXaml(filename);
+                    string filename_ = StringFromNativeUtf8(filename);
+                    System.IO.Stream stream = provider.LoadXaml(filename_);
                     HandleRef handle = GetInstanceHandle(stream);
                     BaseComponent.AddReference(handle.Handle); // released by C++
                     return handle.Handle;
@@ -2641,19 +2536,19 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return IntPtr.Zero;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ProviderTextureInfo(IntPtr cPtr,
-            string filename, ref uint width, ref uint height);
+        private delegate void Callback_ProviderTextureInfo(IntPtr cPtr, IntPtr filename,
+            ref uint width, ref uint height);
         private static Callback_ProviderTextureInfo _providerTextureInfo = ProviderTextureInfo;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderTextureInfo))]
-        private static void ProviderTextureInfo(IntPtr cPtr, string filename,
+        private static void ProviderTextureInfo(IntPtr cPtr, IntPtr filename,
             ref uint width, ref uint height)
         {
             width = height = 0;
@@ -2663,29 +2558,30 @@ namespace Noesis
                 TextureProvider provider = (TextureProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    provider.GetTextureInfo(filename, out width, out height);
+                    string filename_ = StringFromNativeUtf8(filename);
+                    provider.GetTextureInfo(filename_, out width, out height);
                 }
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate IntPtr Callback_ProviderTextureLoad(IntPtr cPtr,
-            string filename);
+        private delegate IntPtr Callback_ProviderTextureLoad(IntPtr cPtr, IntPtr filename);
         private static Callback_ProviderTextureLoad _providerTextureLoad = ProviderTextureLoad;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderTextureLoad))]
-        private static IntPtr ProviderTextureLoad(IntPtr cPtr, string filename)
+        private static IntPtr ProviderTextureLoad(IntPtr cPtr, IntPtr filename)
         {
             try
             {
                 TextureProvider provider = (TextureProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    Texture texture = provider.LoadTexture(filename);
+                    string filename_ = StringFromNativeUtf8(filename);
+                    Texture texture = provider.LoadTexture(filename_);
                     HandleRef handle = GetInstanceHandle(texture);
                     BaseComponent.AddReference(handle.Handle); // released by C++
                     return handle.Handle;
@@ -2693,26 +2589,26 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return IntPtr.Zero;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate IntPtr Callback_ProviderTextureOpen(IntPtr cPtr,
-            string filename);
+        private delegate IntPtr Callback_ProviderTextureOpen(IntPtr cPtr, IntPtr filename);
         private static Callback_ProviderTextureOpen _providerTextureOpen = ProviderTextureOpen;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderTextureOpen))]
-        private static IntPtr ProviderTextureOpen(IntPtr cPtr, string filename)
+        private static IntPtr ProviderTextureOpen(IntPtr cPtr, IntPtr filename)
         {
             try
             {
                 FileTextureProvider provider = (FileTextureProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    System.IO.Stream stream = provider.OpenStream(filename);
+                    string filename_ = StringFromNativeUtf8(filename);
+                    System.IO.Stream stream = provider.OpenStream(filename_);
                     HandleRef handle = GetInstanceHandle(stream);
                     BaseComponent.AddReference(handle.Handle); // released by C++
                     return handle.Handle;
@@ -2720,49 +2616,49 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return IntPtr.Zero;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate void Callback_ProviderScanFolder(IntPtr cPtr,
-            string folder);
+        private delegate void Callback_ProviderScanFolder(IntPtr cPtr, IntPtr folder);
         private static Callback_ProviderScanFolder _providerScanFolder = ProviderScanFolder;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderScanFolder))]
-        private static void ProviderScanFolder(IntPtr cPtr, string folder)
+        private static void ProviderScanFolder(IntPtr cPtr, IntPtr folder)
         {
             try
             {
                 FontProvider provider = (FontProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    provider.ScanFolder(folder);
+                    string folder_ = StringFromNativeUtf8(folder);
+                    provider.ScanFolder(folder_);
                 }
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private delegate IntPtr Callback_ProviderOpenFont(IntPtr cPtr,
-            string folder, string id);
+        private delegate IntPtr Callback_ProviderOpenFont(IntPtr cPtr, IntPtr folder, IntPtr id);
         private static Callback_ProviderOpenFont _providerOpenFont = ProviderOpenFont;
 
         [MonoPInvokeCallback(typeof(Callback_ProviderOpenFont))]
-        private static IntPtr ProviderOpenFont(IntPtr cPtr, string folder,
-            string id)
+        private static IntPtr ProviderOpenFont(IntPtr cPtr, IntPtr folder, IntPtr id)
         {
             try
             {
                 FontProvider provider = (FontProvider)GetExtendInstance(cPtr);
                 if (provider != null)
                 {
-                    System.IO.Stream stream = provider.OpenFont(folder, id);
+                    string folder_ = StringFromNativeUtf8(folder);
+                    string id_ = StringFromNativeUtf8(id);
+                    System.IO.Stream stream = provider.OpenFont(folder_, id_);
                     HandleRef handle = GetInstanceHandle(stream);
                     BaseComponent.AddReference(handle.Handle); // released by C++
                     return handle.Handle;
@@ -2770,7 +2666,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
 
             return IntPtr.Zero;
@@ -2818,181 +2714,181 @@ namespace Noesis
         };
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private static int GetNativePropertyType(Type type)
+        internal static int GetNativePropertyType(Type type)
         {
-            if (type.TypeHandle.Equals(typeof(string).TypeHandle))
+            if (type.Equals(typeof(string)))
             {
                 return (int)NativePropertyType.String;
             }
 
-            if (type.TypeHandle.Equals(typeof(bool).TypeHandle))
+            if (type.Equals(typeof(bool)))
             {
                 return (int)NativePropertyType.Bool;
             }
 
-            if (type.TypeHandle.Equals(typeof(float).TypeHandle))
+            if (type.Equals(typeof(float)))
             {
                 return (int)NativePropertyType.Float;
             }
 
-            if (type.TypeHandle.Equals(typeof(double).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(decimal).TypeHandle))
+            if (type.Equals(typeof(double)) ||
+                type.Equals(typeof(decimal)))
             {
                 return (int)NativePropertyType.Double;
             }
 
-            if (type.TypeHandle.Equals(typeof(int).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(long).TypeHandle))
+            if (type.Equals(typeof(int)) ||
+                type.Equals(typeof(long)))
             {
                 return (int)NativePropertyType.Int;
             }
 
-            if (type.TypeHandle.Equals(typeof(uint).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(ulong).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(char).TypeHandle))
+            if (type.Equals(typeof(uint)) ||
+                type.Equals(typeof(ulong)) ||
+                type.Equals(typeof(char)))
             {
                 return (int)NativePropertyType.UInt;
             }
 
-            if (type.TypeHandle.Equals(typeof(short).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(sbyte).TypeHandle))
+            if (type.Equals(typeof(short)) ||
+                type.Equals(typeof(sbyte)))
             {
                 return (int)NativePropertyType.Short;
             }
 
-            if (type.TypeHandle.Equals(typeof(ushort).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(byte).TypeHandle))
+            if (type.Equals(typeof(ushort)) ||
+                type.Equals(typeof(byte)))
             {
                 return (int)NativePropertyType.UShort;
             }
 
-            if (type.TypeHandle.Equals(typeof(Color).TypeHandle))
+            if (type.Equals(typeof(Color)))
             {
                 return (int)NativePropertyType.Color;
             }
 
-            if (type.TypeHandle.Equals(typeof(Point).TypeHandle))
+            if (type.Equals(typeof(Point)))
             {
                 return (int)NativePropertyType.Point;
             }
 
-            if (type.TypeHandle.Equals(typeof(Rect).TypeHandle))
+            if (type.Equals(typeof(Rect)))
             {
                 return (int)NativePropertyType.Rect;
             }
 
-            if (type.TypeHandle.Equals(typeof(Size).TypeHandle))
+            if (type.Equals(typeof(Size)))
             {
                 return (int)NativePropertyType.Size;
             }
 
-            if (type.TypeHandle.Equals(typeof(Thickness).TypeHandle))
+            if (type.Equals(typeof(Thickness)))
             {
                 return (int)NativePropertyType.Thickness;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.CornerRadius).TypeHandle))
+            if (type.Equals(typeof(Noesis.CornerRadius)))
             {
                 return (int)NativePropertyType.CornerRadius;
             }
 
-            if (type.TypeHandle.Equals(typeof(System.TimeSpan).TypeHandle))
+            if (type.Equals(typeof(System.TimeSpan)))
             {
                 return (int)NativePropertyType.TimeSpan;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.Duration).TypeHandle))
+            if (type.Equals(typeof(Noesis.Duration)))
             {
                 return (int)NativePropertyType.Duration;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.KeyTime).TypeHandle))
+            if (type.Equals(typeof(Noesis.KeyTime)))
             {
                 return (int)NativePropertyType.KeyTime;
             }
 
-            if (type.TypeHandle.Equals(typeof(bool?).TypeHandle))
+            if (type.Equals(typeof(bool?)))
             {
                 return (int)NativePropertyType.NullableBool;
             }
 
-            if (type.TypeHandle.Equals(typeof(float?).TypeHandle))
+            if (type.Equals(typeof(float?)))
             {
                 return (int)NativePropertyType.NullableFloat;
             }
 
-            if (type.TypeHandle.Equals(typeof(double?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(decimal?).TypeHandle))
+            if (type.Equals(typeof(double?)) ||
+                type.Equals(typeof(decimal?)))
             {
                 return (int)NativePropertyType.NullableDouble;
             }
 
-            if (type.TypeHandle.Equals(typeof(int?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(long?).TypeHandle))
+            if (type.Equals(typeof(int?)) ||
+                type.Equals(typeof(long?)))
             {
                 return (int)NativePropertyType.NullableInt;
             }
 
-            if (type.TypeHandle.Equals(typeof(uint?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(ulong?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(char?).TypeHandle))
+            if (type.Equals(typeof(uint?)) ||
+                type.Equals(typeof(ulong?)) ||
+                type.Equals(typeof(char?)))
             {
                 return (int)NativePropertyType.NullableUInt;
             }
 
-            if (type.TypeHandle.Equals(typeof(short?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(sbyte?).TypeHandle))
+            if (type.Equals(typeof(short?)) ||
+                type.Equals(typeof(sbyte?)))
             {
                 return (int)NativePropertyType.NullableShort;
             }
 
-            if (type.TypeHandle.Equals(typeof(ushort?).TypeHandle) ||
-                type.TypeHandle.Equals(typeof(byte?).TypeHandle))
+            if (type.Equals(typeof(ushort?)) ||
+                type.Equals(typeof(byte?)))
             {
                 return (int)NativePropertyType.NullableUShort;
             }
 
-            if (type.TypeHandle.Equals(typeof(Color?).TypeHandle))
+            if (type.Equals(typeof(Color?)))
             {
                 return (int)NativePropertyType.NullableColor;
             }
 
-            if (type.TypeHandle.Equals(typeof(Point?).TypeHandle))
+            if (type.Equals(typeof(Point?)))
             {
                 return (int)NativePropertyType.NullablePoint;
             }
 
-            if (type.TypeHandle.Equals(typeof(Rect?).TypeHandle))
+            if (type.Equals(typeof(Rect?)))
             {
                 return (int)NativePropertyType.NullableRect;
             }
 
-            if (type.TypeHandle.Equals(typeof(Size?).TypeHandle))
+            if (type.Equals(typeof(Size?)))
             {
                 return (int)NativePropertyType.NullableSize;
             }
 
-            if (type.TypeHandle.Equals(typeof(Thickness?).TypeHandle))
+            if (type.Equals(typeof(Thickness?)))
             {
                 return (int)NativePropertyType.NullableThickness;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.CornerRadius?).TypeHandle))
+            if (type.Equals(typeof(Noesis.CornerRadius?)))
             {
                 return (int)NativePropertyType.NullableCornerRadius;
             }
 
-            if (type.TypeHandle.Equals(typeof(System.TimeSpan?).TypeHandle))
+            if (type.Equals(typeof(System.TimeSpan?)))
             {
                 return (int)NativePropertyType.NullableTimeSpan;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.Duration?).TypeHandle))
+            if (type.Equals(typeof(Noesis.Duration?)))
             {
                 return (int)NativePropertyType.NullableDuration;
             }
 
-            if (type.TypeHandle.Equals(typeof(Noesis.KeyTime?).TypeHandle))
+            if (type.Equals(typeof(Noesis.KeyTime?)))
             {
                 return (int)NativePropertyType.NullableKeyTime;
             }
@@ -3040,7 +2936,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return false;
             }
         }
@@ -3121,7 +3017,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return false;
             }
         }
@@ -3141,7 +3037,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0.0f;
             }
         }
@@ -3161,7 +3057,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0.0f;
             }
         }
@@ -3181,7 +3077,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -3201,7 +3097,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -3221,7 +3117,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -3241,7 +3137,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return 0;
             }
         }
@@ -3261,7 +3157,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return Marshal.StringToHGlobalUni(string.Empty);
             }
         }
@@ -3281,7 +3177,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3300,7 +3196,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3319,7 +3215,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3338,7 +3234,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3357,7 +3253,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3376,7 +3272,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3395,7 +3291,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3414,7 +3310,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3433,7 +3329,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3451,7 +3347,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
                 return IntPtr.Zero;
             }
         }
@@ -3515,7 +3411,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3535,7 +3431,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3555,7 +3451,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3575,7 +3471,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3595,7 +3491,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3615,7 +3511,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3635,7 +3531,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3654,7 +3550,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3674,7 +3570,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3694,7 +3590,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3714,7 +3610,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3734,7 +3630,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3754,7 +3650,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3774,7 +3670,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3794,7 +3690,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3814,7 +3710,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3834,7 +3730,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3853,7 +3749,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3893,7 +3789,7 @@ namespace Noesis
 
             // This function is called when a Extend object is created from C#
             // so we create the corresponding C++ proxy
-            IntPtr cPtr = Noesis_InstantiateExtend_(nativeType);
+            IntPtr cPtr = Noesis_InstantiateExtend(nativeType);
 
             if (cPtr == IntPtr.Zero)
             {
@@ -3948,7 +3844,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -3968,7 +3864,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -4019,7 +3915,7 @@ namespace Noesis
             }
             catch (Exception e)
             {
-                Noesis.Error.SetNativePendingError(e);
+                Error.UnhandledException(e);
             }
         }
 
@@ -4283,7 +4179,7 @@ namespace Noesis
                 if (cPtr == IntPtr.Zero)
                 {
                     cPtr = FindInstancePtr(instance);
-                    if (cPtr == IntPtr.Zero)
+                    if (cPtr == IntPtr.Zero && Initialized)
                     {
                         cPtr = NewCPtr(instance.GetType(), instance);
                         AddExtendInfo(cPtr, instance);
@@ -4375,7 +4271,7 @@ namespace Noesis
 
             // For ICommand objects, we need to hook to the CanExecuteChanged event so we can
             // notify C++ side when command.CanExecute has changed in Mono
-            System.Windows.Input.ICommand command = instance as System.Windows.Input.ICommand;
+            ICommand command = instance as ICommand;
             if (command != null)
             {
                 command.CanExecuteChanged += NotifyCanExecuteChanged;
@@ -4383,19 +4279,21 @@ namespace Noesis
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private static void NotifyPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private static void NotifyPropertyChanged(object sender,
+            System.ComponentModel.PropertyChangedEventArgs e)
         {
             // We don't want to raise more property change notifications after shutdown is called
             if (Initialized)
             {
                 IntPtr nativeType = EnsureNativeType(sender.GetType());
 
-                Noesis_LaunchPropertyChangedEvent_(nativeType, GetInstanceHandle(sender).Handle, e.PropertyName);
+                Noesis_LaunchPropertyChangedEvent(nativeType, GetInstanceHandle(sender).Handle, e.PropertyName);
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        private static void NotifyCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private static void NotifyCollectionChanged(object sender,
+            System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // We don't want to raise more property change notifications after shutdown is called
             if (Initialized)
@@ -4405,7 +4303,7 @@ namespace Noesis
                 object newItem = (e.NewItems != null && e.NewItems.Count > 0 ? e.NewItems[0] : null);
                 object oldItem = (e.OldItems != null && e.OldItems.Count > 0 ? e.OldItems[0] : null);
 
-                Noesis_LaunchCollectionChangedEvent_(nativeType, GetInstanceHandle(sender).Handle,
+                Noesis_LaunchCollectionChangedEvent(nativeType, GetInstanceHandle(sender).Handle,
                     (int)e.Action, GetInstanceHandle(newItem).Handle, GetInstanceHandle(oldItem).Handle,
                     e.NewStartingIndex, e.OldStartingIndex);
             }
@@ -4418,7 +4316,7 @@ namespace Noesis
             {
                 IntPtr nativeType = EnsureNativeType(sender.GetType());
 
-                Noesis_LaunchCanExecuteChangedEvent_(nativeType, GetInstanceHandle(sender).Handle);
+                Noesis_LaunchCanExecuteChangedEvent(nativeType, GetInstanceHandle(sender).Handle);
             }
         }
     }

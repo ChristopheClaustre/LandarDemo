@@ -16,36 +16,32 @@ namespace Noesis
 
     public class Log
     {
-        private static LogCallback _managedCallback;
-        public static LogCallback LogCallback
+        public static void SetLogCallback(LogCallback callback)
         {
-            get { return _managedCallback; }
-            set
-            {
-                _managedCallback = value;
-                Noesis_RegisterLogCallback(_managedCallback != null ? _nativeCallback : null);
-            }
+            _logCallback = callback;
+            Noesis_RegisterLogCallback(callback != null ? _noesisLogCallback : null);
         }
-
-        #region Internal log helpers
-        internal static void Error(string text)
-        {
-            DoLog((int)LogLevel.Error, "", text);
-        }
-        #endregion
 
         #region Native to managed callback
-        private delegate void NativeLogCallback(int level, [MarshalAs(UnmanagedType.LPWStr)]string channel, [MarshalAs(UnmanagedType.LPWStr)]string message);
-        private static NativeLogCallback _nativeCallback = DoLog;
+        private static LogCallback _logCallback;
+
+        private delegate void NativeLogCallback(uint level,
+            [MarshalAs(UnmanagedType.LPWStr)]string channel,
+            [MarshalAs(UnmanagedType.LPWStr)]string message);
+        private static NativeLogCallback _noesisLogCallback = OnLog;
 
         [MonoPInvokeCallback(typeof(NativeLogCallback))]
-        private static void DoLog(int level, string channel, string message)
+        private static void OnLog(uint level, string channel, string message)
         {
-            LogCallback callback = LogCallback;
-            if (callback != null)
+            if (_logCallback != null)
             {
-                callback((LogLevel)level, channel, message);
+                _logCallback((LogLevel)level, channel, message);
             }
+        }
+
+        internal static void Error(string message)
+        {
+            OnLog((int)LogLevel.Error, "", message);
         }
 
         [DllImport(Library.Name)]

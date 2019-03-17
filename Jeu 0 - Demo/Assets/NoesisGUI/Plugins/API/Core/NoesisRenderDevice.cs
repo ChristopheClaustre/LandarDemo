@@ -149,18 +149,11 @@ namespace Noesis
     public class RenderDeviceGL : RenderDevice
     {
         public RenderDeviceGL() :
-            base(Noesis_RenderDevice_CreateGL_(), true)
+            base(Noesis_RenderDevice_CreateGL(), true)
         {
         }
 
         #region Imports
-        private static IntPtr Noesis_RenderDevice_CreateGL_()
-        {
-            IntPtr cPtr = Noesis_RenderDevice_CreateGL();
-            Error.Check();
-            return cPtr;
-        }
-
         [DllImport(Library.Name)]
         static extern IntPtr Noesis_RenderDevice_CreateGL();
         #endregion
@@ -176,20 +169,45 @@ namespace Noesis
         }
 
         public RenderDeviceD3D11(IntPtr deviceContext, bool sRGB) :
-            base(Noesis_RenderDevice_CreateD3D11_(deviceContext, sRGB), true)
+            base(Noesis_RenderDevice_CreateD3D11(deviceContext, sRGB), true)
         {
         }
 
         #region Imports
-        private static IntPtr Noesis_RenderDevice_CreateD3D11_(IntPtr deviceContext, bool sRGB)
-        {
-            IntPtr cPtr = Noesis_RenderDevice_CreateD3D11(deviceContext, sRGB);
-            Error.Check();
-            return cPtr;
-        }
-
         [DllImport(Library.Name)]
         static extern IntPtr Noesis_RenderDevice_CreateD3D11(IntPtr deviceContext, bool sRGB);
+        #endregion
+    }
+
+    /// <summary>
+    ///  Creates a Metal RenderDevice.
+    /// </summary>
+    public class RenderDeviceMTL : RenderDevice
+    {
+        public RenderDeviceMTL(IntPtr device, bool sRGB) :
+            base(Noesis_RenderDevice_CreateMTL(device, sRGB), true)
+        {
+        }
+
+        public void SetOffscreenCommandBuffer(IntPtr commandBuffer)
+        {
+            Noesis_RenderDeviceMTL_SetOffScreenCommandBuffer(CPtr, commandBuffer);
+        }
+
+        public void SetOnScreenEncoder(IntPtr encoder, uint colorFormat, uint stencilFormat, uint sampleCount)
+        {
+            Noesis_RenderDeviceMTL_SetOnScreenEncoder(CPtr, encoder, colorFormat, stencilFormat, sampleCount);
+        }
+
+        #region Imports
+        [DllImport(Library.Name)]
+        static extern IntPtr Noesis_RenderDevice_CreateMTL(IntPtr device, bool sRGB);
+
+        [DllImport(Library.Name)]
+        static extern IntPtr Noesis_RenderDeviceMTL_SetOffScreenCommandBuffer(HandleRef renderDevice, IntPtr commandBuffer);
+
+        [DllImport(Library.Name)]
+        static extern IntPtr Noesis_RenderDeviceMTL_SetOnScreenEncoder(HandleRef renderDevice, IntPtr encoder, uint colorFormat, uint stencilFormat, uint sampleCount);
         #endregion
     }
 }

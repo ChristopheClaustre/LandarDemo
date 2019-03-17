@@ -40,65 +40,54 @@ public class Grid : Panel {
     }
   }
 
-  public static uint GetColumn(DependencyObject element) {
-    uint ret = NoesisGUI_PINVOKE.Grid_GetColumn(DependencyObject.getCPtr(element));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
+  public static int GetColumn(DependencyObject element) {
+    int ret = NoesisGUI_PINVOKE.Grid_GetColumn(DependencyObject.getCPtr(element));
     return ret;
   }
 
-  public static void SetColumn(DependencyObject element, uint column) {
+  public static void SetColumn(DependencyObject element, int column) {
     NoesisGUI_PINVOKE.Grid_SetColumn(DependencyObject.getCPtr(element), column);
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static uint GetColumnSpan(DependencyObject element) {
-    uint ret = NoesisGUI_PINVOKE.Grid_GetColumnSpan(DependencyObject.getCPtr(element));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
+  public static int GetColumnSpan(DependencyObject element) {
+    int ret = NoesisGUI_PINVOKE.Grid_GetColumnSpan(DependencyObject.getCPtr(element));
     return ret;
   }
 
-  public static void SetColumnSpan(DependencyObject element, uint columnSpan) {
+  public static void SetColumnSpan(DependencyObject element, int columnSpan) {
     NoesisGUI_PINVOKE.Grid_SetColumnSpan(DependencyObject.getCPtr(element), columnSpan);
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
   public static bool GetIsSharedSizeScope(DependencyObject element) {
     bool ret = NoesisGUI_PINVOKE.Grid_GetIsSharedSizeScope(DependencyObject.getCPtr(element));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public static void SetIsSharedSizeScope(DependencyObject element, bool value) {
     NoesisGUI_PINVOKE.Grid_SetIsSharedSizeScope(DependencyObject.getCPtr(element), value);
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static uint GetRow(DependencyObject element) {
-    uint ret = NoesisGUI_PINVOKE.Grid_GetRow(DependencyObject.getCPtr(element));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
+  public static int GetRow(DependencyObject element) {
+    int ret = NoesisGUI_PINVOKE.Grid_GetRow(DependencyObject.getCPtr(element));
     return ret;
   }
 
-  public static void SetRow(DependencyObject element, uint row) {
+  public static void SetRow(DependencyObject element, int row) {
     NoesisGUI_PINVOKE.Grid_SetRow(DependencyObject.getCPtr(element), row);
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static uint GetRowSpan(DependencyObject element) {
-    uint ret = NoesisGUI_PINVOKE.Grid_GetRowSpan(DependencyObject.getCPtr(element));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
+  public static int GetRowSpan(DependencyObject element) {
+    int ret = NoesisGUI_PINVOKE.Grid_GetRowSpan(DependencyObject.getCPtr(element));
     return ret;
   }
 
-  public static void SetRowSpan(DependencyObject element, uint rowSpan) {
+  public static void SetRowSpan(DependencyObject element, int rowSpan) {
     NoesisGUI_PINVOKE.Grid_SetRowSpan(DependencyObject.getCPtr(element), rowSpan);
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
   public static DependencyProperty ColumnProperty {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_ColumnProperty_get();
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (DependencyProperty)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -106,7 +95,6 @@ public class Grid : Panel {
   public static DependencyProperty ColumnSpanProperty {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_ColumnSpanProperty_get();
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (DependencyProperty)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -114,7 +102,6 @@ public class Grid : Panel {
   public static DependencyProperty IsSharedSizeScopeProperty {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_IsSharedSizeScopeProperty_get();
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (DependencyProperty)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -122,7 +109,6 @@ public class Grid : Panel {
   public static DependencyProperty RowProperty {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_RowProperty_get();
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (DependencyProperty)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -130,7 +116,6 @@ public class Grid : Panel {
   public static DependencyProperty RowSpanProperty {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_RowSpanProperty_get();
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (DependencyProperty)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -138,7 +123,6 @@ public class Grid : Panel {
   public ColumnDefinitionCollection ColumnDefinitions {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_ColumnDefinitions_get(swigCPtr);
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (ColumnDefinitionCollection)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
@@ -146,22 +130,17 @@ public class Grid : Panel {
   public RowDefinitionCollection RowDefinitions {
     get {
       IntPtr cPtr = NoesisGUI_PINVOKE.Grid_RowDefinitions_get(swigCPtr);
-      if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
       return (RowDefinitionCollection)Noesis.Extend.GetProxy(cPtr, false);
     }
   }
 
   new internal static IntPtr GetStaticType() {
     IntPtr ret = NoesisGUI_PINVOKE.Grid_GetStaticType();
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-
   internal new static IntPtr Extend(string typeName) {
-    IntPtr nativeType = NoesisGUI_PINVOKE.Extend_Grid(Marshal.StringToHGlobalAnsi(typeName));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
-    return nativeType;
+    return NoesisGUI_PINVOKE.Extend_Grid(Marshal.StringToHGlobalAnsi(typeName));
   }
 }
 

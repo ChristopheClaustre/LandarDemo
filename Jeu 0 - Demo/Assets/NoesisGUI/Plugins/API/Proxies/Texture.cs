@@ -29,12 +29,10 @@ public partial class Texture : BaseComponent {
 
   public void SetPrivateData(object context) {
     NoesisGUI_PINVOKE.Texture_SetPrivateData(swigCPtr, Noesis.Extend.GetInstanceHandle(context));
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
   }
 
   new internal static IntPtr GetStaticType() {
     IntPtr ret = NoesisGUI_PINVOKE.Texture_GetStaticType();
-    if (NoesisGUI_PINVOKE.SWIGPendingException.Pending) throw NoesisGUI_PINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 

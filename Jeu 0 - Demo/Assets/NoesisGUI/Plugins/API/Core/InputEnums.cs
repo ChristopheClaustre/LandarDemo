@@ -269,16 +269,17 @@ public enum Key
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-public enum KeyStateFlags
+[FlagsAttribute]
+public enum KeyStates
 {
-    /// The key is not pressed.
-    None = 0x00,
+    /// The key is not pressed (same as up).
+    None = 0,
 
     /// The key is pressed.
-    Down = 0x01,
+    Down = 1,
 
-    /// The key is toggled.
-    Toggled = 0x02
+    /// The key is toggled on.
+    Toggled = 2
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

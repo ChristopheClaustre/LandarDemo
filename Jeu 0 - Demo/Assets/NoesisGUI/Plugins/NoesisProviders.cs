@@ -73,6 +73,72 @@ public class NoesisXamlProvider: XamlProvider
 }
 
 /// <summary>
+/// Audio provider
+/// </summary>
+public class AudioProvider
+{
+    public static AudioProvider instance = new AudioProvider();
+
+    AudioProvider()
+    {
+        _audios = new Dictionary<string, Value>();
+    }
+
+    public void Register(string uri, UnityEngine.AudioClip audio)
+    {
+        Value v;
+        if (_audios.TryGetValue(uri, out v))
+        {
+            v.refs++;
+            v.audio = audio;
+            _audios[uri] = v;
+        }
+        else
+        {
+            _audios[uri] = new Value() { refs = 1, audio = audio };
+        }
+    }
+
+    public void Unregister(string uri)
+    {
+        Value v;
+        if (_audios.TryGetValue(uri, out v))
+        {
+            if (v.refs == 1)
+            {
+                _audios.Remove(uri);
+            }
+            else
+            {
+                v.refs--;
+                _audios[uri] = v;
+            }
+        }
+    }
+
+    public void PlayAudio(string uri, float volume)
+    {
+        Value v;
+        if (_audios.TryGetValue(uri, out v) && v.audio != null)
+        {
+            UnityEngine.AudioSource.PlayClipAtPoint(v.audio, UnityEngine.Vector3.zero, volume);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("AudioClip not found '" + uri + "'");
+        }
+    }
+
+    public struct Value
+    {
+        public int refs;
+        public UnityEngine.AudioClip audio;
+    }
+
+    private Dictionary<string, Value> _audios;
+}
+
+/// <summary>
 /// Texture provider
 /// </summary>
 public class NoesisTextureProvider: TextureProvider
@@ -86,64 +152,60 @@ public class NoesisTextureProvider: TextureProvider
 
     public void Register(string uri, UnityEngine.Texture texture)
     {
-        lock(_lock)
+        Value v;
+        if (_textures.TryGetValue(uri, out v))
         {
-            Value v;
-            if (_textures.TryGetValue(uri, out v))
-            {
-                v.refs++;
-                v.texture = texture;
-                _textures[uri] = v;
-            }
-            else
-            {
-                _textures[uri] = new Value() { refs = 1, texture = texture };
-            }
+            v.refs++;
+            v.texture = texture;
+            _textures[uri] = v;
+        }
+        else
+        {
+            _textures[uri] = new Value() { refs = 1, texture = texture };
         }
     }
 
     public void Unregister(string uri)
     {
-        lock(_lock)
+        Value v;
+        if (_textures.TryGetValue(uri, out v))
         {
-            Value v;
-            if (_textures.TryGetValue(uri, out v))
+            if (v.refs == 1)
             {
-                if (v.refs == 1)
-                {
-                    _textures.Remove(uri);
-                }
-                else
-                {
-                    v.refs--;
-                    _textures[uri] = v;
-                }
+                _textures.Remove(uri);
+            }
+            else
+            {
+                v.refs--;
+                _textures[uri] = v;
             }
         }
     }
 
-    public override void GetTextureInfo(string uri, out uint width, out uint height)
+    public override void GetTextureInfo(string uri, out uint width_, out uint height_)
     {
-        width = 0;
-        height = 0;
+        int width = 0;
+        int height = 0;
+        int numLevels = 0;
+        System.IntPtr nativePtr = IntPtr.Zero;
 
         Value v;
-
-        lock(_lock)
+        if (_textures.TryGetValue(uri, out v))
         {
-            _textures.TryGetValue(uri, out v);
+            if (v.texture != null)
+            {
+                width = v.texture.width;
+                height = v.texture.height;
+                numLevels = v.texture is UnityEngine.Texture2D ? ((UnityEngine.Texture2D)v.texture).mipmapCount : 1;
+                nativePtr = v.texture.GetNativeTexturePtr();
+            }
         }
 
-        // Mutex must not be locked here beacuse GetNativeTexturePtr() may wait for the render thread
-        if (v.texture != null)
-        {
-            width = (uint)v.texture.width;
-            height = (uint)v.texture.height;
+        // Send to C++
+        Noesis_TextureProviderStoreTextureInfo(swigCPtr.Handle, uri, width, height, numLevels, nativePtr);
 
-            // Store all texture info in C++ TextureProvider so we can create texture in render
-            // thread without calling back C# because this breaks Unity mono
-            StoreTextureInfo(uri, v.texture);
-        }
+        width_ = (uint)width;
+        height_ = (uint)height;
     }
 
     public struct Value
@@ -153,24 +215,10 @@ public class NoesisTextureProvider: TextureProvider
     }
 
     private Dictionary<string, Value> _textures;
-    private readonly object _lock = new object();
-
-    private void StoreTextureInfo(string uri, UnityEngine.Texture texture)
-    {
-        UnityEngine.Texture2D texture2D = texture as UnityEngine.Texture2D;
-
-        Noesis_TextureProviderStoreTextureInfo(swigCPtr.Handle, uri, texture.width, texture.height,
-            texture2D != null ? texture2D.mipmapCount : 1, texture.GetNativeTexturePtr());
-        Noesis.Error.Check();
-    }
 
     internal new static IntPtr Extend(string typeName)
     {
-        IntPtr nativeType = Noesis_TextureProviderExtend(
-            System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(typeName));
-        Noesis.Error.Check();
-
-        return nativeType;
+        return Noesis_TextureProviderExtend(System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(typeName));
     }
 
     #region Imports
@@ -189,35 +237,43 @@ public class NoesisTextureProvider: TextureProvider
 /// </summary>
 public class NoesisFontProvider: FontProvider
 {
-    private static OpenFontCallback _openFont = OpenFont;
+    private static LockFontCallback _lockFont = LockFont;
+    private static UnlockFontCallback _unlockFont = UnlockFont;
     public static NoesisFontProvider instance = new NoesisFontProvider();
 
     NoesisFontProvider()
     {
-        Noesis_FontProviderSetCallback(Noesis.Extend.GetInstanceHandle(this).Handle, _openFont);
-
+        Noesis_FontProviderSetLockUnlockCallbacks(_lockFont, _unlockFont);
         _fonts = new Dictionary<string, Value>();
     }
 
     public void Register(NoesisFont font)
     {
+        bool register = false;
+
         string uri = font.source;
         Value v;
 
         if (_fonts.TryGetValue(uri, out v))
         {
+            register = v.font != font;
+
             v.refs++;
             v.font = font;
             _fonts[uri] = v;
         }
         else
         {
+            register = true;
             _fonts[uri] = new Value() { refs = 1, font = font };
         }
 
-        string folder = System.IO.Path.GetDirectoryName(uri);
-        string filename = System.IO.Path.GetFileName(uri);
-        RegisterFont(folder, filename);
+        if (register)
+        {
+            string folder = System.IO.Path.GetDirectoryName(uri);
+            string filename = System.IO.Path.GetFileName(uri);
+            RegisterFont(folder, filename);
+        }
     }
 
     public void Unregister(NoesisFont font)
@@ -239,20 +295,35 @@ public class NoesisFontProvider: FontProvider
         }
     }
 
-    private delegate void OpenFontCallback(IntPtr cPtr, IntPtr stream, string folder, string id);
-
-    [MonoPInvokeCallback(typeof(OpenFontCallback))]
-    private static void OpenFont(IntPtr cPtr, IntPtr stream, string folder, string id)
+    private delegate void LockFontCallback(string folder, string filename, out IntPtr handle, out IntPtr addr, out int length);
+    [MonoPInvokeCallback(typeof(LockFontCallback))]
+    private static void LockFont(string folder, string filename, out IntPtr handle, out IntPtr addr, out int length)
     {
-        NoesisFontProvider provider = (NoesisFontProvider)Noesis.Extend.GetExtendInstance(cPtr);
+        NoesisFontProvider provider = NoesisFontProvider.instance;
 
         Value v;
-        provider._fonts.TryGetValue(folder + "/" + id, out v);
+        provider._fonts.TryGetValue(folder + "/" + filename, out v);
 
         if (v.font != null && v.font.content != null)
         {
-            Noesis_FontProviderCopyBuffer(cPtr, stream, v.font.content, v.font.content.Length);
+            GCHandle h = GCHandle.Alloc(v.font.content, GCHandleType.Pinned);
+            handle =  GCHandle.ToIntPtr(h);
+            addr = h.AddrOfPinnedObject();
+            length = v.font.content.Length;
+            return;
         }
+
+        handle = IntPtr.Zero;
+        addr = IntPtr.Zero;
+        length = 0;
+    }
+
+    private delegate void UnlockFontCallback(IntPtr handle);
+    [MonoPInvokeCallback(typeof(UnlockFontCallback))]
+    private static void UnlockFont(IntPtr handle)
+    {
+        GCHandle h = GCHandle.FromIntPtr(handle);
+        h.Free();
     }
 
     public struct Value
@@ -265,11 +336,7 @@ public class NoesisFontProvider: FontProvider
 
     internal new static IntPtr Extend(string typeName)
     {
-        IntPtr nativeType = Noesis_FontProviderExtend(
-            System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(typeName));
-        Noesis.Error.Check();
-
-        return nativeType;
+        return Noesis_FontProviderExtend(System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(typeName));
     }
 
     #region Imports
@@ -277,10 +344,6 @@ public class NoesisFontProvider: FontProvider
     static extern IntPtr Noesis_FontProviderExtend(IntPtr typeName);
 
     [DllImport(Library.Name)]
-    static extern void Noesis_FontProviderSetCallback(IntPtr cPtr, OpenFontCallback callback);
-
-    [DllImport(Library.Name)]
-    static extern void Noesis_FontProviderCopyBuffer(IntPtr cPtr, IntPtr stream, byte[] buffer,
-        int bufferSize);
+    static extern void Noesis_FontProviderSetLockUnlockCallbacks(LockFontCallback lockFont, UnlockFontCallback unlockFont);
     #endregion
 }
