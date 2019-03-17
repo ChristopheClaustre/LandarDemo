@@ -45,14 +45,9 @@ public class CameraMovementAPI :
 
     /********  PRIVATE          ************************/
 
-    [Header("Initialisation only")]
-    [SerializeField]
-    private GameObject m_movementAllowedAreaGO = null;
-
     private Rect m_movementAllowedArea = new Rect();
 
     private Camera m_camera;
-    private Setting m_setting;
 
     #endregion
     #region Methods
@@ -65,113 +60,64 @@ public class CameraMovementAPI :
     // Use this for initialization
     private void Start()
     {
-        m_setting = Setting.Instance;
-
         m_camera = GetComponent<Camera>();
-
-        if (! m_movementAllowedAreaGO)
-        {
-            m_movementAllowedArea = new Rect();
-        }
-        else
-        {
-            Vector2 size = new Vector2(m_movementAllowedAreaGO.transform.localScale.x, m_movementAllowedAreaGO.transform.localScale.y);
-            Vector2 position = new Vector2(m_movementAllowedAreaGO.transform.position.x, m_movementAllowedAreaGO.transform.position.z) - (size / 2);
-
-            m_movementAllowedArea = new Rect(position, size);
-        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        CheckActualCameraPosition();
+
     }
 
     /********  OUR MESSAGES     ************************/
 
     /********  PUBLIC           ************************/
 
-    public void ZoomIn()
+    public void Zoom(float p_increment)
     {
-        Zoom(-m_setting.ZoomVelocity);
-        Vector3 newPosition = m_camera.ScreenToWorldPoint(Input.mousePosition);
-        QueryNewCameraPosition(new Vector2(newPosition.x, newPosition.z));
-    }
-    public void ZoomOut()
-    {
-        Zoom(m_setting.ZoomVelocity);
-        Vector3 newPosition = m_camera.ScreenToWorldPoint(Input.mousePosition);
-        QueryNewCameraPosition(new Vector2(newPosition.x, newPosition.z));
+        m_camera.transform.position = m_camera.ScreenToWorldPoint(Input.mousePosition);
+        m_camera.orthographicSize += p_increment;
     }
 
-    public void MoveToLeft()
+    public void VerticalMove(float p_increment, float p_vitesse)
     {
-        HorizontalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
-    }
-    public void MoveToRight()
-    {
-        HorizontalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
-    }
-    public void MoveToTop()
-    {
-        VerticalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
-    }
-    public void MoveToBottom()
-    {
-        VerticalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
+        m_camera.transform.Translate(0, p_increment * p_vitesse, 0);
     }
 
-    public void MoveFromVector(Vector2 p_vector)
+    public void HorizontalMove(float p_increment, float p_vitesse)
     {
-        HorizontalMove(m_setting.CameraVelocity * p_vector.x, Time.unscaledDeltaTime);
-        VerticalMove  (m_setting.CameraVelocity * p_vector.y, Time.unscaledDeltaTime);
+        m_camera.transform.Translate(p_increment * p_vitesse, 0, 0);
     }
 
-    public void QueryNewCameraPosition(Vector2 p_newPosition)
+    public void CheckPosition(Rect p_limiter)
     {
-        Vector3 actualPosition = m_camera.transform.position;
+        // Check Zoom
+        float zoomMaxVertical = p_limiter.height / 2.0f;
+        float zoomMaxHorizontal = p_limiter.width / (2.0f * m_camera.aspect);
 
-        HorizontalMove(p_newPosition.x - actualPosition.x, Time.unscaledDeltaTime);
-        VerticalMove(p_newPosition.y - actualPosition.y, Time.unscaledDeltaTime);
+        m_camera.orthographicSize = Mathf.Clamp(m_camera.orthographicSize, Setting.Instance.MinimalZoom, Mathf.Max(zoomMaxVertical, zoomMaxHorizontal));
+
+        // Check Position
+        Vector3 cameraPosition = m_camera.transform.position;
+
+        cameraPosition.z = ComputeVerifiedMove(
+            m_camera.transform.position.z,
+            m_camera.orthographicSize,
+            p_limiter.yMin,
+            p_limiter.yMax);
+
+        cameraPosition.x = ComputeVerifiedMove(
+            m_camera.transform.position.x,
+            m_camera.orthographicSize * m_camera.aspect,
+            p_limiter.xMin,
+            p_limiter.xMax);
+
+        m_camera.transform.position = cameraPosition;
     }
 
     /********  PROTECTED        ************************/
 
     /********  PRIVATE          ************************/
-
-    public void Zoom(float p_increment)
-    {
-        float zoomMaxVertical   = m_movementAllowedArea.height /  2.0f;
-        float zoomMaxHorizontal = m_movementAllowedArea.width  / (2.0f * m_camera.aspect);
-
-        m_camera.orthographicSize =
-            Mathf.Clamp(m_camera.orthographicSize + p_increment, m_setting.MinimalZoom, Mathf.Max(zoomMaxVertical, zoomMaxHorizontal));
-    }
-
-    public void VerticalMove(float p_increment, float p_vitesse)
-    {
-        float verifiedMove = ComputeVerifiedMove(
-            m_camera.transform.position.z + p_increment * p_vitesse,
-            m_camera.orthographicSize,
-            m_movementAllowedArea.yMin,
-            m_movementAllowedArea.yMax);
-
-        Vector3 cameraPosition = m_camera.transform.position;
-        m_camera.transform.position = new Vector3(cameraPosition.x, cameraPosition.y, verifiedMove);
-    }
-
-    private void HorizontalMove(float p_increment, float p_vitesse)
-    {
-        float verifiedMove = ComputeVerifiedMove(
-            m_camera.transform.position.x + p_increment * p_vitesse,
-            m_camera.orthographicSize * m_camera.aspect,
-            m_movementAllowedArea.xMin,
-            m_movementAllowedArea.xMax);
-
-        Vector3 cameraPosition = m_camera.transform.position;
-        m_camera.transform.position = new Vector3(verifiedMove, cameraPosition.y, cameraPosition.z);
-    }
 
     private float ComputeVerifiedMove(float p_nextValue, float p_cameraSize, float p_min, float p_max)
     {
@@ -179,12 +125,6 @@ public class CameraMovementAPI :
             return p_min + (p_max - p_min) / 2.0f;
         else
             return Mathf.Clamp(p_nextValue, p_min + p_cameraSize, p_max - p_cameraSize);
-    }
-
-    private void CheckActualCameraPosition()
-    {
-        HorizontalMove(0, 1);
-        VerticalMove(0, 1);
     }
 
     #endregion

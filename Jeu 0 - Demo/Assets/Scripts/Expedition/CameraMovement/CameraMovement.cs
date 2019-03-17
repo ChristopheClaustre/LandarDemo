@@ -18,6 +18,9 @@ public class CameraMovement :
 
     /********  INSPECTOR        ************************/
 
+    [Header("Initialisation only")][SerializeField]
+    private GameObject m_limiterGO = null;
+
     /********  PROTECTED        ************************/
 
     /********  PRIVATE          ************************/
@@ -27,6 +30,9 @@ public class CameraMovement :
     // Scripts
     private CameraMovementAPI m_API;
     private Setting m_setting;
+
+    // The movement limiter
+    private Rect m_limiter;
 
     // Middle click management
     private Vector2 m_previousMiddleClick = Vector2.zero;
@@ -47,6 +53,18 @@ public class CameraMovement :
         m_setting = Setting.Instance;
 
         m_camera = GetComponent<Camera>();
+
+        if (!m_limiterGO)
+        {
+            m_limiter = new Rect();
+        }
+        else
+        {
+            Vector2 size = new Vector2(m_limiterGO.transform.localScale.x, m_limiterGO.transform.localScale.y);
+            Vector2 position = new Vector2(m_limiterGO.transform.position.x, m_limiterGO.transform.position.z) - (size / 2);
+
+            m_limiter = new Rect(position, size);
+        }
     }
 
     // Update is called once per frame
@@ -68,59 +86,59 @@ public class CameraMovement :
                 if (Input.mousePosition.y >= Screen.height - marginHeight
                     && Input.mousePosition.y <= Screen.height)
                 {
-                    m_API.MoveToTop();
+                    MoveToTop();
                 }
                 // (Bottom)
                 if (Input.mousePosition.y >= 0
                     && Input.mousePosition.y <= marginHeight)
                 {
-                    m_API.MoveToBottom();
+                    MoveToBottom();
                 }
                 // (Right)
                 if (Input.mousePosition.x >= Screen.width - marginWidth
                     && Input.mousePosition.x <= Screen.width)
                 {
-                    m_API.MoveToRight();
+                    MoveToRight();
                 }
                 // (Left)
                 if (Input.mousePosition.x >= 0
                     && Input.mousePosition.x <= marginWidth)
                 {
-                    m_API.MoveToLeft();
+                    MoveToLeft();
+                }
+                
+                // Zoom
+                if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetAxis("Zoom") > 0)
+                {
+                    ZoomIn();
+                }
+                if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetAxis("Zoom") < 0)
+                {
+                    ZoomOut();
                 }
             }
-
-            // KEYBOARD
-            // (Top)
-            if (Input.GetAxis("Vertical") > 0)
-            {
-                m_API.MoveToTop();
-            }
-            // (Bottom)
-            if (Input.GetAxis("Vertical") < 0)
-            {
-                m_API.MoveToBottom();
-            }
-            // (Right)
-            if (Input.GetAxis("Horizontal") > 0)
-            {
-                m_API.MoveToRight();
-            }
-            // (Left)
-            if (Input.GetAxis("Horizontal") < 0)
-            {
-                m_API.MoveToLeft();
-            }
         }
 
-        // Zoom
-        if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetAxis("Zoom") > 0)
+        // KEYBOARD
+        // (Top)
+        if (Input.GetAxis("Vertical") > 0)
         {
-            m_API.ZoomIn();
+            MoveToTop();
         }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetAxis("Zoom") < 0)
+        // (Bottom)
+        if (Input.GetAxis("Vertical") < 0)
         {
-            m_API.ZoomOut();
+            MoveToBottom();
+        }
+        // (Right)
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            MoveToRight();
+        }
+        // (Left)
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            MoveToLeft();
         }
 
         // Middle click movement
@@ -137,17 +155,51 @@ public class CameraMovement :
         {
             if (m_middleClickHandled)
             {
-                m_API.MoveFromVector(m_previousMiddleClick - (Vector2)Input.mousePosition);
+                MoveFromVector(m_previousMiddleClick - (Vector2)Input.mousePosition);
             }
 
             m_previousMiddleClick = Input.mousePosition;
             m_middleClickHandled = true;
         }
+
+        m_API.CheckPosition(m_limiter);
     }
 
     /********  OUR MESSAGES     ************************/
 
     /********  PUBLIC           ************************/
+
+    public void ZoomIn()
+    {
+        m_API.Zoom(-m_setting.ZoomVelocity);
+    }
+    public void ZoomOut()
+    {
+        m_API.Zoom(m_setting.ZoomVelocity);
+    }
+
+    public void MoveToLeft()
+    {
+        m_API.HorizontalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
+    }
+    public void MoveToRight()
+    {
+        m_API.HorizontalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
+    }
+    public void MoveToTop()
+    {
+        m_API.VerticalMove(m_setting.CameraVelocity, Time.unscaledDeltaTime);
+    }
+    public void MoveToBottom()
+    {
+        m_API.VerticalMove(-m_setting.CameraVelocity, Time.unscaledDeltaTime);
+    }
+
+    public void MoveFromVector(Vector2 p_vector)
+    {
+        m_API.HorizontalMove(p_vector.x, Time.unscaledDeltaTime);
+        m_API.VerticalMove(p_vector.y, Time.unscaledDeltaTime);
+    }
 
     /********  PROTECTED        ************************/
 
