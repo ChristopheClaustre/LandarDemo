@@ -45,8 +45,6 @@ public class CameraMovementAPI :
 
     /********  PRIVATE          ************************/
 
-    private Rect m_movementAllowedArea = new Rect();
-
     private Camera m_camera;
 
     #endregion
