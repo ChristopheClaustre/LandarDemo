@@ -15,10 +15,6 @@ public class Setting :
     /***  PROPERTY              ************************/
     /***************************************************/
 
-    /* gestion des settings du curseur */
-    public Texture2D CursorTex { get { return m_cursorTex; } }
-    public Vector2 Hotspot { get { return m_hotspot; } }
-
     /* gestion des settings de déplacement de la cam */
     public float MouseMarginInPercent { get { return m_mouseMarginInPercent; } }
     public float CameraVelocity { get { return m_cameraVelocity; } }
@@ -45,11 +41,6 @@ public class Setting :
     /***************************************************/
 
     /********  INSPECTOR        ************************/
-
-    /* gestion des settings du curseur */
-    [Header("Curseur")]
-    [SerializeField] private Texture2D m_cursorTex;
-    [SerializeField] private Vector2 m_hotspot;
 
     /* gestion des settings de déplacement de la cam */
     [Header("Déplacements de la caméra")]
@@ -84,12 +75,6 @@ public class Setting :
     {
 //        instance = Camera.main.GetComponent<Setting>();
         instance = this;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        Cursor.SetCursor(m_cursorTex, m_hotspot, CursorMode.Auto);
     }
 
     // Update is called once per frame
