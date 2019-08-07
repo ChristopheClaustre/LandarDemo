@@ -9,6 +9,7 @@ public class TirAnim : MonoBehaviour
 	
 	void bang ()
 	{
-		Instantiate(Projectile,transform.position,transform.rotation);
+		//Instantiate(Projectile,transform.position,transform.rotation);
+		Projectile.GetComponent<ParticleSystem>().Emit(1);
 	}
 }
